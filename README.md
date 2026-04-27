@@ -1,2 +1,0 @@
-# TRK
-BETA Gym APP
