@@ -1,4 +1,4 @@
-const CACHE = 'trk-v2';
+const CACHE = 'trk-v3';
 
 self.addEventListener('install', e => {
   e.waitUntil(
