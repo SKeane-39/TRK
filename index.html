@@ -6,6 +6,7 @@
   <!-- PWA: manifest -->
   <link rel="manifest" href="./manifest.json"/>
   <!-- iOS PWA -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <meta name="apple-mobile-web-app-title" content="TRK"/>
@@ -47,8 +48,8 @@ body.light-mode{--tp:#1a1a1a;--ts:rgba(0,0,0,0.70);--tt:rgba(0,0,0,0.52);--tm:rg
   --chart-line: rgba(0,0,0,0.25);}
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--ac:#95bc2b;--gc:#95bc2b}
-html,body{height:100%;overflow:hidden}body{font-family:system-ui,sans-serif;background:#111;display:flex;justify-content:center;align-items:flex-start;padding:16px;box-sizing:border-box}
-.app{width:390px;max-width:100%;height:calc(100vh - 32px);max-height:860px;border-radius:20px;overflow-y:auto;overflow-x:hidden;border:1px solid rgba(255,255,255,0.12);background:linear-gradient(170deg,#050508 0%,#0a0a10 55%,var(--gc) 200%);position:relative}
+html,body{height:100%;overflow:hidden;margin:0;padding:0}body{font-family:system-ui,sans-serif;background:#111;display:flex;justify-content:center;align-items:flex-start;padding:0;box-sizing:border-box}
+.app{width:100%;max-width:430px;height:100vh;max-height:100dvh;border-radius:0px;overflow-y:auto;overflow-x:hidden;border:none;background:linear-gradient(170deg,#050508 0%,#0a0a10 55%,var(--gc) 200%);position:relative}
 .topbar{padding:10px 18px 8px;display:flex;align-items:center;justify-content:space-between;position:relative}
 
 .hamburger{display:flex;flex-direction:column;gap:5px;cursor:pointer;padding:7px 8px;border-radius:9px;background:rgba(255,255,255,0.09)!important;border:1px solid rgba(255,255,255,0.3)!important}
@@ -221,7 +222,8 @@ html,body{height:100%;overflow:hidden}body{font-family:system-ui,sans-serif;back
 /* Set row swipe-to-delete */
 .sets-area{padding:10px 12px 10px;border-top:0.5px solid rgba(255,255,255,0.07)}
 .set-swipe-wrap{position:relative;overflow:hidden;border-radius:8px;margin-bottom:3px}
-.set-row{display:grid;align-items:center;gap:4px;padding:4px 2px;position:relative;background:transparent;transition:transform 0.2s ease;touch-action:pan-y;user-select:none}
+.set-row{display:grid;align-items:center;gap:4px;padding:4px 2px;position:relative;background:transparent;transition:background 0.2s ease,transform 0.2s ease;touch-action:pan-y;user-select:none}
+.set-row.done{background:rgba(149,188,43,0.08);border-radius:8px}
 .set-row.swiped{transform:translateX(-52px)}
 .set-del{position:absolute;right:0;top:0;bottom:0;width:52px;background:#E24B4A;display:flex;align-items:center;justify-content:center;border-radius:0 8px 8px 0;cursor:pointer;opacity:0;transition:opacity 0.2s}
 .set-del.visible{opacity:1}
@@ -262,6 +264,23 @@ html,body{height:100%;overflow:hidden}body{font-family:system-ui,sans-serif;back
 .lib-item.lib-selected{background:rgba(149,188,43,0.1);border-color:rgba(149,188,43,0.45)}
 .lib-check{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;transition:all 0.15s}
 .lib-item.lib-selected .lib-check{background:var(--ac);border-color:var(--ac);color:#fff}
+.lib-create-btn{padding:9px 20px;font-size:13px;font-weight:500;border-radius:10px;cursor:pointer;color:var(--ac)!important;background:rgba(149,188,43,0.1)!important;border:1px solid rgba(149,188,43,0.3)!important;transition:all 0.15s}
+/* Custom tag on lib items */
+.lib-tag-custom{font-size:9px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;padding:2px 7px;border-radius:20px;color:rgba(175,169,236,0.9);background:rgba(127,119,221,0.12);border:1px solid rgba(127,119,221,0.25)}
+/* Create exercise sheet */
+.create-ex-sheet{background:#131318;border-radius:20px 20px 0 0;padding:16px 18px 32px;width:100%;box-sizing:border-box;border-top:0.5px solid rgba(255,255,255,0.1)}
+.create-ex-handle{width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);margin:0 auto 18px}
+.create-ex-title{font-size:17px;font-weight:600;color:#fff;margin-bottom:18px}
+.create-ex-field{margin-bottom:16px}
+.create-ex-lbl{display:block;font-size:11px;font-weight:600;color:rgba(255,255,255,0.35);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:8px}
+.create-ex-input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.06);color:#fff;font-size:15px;box-sizing:border-box}
+.create-ex-input:focus{outline:none;border-color:var(--ac)}
+.create-ex-pills{display:flex;flex-wrap:wrap;gap:6px}
+.create-ex-pill{padding:7px 14px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.55);transition:all 0.15s;touch-action:manipulation}
+.create-ex-pill.active{background:rgba(149,188,43,0.12);border-color:rgba(149,188,43,0.45);color:var(--ac)}
+.create-ex-cancel{flex:1;padding:13px;border-radius:12px;font-size:15px;font-weight:500;cursor:pointer;color:rgba(255,255,255,0.45)!important;background:rgba(255,255,255,0.06)!important;border:1px solid rgba(255,255,255,0.1)!important}
+.create-ex-save{flex:2;padding:13px;border-radius:12px;font-size:15px;font-weight:500;cursor:pointer;color:#fff!important;background:var(--ac)!important;border:none!important;opacity:0.4;transition:opacity 0.15s}
+.create-ex-save.ready{opacity:1}
 .lib-add-bar{position:sticky;bottom:0;left:0;right:0;padding:10px 0 4px;background:linear-gradient(to bottom,transparent,rgba(13,13,20,0.98) 40%);display:none}
 .lib-add-bar.visible{display:block}
 .lib-add-bar-btn{width:100%;padding:13px;font-size:15px;font-weight:500;border-radius:12px;cursor:pointer;color:#fff!important;background:var(--ac)!important;border:none!important;display:block}.lib-thumb{width:38px;height:38px;border-radius:7px;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer}
@@ -343,7 +362,27 @@ html,body{height:100%;overflow:hidden}body{font-family:system-ui,sans-serif;back
 .m-anim-lbl{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,0.22);letter-spacing:0.5px;white-space:nowrap}
 .m-info{padding:14px 16px}
 .mttl{font-size:16px;font-weight:500;color:#fff;margin-bottom:2px}
+
+/* ── Exercise tags ───────────────────────────────────────────────────────── */
+.ex-tag-row{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.ex-tag{font-size:10px;font-weight:600;letter-spacing:0.3px;padding:2px 7px;border-radius:20px;border:0.5px solid;white-space:nowrap}
+/* Equipment */
+.ex-tag-equip{color:rgba(133,183,235,0.85);background:rgba(55,138,221,0.1);border-color:rgba(55,138,221,0.25)}
+/* Movement pattern */
+.ex-tag-pattern{color:rgba(149,188,43,0.9);background:rgba(149,188,43,0.1);border-color:rgba(149,188,43,0.25)}
+/* Context */
+.ex-tag-context{color:rgba(255,178,80,0.85);background:rgba(255,140,0,0.08);border-color:rgba(255,140,0,0.22)}
+/* Rehab */
+.ex-tag-rehab{color:rgba(175,169,236,0.85);background:rgba(127,119,221,0.1);border-color:rgba(127,119,221,0.25)}
+body.light-mode .ex-tag-equip{color:rgba(30,100,200,0.85);background:rgba(55,138,221,0.1);border-color:rgba(55,138,221,0.25)}
+body.light-mode .ex-tag-pattern{color:rgba(80,130,20,0.9);background:rgba(149,188,43,0.12);border-color:rgba(149,188,43,0.3)}
+body.light-mode .ex-tag-context{color:rgba(180,100,0,0.85);background:rgba(255,140,0,0.1);border-color:rgba(255,140,0,0.25)}
+body.light-mode .ex-tag-rehab{color:rgba(90,80,180,0.85);background:rgba(127,119,221,0.12);border-color:rgba(127,119,221,0.3)}
 .mmus{font-size:12px;color:rgba(255,255,255,0.38);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.mmus-primary{font-size:12px;color:var(--ac);font-weight:500;background:rgba(149,188,43,0.12);border:0.5px solid rgba(149,188,43,0.3);padding:2px 8px;border-radius:6px}
+.mmus-secondary{font-size:11px;color:rgba(255,255,255,0.45);background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.12);padding:2px 7px;border-radius:6px}
+body.light-mode .mmus-secondary{color:rgba(0,0,0,0.45);background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.12)}
+
 .m-log-tip{background:rgba(149,188,43,0.1);border:0.5px solid rgba(149,188,43,0.3);border-radius:9px;padding:8px 11px;margin-bottom:12px;display:flex;align-items:flex-start;gap:7px}
 .m-log-tip-icon{font-size:13px;margin-top:1px;flex-shrink:0}
 .m-log-tip-text{font-size:12px;color:rgba(255,255,255,0.65);line-height:1.55}
@@ -419,22 +458,22 @@ html,body{height:100%;overflow:hidden}body{font-family:system-ui,sans-serif;back
 .mini-bar.run{background:#378ADD;opacity:0.6}
 
 /* Pre-workout check-in overlay */
-.prewo-overlay{position:absolute;inset:8px;border-radius:16px;background:#0b0b0f;border:0.5px solid rgba(255,255,255,0.13);z-index:70;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 0 0 8px rgba(0,0,0,0.55)}
+.prewo-overlay{position:absolute;inset:0;border-radius:0;background:#0b0b0f;border:none;z-index:70;display:flex;flex-direction:column;overflow:hidden;-webkit-overflow-scrolling:touch}
 .prewo-topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;flex-shrink:0}
 .prewo-title{font-size:16px;font-weight:500;color:#fff}
 .prewo-skip{font-size:13px;font-weight:500;color:rgba(255,255,255,0.38);padding:5px 10px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.05);cursor:pointer}
-.prewo-scroll{flex:1;overflow-y:auto;padding:4px 16px 16px}
+.prewo-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 16px 16px}
 .prewo-sec{font-size:11px;font-weight:500;color:rgba(255,255,255,0.32);letter-spacing:0.9px;text-transform:uppercase;margin:14px 0 8px}
 /* Mood faces */
 .mood-row{display:flex;gap:6px}
-.mood-opt{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 4px;border-radius:12px;border:1px solid rgba(255,255,255,0.09);background:rgba(255,255,255,0.04);cursor:pointer;transition:border-color 0.15s,background 0.15s}
+.mood-opt{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 4px;border-radius:12px;border:1px solid rgba(255,255,255,0.09);background:rgba(255,255,255,0.04);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:border-color 0.15s,background 0.15s}
 .mood-opt.sel{border-color:var(--ac);background:rgba(149,188,43,0.1)}
 .mood-face{font-size:24px;line-height:1}
 .mood-lbl{font-size:10px;color:rgba(255,255,255,0.38);text-align:center}
 .mood-opt.sel .mood-lbl{color:var(--ac)}
 /* Symptom chips */
 .sym-grid{display:flex;flex-wrap:wrap;gap:6px}
-.sym-chip{display:flex;align-items:center;gap:5px;padding:6px 11px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.58);transition:all 0.15s}
+.sym-chip{display:flex;align-items:center;gap:5px;padding:6px 11px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.58);transition:all 0.15s}
 .sym-chip .sc-icon{font-size:14px;line-height:1}
 .sym-chip.sel-g{border-color:var(--ac);background:rgba(149,188,43,0.12);color:#5DCAA5}
 .sym-chip.sel-r{border-color:#E24B4A;background:rgba(226,75,74,0.1);color:#F09595}
@@ -465,7 +504,7 @@ html,body{height:100%;overflow:hidden}body{font-family:system-ui,sans-serif;back
 .prewo-complete{width:100%;padding:14px;font-size:15px;font-weight:500;border-radius:12px;cursor:pointer;color:#fff!important;background:var(--ac)!important;border:none!important}
 
 /* Active workout bar */
-.wo-bar{position:absolute;bottom:0;left:0;right:0;z-index:50;padding:10px 14px 18px;background:linear-gradient(to top,#0a0a10 60%,transparent);display:none;border-radius:0 0 20px 20px;pointer-events:none}
+.wo-bar{position:absolute;bottom:0;left:0;right:0;z-index:50;padding:10px 14px 18px;background:linear-gradient(to top,#0a0a10 60%,transparent);display:none;border-radius:0;pointer-events:none}
 .wo-bar.active{display:block}
 .wo-bar-inner{background:#151520;border:0.5px solid rgba(255,255,255,0.15);border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 -4px 24px rgba(0,0,0,0.5);pointer-events:all}
 .wo-bar-info{flex:1;min-width:0}
@@ -474,7 +513,7 @@ html,body{height:100%;overflow:hidden}body{font-family:system-ui,sans-serif;back
 .wo-bar-resume{padding:9px 16px;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;color:#fff!important;background:var(--ac)!important;border:none!important;white-space:nowrap;flex-shrink:0}
 .wo-bar-discard{padding:9px 12px;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;color:rgba(255,255,255,0.45)!important;background:rgba(255,255,255,0.07)!important;border:0.5px solid rgba(255,255,255,0.14)!important;white-space:nowrap;flex-shrink:0}
 /* Confirm discard dialog */
-.wo-confirm{position:absolute;bottom:0;left:0;right:0;z-index:55;padding:0 14px 18px;display:none;border-radius:0 0 20px 20px}
+.wo-confirm{position:absolute;bottom:0;left:0;right:0;z-index:55;padding:0 14px 18px;display:none;border-radius:0}
 .wo-confirm.active{display:block}
 .wo-confirm-inner{background:#1a0a0a;border:0.5px solid rgba(226,75,74,0.3);border-radius:16px;padding:16px 14px}
 .wo-confirm-title{font-size:15px;font-weight:500;color:#fff;margin-bottom:4px}
@@ -484,13 +523,13 @@ html,body{height:100%;overflow:hidden}body{font-family:system-ui,sans-serif;back
 .wo-confirm-yes{flex:1;padding:11px;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;color:#fff!important;background:#E24B4A!important;border:none!important}
 
 /* Post-workout check-in overlay */
-.postwo-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.88);z-index:75;border-radius:20px;display:flex;flex-direction:column;overflow:hidden}
-.postwo-scroll{flex:1;overflow-y:auto;padding:16px 16px 8px}
+.postwo-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.88);z-index:75;display:flex;flex-direction:column;overflow:hidden}
+.postwo-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px 8px}
 .postwo-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .postwo-title{font-size:17px;font-weight:500;color:#fff}
 .postwo-sec{font-size:11px;font-weight:500;color:rgba(255,255,255,0.32);letter-spacing:0.9px;text-transform:uppercase;margin:14px 0 8px}
 .postwo-moods{display:flex;gap:6px}
-.postwo-mood{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:12px;border:1px solid rgba(255,255,255,0.09);background:rgba(255,255,255,0.04);cursor:pointer;transition:all 0.15s}
+.postwo-mood{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:12px;border:1px solid rgba(255,255,255,0.09);background:rgba(255,255,255,0.04);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:all 0.15s}
 .postwo-mood.sel{border-color:var(--ac);background:rgba(149,188,43,0.1)}
 .postwo-mood-face{font-size:22px;line-height:1}
 .postwo-mood-lbl{font-size:10px;color:rgba(255,255,255,0.38);text-align:center}
@@ -513,10 +552,12 @@ html,body{height:100%;overflow:hidden}body{font-family:system-ui,sans-serif;back
 .postwo-muscle-fill{height:7px;border-radius:4px}
 .postwo-muscle-kg{font-size:11px;color:rgba(255,255,255,0.35);min-width:36px;text-align:right}
 .postwo-pb-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:0.5px solid rgba(255,255,255,0.05)}
+.postwo-pb-icon{font-size:16px;line-height:1;flex-shrink:0}
 .postwo-pb-row:last-child{border-bottom:none}
 .postwo-pb-name{font-size:13px;font-weight:500;color:#fff;flex:1}
 .postwo-pb-val{font-size:14px;font-weight:500;color:#5DCAA5}
 .postwo-pb-badge{font-size:10px;padding:2px 7px;border-radius:6px;background:rgba(149,188,43,0.18);color:#5DCAA5;border:0.5px solid rgba(149,188,43,0.35);margin-left:4px}
+.postwo-pb-badge-vol{background:rgba(85,130,220,0.15);color:rgba(133,183,235,0.9);border-color:rgba(100,150,220,0.3)}
 .postwo-footer{padding:12px 16px 20px;border-top:0.5px solid rgba(255,255,255,0.06);flex-shrink:0}
 .postwo-complete{width:100%;padding:14px;font-size:15px;font-weight:500;border-radius:12px;cursor:pointer;color:#fff!important;background:var(--ac)!important;border:none!important}
 
@@ -530,7 +571,7 @@ html,body{height:100%;overflow:hidden}body{font-family:system-ui,sans-serif;back
 .dial-tap-hint{position:absolute;bottom:6px;right:8px;font-size:9px;color:rgba(255,255,255,0.18)}
 
 /* Rest timer popup */
-.rest-popup{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);z-index:120;background:#151520;border:0.5px solid rgba(255,255,255,0.18);border-radius:16px;padding:14px 16px 12px 16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,0.6);min-width:220px;animation:restPopIn 0.22s cubic-bezier(0.34,1.4,0.64,1) forwards}
+.rest-popup{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:1200;background:#151520;border:0.5px solid rgba(255,255,255,0.18);border-radius:16px;padding:14px 16px 12px 16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,0.6);min-width:220px;max-width:calc(min(430px,100vw) - 32px);width:calc(min(430px,100vw) - 32px);animation:restPopIn 0.22s cubic-bezier(0.34,1.4,0.64,1) forwards}
 .rest-popup-top{display:flex;align-items:center;gap:14px}
 .rest-popup-adj{display:flex;align-items:center;justify-content:space-between;gap:6px}
 .rest-adj-btn{flex:1;padding:5px 0;border-radius:8px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.12);font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);cursor:pointer;transition:background 0.15s;text-align:center}
@@ -543,7 +584,7 @@ html,body{height:100%;overflow:hidden}body{font-family:system-ui,sans-serif;back
 .ex-rest-panel.open{display:flex}
 .ex-rest-btn{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.35);cursor:pointer;transition:all 0.15s;white-space:nowrap}
 .ex-rest-btn.active{background:rgba(149,188,43,0.12);border-color:rgba(149,188,43,0.4);color:rgba(149,188,43,0.9)}
-@keyframes restPopIn{from{opacity:0;transform:translateX(-50%) translateY(12px) scale(0.93)}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}
+@keyframes restPopIn{from{opacity:0;transform:translateX(-50%) translateY(20px) scale(0.94)}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}
 .rest-popup.dismissing{animation:restPopOut 0.18s ease forwards}
 @keyframes restPopOut{to{opacity:0;transform:translateX(-50%) translateY(8px) scale(0.95)}}
 .rest-ring-wrap{position:relative;flex-shrink:0;width:48px;height:48px}
@@ -897,7 +938,7 @@ body.light-mode .screen-back-left span:last-child{color:rgba(0,0,0,0.6)}
 body.light-mode .mtab{color:rgba(0,0,0,0.65)!important;background:rgba(0,0,0,0.06)!important;border-color:rgba(0,0,0,0.18)!important}
 body.light-mode .mtab.active{color:#fff!important;background:var(--ac)!important;border-color:var(--ac)!important}
 /* Exercise cards */
-body.light-mode .ex-card{background:rgba(255,255,255,0.72);border-color:rgba(0,0,0,0.07)}
+body.light-mode .ex-card{background:rgba(255,255,255,0.82);border-color:rgba(0,0,0,0.1)}
 body.light-mode .ss-connector{background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.07)}
 body.light-mode .ss-btn{border-color:rgba(0,0,0,0.12);background:rgba(0,0,0,0.04);color:rgba(0,0,0,0.35)}
 body.light-mode .ss-btn.active{border-color:rgba(0,0,0,0.25);color:rgba(0,0,0,0.6);background:rgba(0,0,0,0.06)}
@@ -916,14 +957,29 @@ body.light-mode .info-btn{background:rgba(0,0,0,0.06)!important;border-color:rgb
 body.light-mode .ex-remove{background:rgba(0,0,0,0.04)!important;border-color:rgba(0,0,0,0.1)!important;color:rgba(0,0,0,0.3)!important}
 body.light-mode .ex-mu{color:rgba(0,0,0,0.42)}
 body.light-mode .sets-area{border-top-color:rgba(0,0,0,0.07)}
-body.light-mode .sets-head span{color:rgba(0,0,0,0.38)}
-body.light-mode .set-input{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.12);color:#1a1a1a}
-body.light-mode .set-input:focus{background:rgba(var(--ac-rgb),0.06)}
-body.light-mode .set-input.done-input{border-color:rgba(var(--ac-rgb),0.3);background:rgba(var(--ac-rgb),0.06);color:rgba(0,0,0,0.7)}
-body.light-mode .rpe-input{background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.1);color:rgba(0,0,0,0.65)}
-body.light-mode .sn{color:rgba(0,0,0,0.25)}
-body.light-mode .ck{color:rgba(0,0,0,0.4)!important;background:rgba(0,0,0,0.05)!important;border-color:rgba(0,0,0,0.15)!important}
-body.light-mode .add-set{color:rgba(0,0,0,0.55)!important;background:rgba(0,0,0,0.04)!important;border-color:rgba(0,0,0,0.1)!important}
+/* Column headers */
+body.light-mode .sets-head{border-bottom-color:rgba(0,0,0,0.1)}
+body.light-mode .sets-head span{color:rgba(0,0,0,0.45)!important}
+body.light-mode .col-chip{border-color:rgba(0,0,0,0.15);background:rgba(0,0,0,0.05);color:rgba(0,0,0,0.45)}
+body.light-mode .col-chip.active{background:rgba(var(--ac-rgb),0.1);border-color:rgba(var(--ac-rgb),0.4);color:rgba(var(--ac-rgb),0.9)}
+body.light-mode .col-chip-lbl{color:rgba(0,0,0,0.35)}
+/* Set number */
+body.light-mode .sn{color:rgba(0,0,0,0.4)!important}
+/* Inputs — normal state: solid white with dark text for legibility */
+body.light-mode .set-input{background:#fff!important;border-color:rgba(0,0,0,0.2)!important;color:#1a1a1a!important}
+body.light-mode .set-input:focus{outline:none;border-color:var(--ac)!important;background:rgba(var(--ac-rgb),0.05)!important}
+body.light-mode .rpe-input{background:#fff!important;border-color:rgba(0,0,0,0.15)!important;color:rgba(0,0,0,0.65)!important}
+body.light-mode .rpe-input:focus{outline:none;border-color:rgba(127,119,221,0.6)!important;background:rgba(127,119,221,0.05)!important}
+/* Checkbox — normal state: clear circle with strong border */
+body.light-mode .ck{color:rgba(0,0,0,0.3)!important;background:#fff!important;border-color:rgba(0,0,0,0.28)!important;border-width:1.5px!important}
+body.light-mode .ck.done{color:#fff!important;background:var(--ac)!important;border-color:var(--ac)!important}
+/* Done row — full row accent highlight */
+body.light-mode .set-row.done{background:rgba(149,188,43,0.12);border-radius:8px}
+body.light-mode .set-row.done .sn{color:rgba(var(--ac-rgb),0.7)!important}
+body.light-mode .set-row.done .set-input{background:rgba(149,188,43,0.08)!important;border-color:rgba(149,188,43,0.35)!important;color:rgba(0,0,0,0.75)!important}
+body.light-mode .set-row.done .rpe-input{background:rgba(149,188,43,0.08)!important;border-color:rgba(149,188,43,0.25)!important;color:rgba(0,0,0,0.6)!important}
+/* Add set & other workout action buttons */
+body.light-mode .add-set{color:rgba(0,0,0,0.65)!important;background:#fff!important;border-color:rgba(0,0,0,0.2)!important}
 body.light-mode .add-ex-btn{color:rgba(0,0,0,0.65)!important;background:rgba(0,0,0,0.05)!important;border-color:rgba(0,0,0,0.15)!important}
 body.light-mode .discard-btn{color:rgba(0,0,0,0.38)!important;border-color:rgba(0,0,0,0.1)!important}
 body.light-mode .finish-confirm{background:rgba(var(--ac-rgb),0.06);border-color:rgba(var(--ac-rgb),0.22)}
@@ -952,6 +1008,15 @@ body.light-mode .lib-item{background:rgba(255,255,255,0.65);border-color:rgba(0,
 body.light-mode .lib-item.lib-selected{background:rgba(var(--ac-rgb),0.08);border-color:rgba(var(--ac-rgb),0.4)}
 body.light-mode .lib-check{border-color:rgba(0,0,0,0.2);background:rgba(0,0,0,0.04)}
 body.light-mode .lib-add-bar{background:linear-gradient(to bottom,transparent,rgba(250,247,243,0.98) 40%)}
+body.light-mode #lib-create-hint div{color:rgba(0,0,0,0.35)!important}
+body.light-mode .create-ex-sheet{background:#faf7f3;border-top-color:rgba(0,0,0,0.08)}
+body.light-mode .create-ex-handle{background:rgba(0,0,0,0.12)}
+body.light-mode .create-ex-title{color:#1a1a1a}
+body.light-mode .create-ex-lbl{color:rgba(0,0,0,0.38)}
+body.light-mode .create-ex-input{background:#fff;border-color:rgba(0,0,0,0.18);color:#1a1a1a}
+body.light-mode .create-ex-pill{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.12);color:rgba(0,0,0,0.5)}
+body.light-mode .create-ex-pill.active{background:rgba(var(--ac-rgb),0.1);border-color:rgba(var(--ac-rgb),0.4);color:var(--ac)}
+body.light-mode .create-ex-cancel{color:rgba(0,0,0,0.4)!important;background:rgba(0,0,0,0.05)!important;border-color:rgba(0,0,0,0.1)!important}
 body.light-mode .lib-thumb{background:rgba(0,0,0,0.03)}
 body.light-mode .lib-en{color:#1a1a1a;text-decoration-color:rgba(0,0,0,0.16)}
 body.light-mode .lib-em{color:rgba(0,0,0,0.38)}
@@ -1474,14 +1539,20 @@ body.light-mode #hl *[style*="color:#fff"]{color:#1a1a1a!important}
 body.light-mode #hl *[style*="rgba(255,255,255"]{color:rgba(0,0,0,0.6)!important}
 body.light-mode #hl *[style*="background:rgba(0,0,0"]{background:rgba(0,0,0,0.04)!important}
 
-/* Workout log exercise cards */
+/* Workout log exercise cards — consolidated above, these are reinforcements */
 body.light-mode .ex-nm{color:#1a1a1a!important}
 body.light-mode .ex-mu{color:rgba(0,0,0,0.48)!important}
 body.light-mode .sets-head span{color:rgba(0,0,0,0.45)!important}
-body.light-mode .sn{color:rgba(0,0,0,0.3)!important}
-body.light-mode .set-input{background:rgba(255,255,255,0.75)!important;border-color:rgba(0,0,0,0.14)!important;color:#1a1a1a!important}
-body.light-mode .rpe-input{background:rgba(255,255,255,0.6)!important;border-color:rgba(0,0,0,0.1)!important;color:rgba(0,0,0,0.65)!important}
-body.light-mode .add-set{color:rgba(0,0,0,0.6)!important;background:rgba(0,0,0,0.04)!important;border-color:rgba(0,0,0,0.1)!important}
+body.light-mode .sn{color:rgba(0,0,0,0.4)!important}
+body.light-mode .set-input{background:#fff!important;border-color:rgba(0,0,0,0.2)!important;color:#1a1a1a!important}
+body.light-mode .rpe-input{background:#fff!important;border-color:rgba(0,0,0,0.15)!important;color:rgba(0,0,0,0.65)!important}
+body.light-mode .ck{color:rgba(0,0,0,0.3)!important;background:#fff!important;border-color:rgba(0,0,0,0.28)!important}
+body.light-mode .ck.done{color:#fff!important;background:var(--ac)!important;border-color:var(--ac)!important}
+body.light-mode .set-row.done{background:rgba(149,188,43,0.12)!important}
+body.light-mode .set-row.done .sn{color:rgba(var(--ac-rgb),0.7)!important}
+body.light-mode .set-row.done .set-input{background:rgba(149,188,43,0.08)!important;border-color:rgba(149,188,43,0.35)!important;color:rgba(0,0,0,0.75)!important}
+body.light-mode .set-row.done .rpe-input{background:rgba(149,188,43,0.08)!important;border-color:rgba(149,188,43,0.25)!important}
+body.light-mode .add-set{color:rgba(0,0,0,0.65)!important;background:#fff!important;border-color:rgba(0,0,0,0.2)!important}
 
 /* Cycle phase pill */
 body.light-mode .pp-name{color:#1a1a1a!important}
@@ -1551,10 +1622,9 @@ body.light-mode .prog-metric-btn.active,
 body.light-mode .prog-win-btn.active { color:#fff!important }  /* keep white on coloured bg */
 
 /* .done — checked set circle */
-body.light-mode .ck.done { color:#fff!important }  /* white tick on green circle — keep */
+body.light-mode .ck.done { color:#fff!important;background:var(--ac)!important;border-color:var(--ac)!important }
 
-/* .done-input — completed set input field */
-body.light-mode .done-input { color:#1a1a1a!important; background:rgba(149,188,43,0.1)!important; border-color:rgba(149,188,43,0.35)!important }
+/* .done-input — now handled via .set-row.done .set-input above */
 
 /* .ex-confirm-yes — destructive confirm button */
 body.light-mode .ex-confirm-yes { color:#fff!important }  /* white on red — keep */
@@ -1879,7 +1949,7 @@ body.light-mode .dual-dial-card{
   <div class="word-cover" style="top:224px;left:203px;width:67px;height:32px;animation-delay:3.0s"></div>
 </div>
 </div></div>
-<div style="position:relative" id="wrap">
+<div style="position:relative;width:100%;max-width:430px;height:100dvh;overflow:hidden" id="wrap">
 <div class="app">
 
 <div id="v-home" class="view active">
@@ -1978,8 +2048,40 @@ body.light-mode .dual-dial-card{
     <input class="lib-search" placeholder="Search..." oninput="filterLib(this.value)" id="lsrc"/>
     <div class="mf" id="mf"></div>
     <div id="ll"></div>
+    <div id="lib-create-hint" style="display:none;text-align:center;padding:20px 0 8px">
+      <div style="font-size:13px;color:rgba(255,255,255,0.35);margin-bottom:12px">Can't find what you're looking for?</div>
+      <button class="lib-create-btn" onclick="openCreateEx()">+ Create exercise</button>
+    </div>
     <div class="lib-add-bar" id="lib-add-bar">
       <button class="lib-add-bar-btn" id="lib-add-bar-btn" onclick="confirmLibSelection()">Add exercises</button>
+    </div>
+  </div>
+</div>
+
+<!-- Create exercise modal -->
+<div id="create-ex-overlay" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.6);z-index:80;display:none;align-items:flex-end">
+  <div class="create-ex-sheet" id="create-ex-sheet">
+    <div class="create-ex-handle"></div>
+    <div class="create-ex-title">New exercise</div>
+    <div class="create-ex-field">
+      <label class="create-ex-lbl">Name</label>
+      <input class="create-ex-input" id="cex-name" placeholder="e.g. Cable Fly" maxlength="60" oninput="validateCreateEx()"/>
+    </div>
+    <div class="create-ex-field">
+      <label class="create-ex-lbl">Muscle group</label>
+      <div class="create-ex-pills" id="cex-muscle-pills"></div>
+    </div>
+    <div class="create-ex-field">
+      <label class="create-ex-lbl">Tracking type</label>
+      <div class="create-ex-pills">
+        <button class="create-ex-pill active" id="cex-t-weight" onclick="setCexType('weight')">Weight + reps</button>
+        <button class="create-ex-pill" id="cex-t-reps" onclick="setCexType('reps')">Reps only</button>
+        <button class="create-ex-pill" id="cex-t-time" onclick="setCexType('time')">Time</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button class="create-ex-cancel" onclick="closeCreateEx()">Cancel</button>
+      <button class="create-ex-save" id="cex-save-btn" onclick="saveCreateEx()">Add to library</button>
     </div>
   </div>
 </div>
@@ -2685,8 +2787,8 @@ function getToday(){const d=new Date();d.setHours(0,0,0,0);return d;}
 // TODAY is now a live accessor — always current date, never stale
 Object.defineProperty(window,'TODAY',{get:getToday});
 const COLS=['#95bc2b','#378ADD','#D85A30','#D4537E','#7F77DD','#BA7517','#E24B4A','#888780'];
-const MUSCLES=['Chest','Back','Shoulders','Legs','Arms','Core','Glutes'];
-const MUSCLE_EX={Chest:['Bench Press','Incline DB Press'],Back:['Pull-Up','Barbell Row','Deadlift'],Shoulders:['Overhead Press','Lateral Raise'],Legs:['Squat','Romanian Deadlift','Leg Press','Spanish Squat','Nordic Curl'],Arms:['Barbell Curl','Tricep Pushdown'],Core:['Plank'],Glutes:['Hip Thrust (Band)','Monster Walk','Clamshell']};
+const MUSCLES=['Chest','Back','Shoulders','Legs','Glutes','Core','Biceps','Triceps'];
+const MUSCLE_EX={Chest:['Bench Press (Barbell)','Incline Press (DB)'],Back:['Pull-Up','Bentover Row (Barbell)','Deadlift (Barbell)'],Shoulders:['Overhead Press (Barbell)','Lateral Raise (DB)'],Legs:['Back Squat (Barbell)','Romanian Deadlift (Barbell)','Leg Press','Spanish Squat','Nordic Curl'],Biceps:['Bicep Curl (Barbell)','Hammer Curl (DB)'],Triceps:['Tricep Pushdown Bar (Cable)','Overhead Tricep Extension (Cable)'],Core:['Plank'],Glutes:['Hip Thrust (Band)','Monster Walk','Clamshell']};
 
 /* EX now includes:
    anim   — CSS animation class for the wireframe figure
@@ -2714,501 +2816,596 @@ const MUSCLE_IMGS={
 };
 
 const EX=[
-  {n:'Bench Press',m:'Chest',t:'weight',c:'gym',anim:'anim-bench',
+  {id:1,n:'Bench Press (Barbell)',m:'Chest',ms:['Shoulders','Triceps'],t:'weight',c:'gym',anim:'anim-bench',tags:['Barbell','Push','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong> including collars — not the weight per side.',
    s:['Lie flat, grip just outside shoulder-width','Lower bar to lower chest under control','Press back up, driving feet into floor','Lock out and squeeze at the top']},
-  {n:'Pull-Up',m:'Back',t:'reps',c:'gym',anim:'anim-pullup',
+  {id:2,n:'Pull-Up',m:'Back',ms:['Biceps','Core'],t:'reps',c:'gym',anim:'anim-pullup',tags:['Bodyweight','Pull','Compound'],cols:['reps'],
    tip:'Log <strong>reps only</strong> — no weight unless you\'re using a belt. Assisted pull-ups: log negative kg (e.g. −10kg for a band).',
    s:['Dead hang, overhand shoulder-width grip','Pull elbows down and back','Chin clears the bar','Lower fully between reps']},
-  {n:'Barbell Row',m:'Back',t:'weight',c:'gym',anim:'anim-dead',
+  {id:3,n:'Bentover Row (Barbell)',m:'Back',ms:['Biceps','Core'],t:'weight',c:'gym',anim:'anim-dead',tags:['Barbell','Pull','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong>. Keep your torso angle consistent between sessions so volume is comparable.',
    s:['Hip hinge to ~45°','Drive elbows back to lower abdomen','Brief hold at top','Lower with control']},
-  {n:'Overhead Press',m:'Shoulders',t:'weight',c:'gym',anim:'anim-ohp',
+  {id:4,n:'Overhead Press (Barbell)',m:'Shoulders',ms:['Triceps','Core'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Barbell','Push','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong>. If pressing dumbbells, log combined weight of both — not one dumbbell.',
    s:['Bar at collar, grip just outside shoulders','Brace and press straight up','Lock out overhead','Lower to collarbone under control']},
-  {n:'Squat',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
+  {id:5,n:'Back Squat (Barbell)',m:'Legs',ms:['Glutes','Core'],t:'weight',c:'gym',anim:'anim-squat',tags:['Barbell','Squat','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong> including collars. Pause squats and tempo squats can use the same weight field.',
    s:['Bar on upper traps, feet shoulder-width','Break hips and knees together','Hips below parallel','Drive through whole foot to stand']},
-  {n:'Romanian Deadlift',m:'Legs',t:'weight',c:'gym',anim:'anim-rdl',
+  {id:6,n:'Romanian Deadlift (Barbell)',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-rdl',tags:['Barbell','Hinge','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong>. If using dumbbells, log combined weight of both in the weight field.',
    s:['Hinge at hips, bar close to legs','Push hips back, feel hamstring stretch','Neutral spine throughout','Drive hips forward to finish']},
-  {n:'Deadlift',m:'Back',t:'weight',c:'gym',anim:'anim-dead',
+  {id:7,n:'Deadlift (Barbell)',m:'Back',ms:['Glutes','Legs'],t:'weight',c:'gym',anim:'anim-dead',tags:['Barbell','Hinge','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong>. Conventional and sumo can share the same field — note the style in the set notes if you switch.',
    s:['Bar over mid-foot, grip outside legs','Chest up, lats tight','Drive floor away, bar against shins','Lock hips at top']},
-  {n:'Barbell Curl',m:'Arms',t:'weight',c:'gym',anim:'anim-curl',
+  {id:8,n:'Bicep Curl (Barbell)',m:'Biceps',t:'weight',c:'gym',anim:'anim-curl',tags:['Barbell','Pull'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong>. For dumbbell curls, log the combined weight of both dumbbells.',
    s:['Underhand grip, elbows pinned','Curl without swinging','Squeeze at top','3-second controlled lower']},
-  {n:'Tricep Pushdown',m:'Arms',t:'weight',c:'gym',anim:'anim-ohp',
+  {id:9,n:'Tricep Pushdown Bar (Cable)',m:'Triceps',t:'weight',c:'gym',anim:'anim-ohp',tags:['Cable','Push'],cols:['kg','reps'],
    tip:'Log the <strong>cable stack weight</strong>. Note whether you\'re using a rope or bar — they feel different at the same weight.',
    s:['Elbows pinned to sides','Push to full extension','Hard squeeze at bottom','Controlled return to start']},
-  {n:'Plank',m:'Core',t:'time',c:'gym',anim:'anim-plank',
+  {id:10,n:'Plank',m:'Core',ms:['Shoulders'],t:'time',c:'gym',anim:'anim-plank',tags:['Bodyweight','Isometric'],cols:['time'],
    tip:'Log <strong>time in seconds</strong>. If adding weight plates to your back, use the weight field for kg and time for duration.',
    s:['Forearms under shoulders','Straight line head to heel','Brace abs and squeeze glutes','No sagging hips']},
-  {n:'Lateral Raise',m:'Shoulders',t:'weight',c:'gym',anim:'anim-ohp',
+  {id:11,n:'Lateral Raise (DB)',m:'Shoulders',t:'weight',c:'gym',anim:'anim-ohp',tags:['Dumbbell','Pull'],cols:['kg','reps'],
    tip:'Log the <strong>combined weight of both dumbbells</strong>, not just one. e.g. 2 × 8kg = log 16kg.',
    s:['Slight forward lean, soft elbows','Raise to shoulder height','Pinky leads — thumb down','Slow 2–3s lower']},
-  {n:'Incline DB Press',m:'Chest',t:'weight',c:'gym',anim:'anim-bench',
+  {id:12,n:'Incline Press (DB)',m:'Chest',ms:['Shoulders','Triceps'],t:'weight',c:'gym',anim:'anim-bench',tags:['Dumbbell','Push','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>combined weight of both dumbbells</strong>. e.g. 2 × 30kg = log 60kg so volume totals are accurate.',
    s:['Bench at 30–45°','Arc dumbbells upward and inward','Lower slowly — elbows at 45°','Shoulder blades pinched throughout']},
-  {n:'Leg Press',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
+  {id:13,n:'Leg Press',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Machine','Push'],cols:['kg','reps'],
    tip:'Log the <strong>plate-loaded weight only</strong> (not the sled). This makes cross-machine comparisons meaningless — just track your own progress consistently.',
    s:['Feet shoulder-width, mid-platform','Knees to 90°','Press through whole foot','Control every rep — no locking out hard']},
-  {n:'Spanish Squat',m:'Legs',t:'time',c:'physio',anim:'anim-squat',
+  {id:14,n:'Spanish Squat',m:'Legs',t:'time',c:'physio',anim:'anim-squat',tags:['Band','Rehab','Squat'],cols:['time'],
    tip:'Log <strong>hold time in seconds</strong>. If progressing to weighted (vest or plate), use the weight field.',
    s:['Band anchored low, loop behind knees','Feet shoulder-width, toes forward','Shins nearly vertical — sit back into it','Great for patellar tendon rehab']},
-  {n:'Clamshell',m:'Glutes',t:'reps',c:'physio',anim:'anim-rdl',
+  {id:15,n:'Clamshell',m:'Glutes',t:'reps',c:'physio',anim:'anim-rdl',tags:['Band','Rehab'],cols:['reps'],
    tip:'Log <strong>reps per side</strong>. If using a resistance band, note the band colour or resistance level in your notes.',
    s:['Side-lying, knees bent ~45°, band above knees','Hips stacked, feet together','Rotate top knee open as far as you can','Control the close — no pelvis rocking']},
-  {n:'Band Pull-Apart',m:'Shoulders',t:'reps',c:'physio',anim:'anim-bench',
-   tip:'Log <strong>total reps</strong>. Resistance bands vary — note the band resistance level so you can progress consistently.',
-   s:['Band at shoulder height, arms straight','Pull apart to chest, squeeze shoulder blades','Control the return — no snapping','Slight elbow bend throughout']},
-  {n:'Monster Walk',m:'Glutes',t:'reps',c:'physio',anim:'anim-squat',
+    {id:17,n:'Monster Walk',m:'Glutes',t:'reps',c:'physio',anim:'anim-squat',tags:['Band','Rehab'],cols:['reps'],
    tip:'Log <strong>total steps taken</strong> or reps per direction. Note the band resistance level — light/medium/heavy — to track progress.',
    s:['Band above ankles, slight squat','Step diagonally keeping constant band tension','Alternate legs — maintain depth throughout','Toes forward, knees out']},
-  {n:'Nordic Curl',m:'Legs',t:'reps',c:'physio',anim:'anim-rdl',
+  {id:18,n:'Nordic Curl',m:'Legs',t:'reps',c:'physio',anim:'anim-rdl',tags:['Bodyweight','Rehab'],cols:['reps'],
    tip:'Log <strong>reps completed</strong> — full eccentrics count even if you can\'t pull back up yet. Track the negative phase length separately if you want.',
    s:['Kneel, feet anchored, hips neutral','Lower torso as slowly as possible','Catch with hands at bottom','Drive back up using hamstrings']},
-  {n:'Hip Thrust (Band)',m:'Glutes',t:'reps',c:'physio',anim:'anim-squat',
+  {id:19,n:'Hip Thrust (Band)',m:'Glutes',ms:['Legs'],t:'reps',c:'physio',anim:'anim-squat',tags:['Band','Hinge','Rehab'],cols:['reps'],
    tip:'Log <strong>reps</strong>. If using a barbell or plate instead of a band, use the weight field. Band version: note resistance level.',
    s:['Shoulders on bench, band across hips','Drive hips to full extension','Squeeze glutes hard for 1 second at top','Lower just above floor and repeat']},
-  {n:'Wall Slide',m:'Shoulders',t:'reps',c:'physio',anim:'anim-ohp',
+  {id:20,n:'Wall Slide',m:'Shoulders',t:'reps',c:'physio',anim:'anim-ohp',tags:['Bodyweight','Rehab'],cols:['reps'],
    tip:'Log <strong>total reps</strong>. This is a rehab movement — focus on quality and range of motion, not load.',
    s:['Back flat to wall, arms in goalpost position','Press firmly into wall throughout','Slide arms overhead maintaining contact','Builds rotator cuff stability and scapular control']},
-  {n:'Tibialis Raise',m:'Legs',t:'reps',c:'physio',anim:'anim-squat',
+  {id:21,n:'Tibialis Raise',m:'Legs',t:'reps',c:'physio',anim:'anim-squat',tags:['Bodyweight','Rehab'],cols:['reps'],
    tip:'Log <strong>total reps</strong>. When adding weight, log the weight of any band or plate used in the weight field.',
    s:['Heels against wall, feet forward','Raise toes as high as possible','Lower slowly under control','Add band around foot when easy']},
-  {n:'Single-Leg RDL',m:'Legs',t:'weight',c:'physio',anim:'anim-rdl',
+  {id:22,n:'Single-Leg RDL',m:'Legs',ms:['Glutes'],t:'weight',c:'physio',anim:'anim-rdl',tags:['Bodyweight','Hinge','Unilateral'],cols:['kg','reps'],
    tip:'Log <strong>weight per hand</strong> if using a single dumbbell, or combined weight if holding two. Be consistent each session.',
    s:['Stand on one leg, soft knee','Hinge at hip, rear leg lifts back','Keep hips level throughout — don\'t rotate','Drive hips forward to return to standing']},
 
   // ── BARBELL ──────────────────────────────────────────────────
-  {n:'Sumo Deadlift',m:'Legs',t:'weight',c:'gym',anim:'anim-dead',
+  {id:23,n:'Sumo Deadlift (Barbell)',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-dead',tags:['Barbell','Hinge','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong>. Wider stance shifts load slightly more to adductors and glutes vs conventional.',
    s:['Wide stance, toes out 30–45°','Grip inside legs, bar over mid-foot','Push knees out in line with toes','Drive hips forward to lockout']},
-  {n:'Front Squat',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
+  {id:24,n:'Front Squat (Barbell)',m:'Legs',ms:['Glutes','Core'],t:'weight',c:'gym',anim:'anim-squat',tags:['Barbell','Squat','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong>. Expect to lift ~20% less than back squat — that\'s normal.',
    s:['Bar in front rack — fingertips under bar, elbows high','Elbows stay up throughout — if they drop, the bar rolls','Sit into squat, knees tracking toes','Drive up keeping torso upright']},
-  {n:'Paused Squat',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
-   tip:'Log the <strong>total bar weight</strong>. Use ~10–20% less than your regular squat — the pause removes the stretch reflex.',
-   s:['Set up as normal squat','Descend and pause 2–3 seconds at the bottom','No bouncing — brace and hold','Drive up under control']},
-  {n:'Good Morning',m:'Back',t:'weight',c:'gym',anim:'anim-rdl',
+    {id:26,n:'Good Morning',m:'Back',ms:['Glutes','Legs'],t:'weight',c:'gym',anim:'anim-rdl',tags:['Barbell','Hinge','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong>. Start light — this hammers the lower back. Build gradually.',
    s:['Bar on upper traps, soft knees','Hinge forward until torso is near-parallel','Feel the hamstring stretch','Drive hips forward to return — keep back neutral']},
-  {n:'Barbell Hip Thrust',m:'Glutes',t:'weight',c:'gym',anim:'anim-squat',
+  {id:27,n:'Hip Thrust (Barbell)',m:'Glutes',ms:['Legs'],t:'weight',c:'gym',anim:'anim-squat',tags:['Barbell','Hinge','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong> including plates. Use a pad on the bar across your hips.',
    s:['Shoulders on bench, bar across hips with pad','Feet flat, knees at 90° at top','Drive hips to full extension','Squeeze glutes hard — don\'t hyperextend lower back']},
-  {n:'Pendlay Row',m:'Back',t:'weight',c:'gym',anim:'anim-dead',
+  {id:28,n:'Pendlay Row (Barbell)',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Barbell','Pull','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong>. Bar returns to floor each rep — strict and explosive.',
    s:['Bar on floor, hinge to horizontal torso','Explosively row bar to lower chest','Bar touches chest','Lower under control, reset on floor']},
-  {n:'Yates Row',m:'Back',t:'weight',c:'gym',anim:'anim-dead',
-   tip:'Log the <strong>total bar weight</strong>. Underhand grip and more upright torso than Pendlay Row.',
-   s:['Underhand grip, torso at ~70° from floor','Drive elbows back to hips','Bar touches lower abdomen','Squeeze lats at top']},
-  {n:'Zercher Squat',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
+    {id:30,n:'Zercher Squat',m:'Legs',ms:['Glutes','Core'],t:'weight',c:'gym',anim:'anim-squat',tags:['Barbell','Squat','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong>. Bar sits in the crook of your elbows — use a pad if needed.',
    s:['Bar in elbow crooks, arms crossed or clasped','Elbows stay up, torso upright','Deep squat — bar position encourages it','Drive through whole foot']},
-  {n:'Landmine Press',m:'Shoulders',t:'weight',c:'gym',anim:'anim-ohp',
+  {id:31,n:'Landmine Press (Standing)',m:'Shoulders',ms:['Chest','Triceps'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Barbell','Push','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>weight of plates on the bar</strong> only, not the bar. Single arm: log one side\'s worth.',
    s:['Bar anchored in landmine, hold at shoulder','Press up and forward in an arc','Full extension at top','Lower under control']},
-  {n:'Landmine Row',m:'Back',t:'weight',c:'gym',anim:'anim-dead',
+  {id:32,n:'Landmine Row',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Barbell','Pull','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>weight of plates on the bar</strong>. Single arm version: log one side.',
    s:['Hinge forward, grip end of bar','Row to hip, elbow drives back','Brief hold at top','Lower with control']},
-  {n:'Single-Arm Landmine Row',m:'Back',t:'weight',c:'gym',anim:'anim-dead',
+  {id:33,n:'Single-Arm Landmine Row',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Barbell','Pull','Unilateral'],cols:['kg','reps'],
    tip:'Log the <strong>plate weight on one side</strong>. Keep hips square — don\'t rotate to cheat reps.',
    s:['Stagger stance, hinge forward','Grip end of bar with one hand','Row to hip — no torso rotation','Lower fully between reps']},
-  {n:'Barbell Lunge',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
+  {id:34,n:'Barbell Lunge',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Barbell','Squat','Unilateral'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong>. Alternate legs each rep, or do all reps on one side then switch.',
    s:['Bar on upper traps, stand tall','Step forward into lunge, back knee near floor','Drive through front foot to return','Keep torso upright throughout']},
-  {n:'Bulgarian Split Squat (Barbell)',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
+  {id:35,n:'Bulgarian Split Squat (Barbell)',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Barbell','Squat','Unilateral'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong>. Expect significant DOMS first time — introduce gradually.',
    s:['Bar on traps, rear foot elevated on bench','Front foot far enough forward that knee stays over toes','Lower until rear knee near floor','Drive through front heel to stand']},
-  {n:'Close-Grip Bench Press',m:'Arms',t:'weight',c:'gym',anim:'anim-bench',
+  {id:36,n:'Close-Grip Bench Press (Barbell)',m:'Chest',ms:['Triceps','Shoulders'],t:'weight',c:'gym',anim:'anim-bench',tags:['Barbell','Push','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong>. Grip ~shoulder-width — not ultra-narrow which stresses wrists.',
    s:['Grip shoulder-width or just inside','Lower to lower chest, elbows tucked','Press up — triceps drive the lockout','Squeeze at the top']},
-  {n:'Floor Press',m:'Chest',t:'weight',c:'gym',anim:'anim-bench',
+  {id:37,n:'Floor Press (Barbell)',m:'Chest',ms:['Shoulders','Triceps'],t:'weight',c:'gym',anim:'anim-bench',tags:['Barbell','Push','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong>. Range of motion is shorter — you can often go heavier than bench.',
    s:['Lie on floor, bar over chest','Lower until upper arms touch floor','Brief pause — no bounce','Press up to lockout']},
-  {n:'Incline Barbell Press',m:'Chest',t:'weight',c:'gym',anim:'anim-bench',
+  {id:38,n:'Incline Press (Barbell)',m:'Chest',ms:['Shoulders','Triceps'],t:'weight',c:'gym',anim:'anim-bench',tags:['Barbell','Push','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong>. Set bench at 30–45°. Higher angles shift load to front delts.',
    s:['Bench at 30–45°, bar at upper chest','Lower under control to upper chest','Press in slight arc to lockout','Shoulder blades pinched throughout']},
-  {n:'EZ-Bar Curl',m:'Arms',t:'weight',c:'gym',anim:'anim-curl',
+  {id:39,n:'EZ-Bar Curl',m:'Biceps',t:'weight',c:'gym',anim:'anim-curl',tags:['Barbell','Pull'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight including collars</strong>. EZ bar is typically 7–10kg.',
    s:['Underhand grip on angled grips, elbows pinned','Curl without swinging torso','Squeeze at top','3-second controlled lower']},
-  {n:'EZ-Bar Skullcrusher',m:'Arms',t:'weight',c:'gym',anim:'anim-bench',
+  {id:40,n:'EZ-Bar Skullcrusher',m:'Triceps',t:'weight',c:'gym',anim:'anim-bench',tags:['Barbell','Push'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong>. Elbows stay pointing at ceiling throughout.',
    s:['Lie flat, EZ bar over face','Lower bar toward forehead — only forearms move','Press back up to lockout','Keep upper arms fixed and vertical']},
-  {n:'Barbell Shrug',m:'Back',t:'weight',c:'gym',anim:'anim-dead',
+  {id:41,n:'Shrug (Barbell)',m:'Back',t:'weight',c:'gym',anim:'anim-dead',tags:['Barbell','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>total bar weight</strong>. No neck rolling — straight up and down.',
    s:['Bar at hip level, overhand grip','Shrug shoulders straight up','Hold 1 second at top','Lower with control']},
-  {n:'Snatch-Grip Deadlift',m:'Back',t:'weight',c:'gym',anim:'anim-dead',
-   tip:'Log the <strong>total bar weight</strong>. Wide grip increases range of motion and upper back demand.',
-   s:['Wide snatch grip, bar over mid-foot','More knee bend than conventional — hips lower','Drive floor away, bar close to body','Lock out hips and knees simultaneously']},
-
+  
   // ── DUMBBELL ─────────────────────────────────────────────────
-  {n:'DB Goblet Squat',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
+  {id:43,n:'Goblet Squat',m:'Legs',ms:['Glutes','Core'],t:'weight',c:'gym',anim:'anim-squat',tags:['Dumbbell','Squat','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>weight of one dumbbell</strong> held at chest. Great teaching tool for squat mechanics.',
    s:['Hold DB vertically at chest, feet shoulder-width','Elbows inside knees at bottom','Sit deep — let elbows push knees out','Drive through whole foot']},
-  {n:'DB Bulgarian Split Squat',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
+  {id:44,n:'Bulgarian Split Squat (DB)',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Dumbbell','Squat','Unilateral'],cols:['kg','reps'],
    tip:'Log the <strong>combined weight of both dumbbells</strong>. Log per side if you do all reps on one leg.',
    s:['Rear foot elevated on bench, dumbbells at sides','Front foot forward enough — knee stays behind toes','Lower until rear knee near floor','Drive through front heel']},
-  {n:'DB Step-Up',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
+  {id:45,n:'Step-Up (DB)',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Dumbbell','Squat','Unilateral'],cols:['kg','reps'],
    tip:'Log the <strong>combined weight of both dumbbells</strong>. Use a box height where your knee hits ~90°.',
    s:['Dumbbells at sides, face a box or bench','Drive through front heel to step up','Stand tall at top','Lower the trailing leg with control']},
-  {n:'DB Reverse Lunge',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
+  {id:46,n:'Reverse Lunge (DB)',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Dumbbell','Squat','Unilateral'],cols:['kg','reps'],
    tip:'Log the <strong>combined weight of both dumbbells</strong>.',
    s:['Stand tall, dumbbells at sides','Step one foot back into lunge','Back knee near floor, front shin vertical','Drive through front heel to return']},
-  {n:'DB Walking Lunge',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
+  {id:47,n:'Walking Lunge (DB)',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Dumbbell','Squat','Unilateral'],cols:['kg','reps'],
    tip:'Log the <strong>combined weight of both dumbbells</strong>. Count total steps or reps per leg.',
    s:['Dumbbells at sides, stand tall','Step forward into lunge — back knee near floor','Drive through front heel, bring rear foot forward','Continue alternating']},
-  {n:'Single-Leg DB RDL',m:'Glutes',t:'weight',c:'gym',anim:'anim-rdl',
+  {id:48,n:'Single-Leg RDL (DB)',m:'Glutes',ms:['Legs'],t:'weight',c:'gym',anim:'anim-rdl',tags:['Dumbbell','Hinge','Unilateral'],cols:['kg','reps'],
    tip:'Log the <strong>combined weight of both dumbbells</strong>, or single dumbbell weight if using one hand.',
    s:['Stand on one leg, soft knee','Hinge at hip — rear leg lifts as counterbalance','Dumbbells lower close to standing leg','Drive hip forward to return']},
-  {n:'DB Sumo Squat',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
+  {id:49,n:'Sumo Squat (DB)',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Dumbbell','Squat'],cols:['kg','reps'],
    tip:'Log the <strong>weight of one dumbbell</strong> held vertically between legs.',
    s:['Wide stance, toes out, hold DB between legs','Knees track over toes throughout','Sit deep into squat','Drive through whole foot — knees out']},
-  {n:'DB Chest Fly',m:'Chest',t:'weight',c:'gym',anim:'anim-bench',
+  {id:50,n:'Chest Fly (DB)',m:'Chest',ms:['Shoulders'],t:'weight',c:'gym',anim:'anim-bench',tags:['Dumbbell','Push'],cols:['kg','reps'],
    tip:'Log the <strong>combined weight of both dumbbells</strong>.',
    s:['Lie flat, dumbbells over chest, slight elbow bend','Lower in wide arc to chest height','Feel the stretch across chest','Bring back together in arc — don\'t press']},
-  {n:'DB Pullover',m:'Back',t:'weight',c:'gym',anim:'anim-bench',
+  {id:51,n:'Pullover (DB)',m:'Back',ms:['Chest','Triceps'],t:'weight',c:'gym',anim:'anim-bench',tags:['Dumbbell','Pull'],cols:['kg','reps'],
    tip:'Log the <strong>weight of one dumbbell</strong> held with both hands.',
    s:['Lie across bench — shoulders on pad, hips dropped','Hold DB over chest with both hands','Lower in arc over head — feel lat stretch','Pull back to start with lat — not arms']},
-  {n:'DB Arnold Press',m:'Shoulders',t:'weight',c:'gym',anim:'anim-ohp',
+  {id:52,n:'DB Arnold Press',m:'Shoulders',ms:['Triceps'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Dumbbell','Push'],cols:['kg','reps'],
    tip:'Log the <strong>combined weight of both dumbbells</strong>.',
    s:['Start with dumbbells at chin, palms facing you','Rotate palms outward as you press up','Full extension overhead','Reverse rotation as you lower — hits all three delt heads']},
-  {n:'DB Front Raise',m:'Shoulders',t:'weight',c:'gym',anim:'anim-ohp',
+  {id:53,n:'Front Raise (DB)',m:'Shoulders',t:'weight',c:'gym',anim:'anim-ohp',tags:['Dumbbell','Pull'],cols:['kg','reps'],
    tip:'Log the <strong>combined weight of both dumbbells</strong>. Alternate arms or both together.',
    s:['Dumbbells at thighs, slight bend in elbows','Raise forward to shoulder height','Control the lower — don\'t swing','Slight internal rotation — thumbs down']},
-  {n:'DB Rear Delt Fly',m:'Shoulders',t:'weight',c:'gym',anim:'anim-rdl',
+  {id:54,n:'Rear Delt Fly (DB)',m:'Shoulders',t:'weight',c:'gym',anim:'anim-rdl',tags:['Dumbbell','Pull'],cols:['kg','reps'],
    tip:'Log the <strong>combined weight of both dumbbells</strong>. Go lighter than you think — form breaks easily.',
    s:['Hinge forward ~45°, dumbbells hanging below chest','Raise arms out to sides — slight elbow bend','Lead with elbows, not hands','Squeeze rear delts at top']},
-  {n:'DB Hammer Curl',m:'Arms',t:'weight',c:'gym',anim:'anim-curl',
+  {id:55,n:'Hammer Curl (DB)',m:'Biceps',t:'weight',c:'gym',anim:'anim-curl',tags:['Dumbbell','Pull'],cols:['kg','reps'],
    tip:'Log the <strong>combined weight of both dumbbells</strong>.',
    s:['Neutral grip — palms facing each other','Curl without letting wrists rotate','Squeeze at top','3-second lower']},
-  {n:'DB Concentration Curl',m:'Arms',t:'weight',c:'gym',anim:'anim-curl',
-   tip:'Log <strong>weight of one dumbbell</strong> — this is a single-arm exercise.',
-   s:['Sit, elbow braced on inner thigh','Curl without any body swing','Squeeze hard at top','Full extension at bottom']},
-  {n:'DB Tricep Kickback',m:'Arms',t:'weight',c:'gym',anim:'anim-rdl',
+    {id:57,n:'Tricep Kickback (DB)',m:'Triceps',t:'weight',c:'gym',anim:'anim-rdl',tags:['Dumbbell','Push'],cols:['kg','reps'],
    tip:'Log the <strong>combined weight of both dumbbells</strong>.',
    s:['Hinge forward, upper arms pinned to torso','Extend forearms back to lockout','Squeeze triceps at full extension','Lower with control']},
-  {n:'DB Overhead Tricep Extension',m:'Arms',t:'weight',c:'gym',anim:'anim-ohp',
+  {id:58,n:'Overhead Tricep Extension (DB)',m:'Triceps',t:'weight',c:'gym',anim:'anim-ohp',tags:['Dumbbell','Push'],cols:['kg','reps'],
    tip:'Log the <strong>weight of one dumbbell</strong> held with both hands, or combined weight if single-arm.',
    s:['Hold DB overhead with both hands','Lower behind head — elbows point up','Press back to extension','Elbows stay narrow throughout']},
-  {n:'DB Shrug',m:'Back',t:'weight',c:'gym',anim:'anim-dead',
+  {id:59,n:'Shrug (DB)',m:'Back',t:'weight',c:'gym',anim:'anim-dead',tags:['Dumbbell'],cols:['kg','reps'],
    tip:'Log the <strong>combined weight of both dumbbells</strong>.',
    s:['Dumbbells at sides','Shrug shoulders straight up','Hold 1 second at top','Lower with control — no rolling']},
-  {n:'DB Bent-Over Row',m:'Back',t:'weight',c:'gym',anim:'anim-dead',
+  {id:60,n:'Bent-Over Row (DB)',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Dumbbell','Pull','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>combined weight of both dumbbells</strong>.',
    s:['Hinge to ~45°, dumbbells hanging below chest','Drive elbows back and up','Brief hold at top','Lower with control']},
-  {n:'Single-Arm DB Row',m:'Back',t:'weight',c:'gym',anim:'anim-dead',
+  {id:61,n:'Single-Arm DB Row',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Dumbbell','Pull','Unilateral'],cols:['kg','reps'],
    tip:'Log the <strong>weight of one dumbbell</strong>. Brace well — the working side should do all the moving.',
    s:['Hand and knee on bench, DB hanging below shoulder','Drive elbow up and back','Don\'t rotate torso — keep hips square','Full stretch at bottom']},
-  {n:'DB Lateral Lunge',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
+  {id:62,n:'Lateral Lunge (DB)',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',tags:['Dumbbell','Squat','Unilateral'],cols:['kg','reps'],
    tip:'Log the <strong>combined weight of both dumbbells</strong>, or single DB held at chest.',
    s:['Stand tall, dumbbells at sides','Step wide to one side, sit into that hip','Working knee tracks over toes','Push through that heel to return']},
-  {n:'DB Incline Curl',m:'Arms',t:'weight',c:'gym',anim:'anim-curl',
+  {id:63,n:'Incline Curl (DB)',m:'Biceps',t:'weight',c:'gym',anim:'anim-curl',tags:['Dumbbell','Pull'],cols:['kg','reps'],
    tip:'Log the <strong>combined weight of both dumbbells</strong>. The incline increases the stretch on the bicep.',
    s:['Lie back on incline bench, arms hanging fully extended','Curl without letting upper arms move forward','Full squeeze at top','Slow lower — use the stretch']},
 
   // ── CABLE ────────────────────────────────────────────────────
-  {n:'Cable Row (Seated)',m:'Back',t:'weight',c:'gym',anim:'anim-dead',
+  {id:64,n:'Cable Row (Seated)',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Cable','Pull','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>cable stack weight</strong>. Use a close-grip or wide-grip — note which in your session.',
    s:['Sit upright, feet on platform, slight knee bend','Drive elbows back to lower ribs','Squeeze shoulder blades together','Controlled return — feel the stretch']},
-  {n:'Cable Lat Pulldown',m:'Back',t:'weight',c:'gym',anim:'anim-pullup',
+  {id:65,n:'Cable Lat Pulldown (Wide)',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-pullup',tags:['Cable','Pull','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>cable stack weight</strong>. Wide or close grip both work — be consistent for tracking.',
    s:['Wide overhand grip, sit with thighs under pads','Pull bar to upper chest — elbows drive down','Brief squeeze at bottom','Controlled return to full arm extension']},
-  {n:'Single-Arm Cable Row',m:'Back',t:'weight',c:'gym',anim:'anim-dead',
+  {id:66,n:'Single-Arm Row (Cable)',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Cable','Pull','Unilateral'],cols:['kg','reps'],
    tip:'Log the <strong>cable stack weight</strong> — this is the load on one side.',
    s:['Face cable, single handle, hinge slightly','Row handle to hip, elbow drives back','No torso rotation — keep hips square','Full extension between reps']},
-  {n:'Cable Face Pull',m:'Shoulders',t:'weight',c:'gym',anim:'anim-bench',
+  {id:67,n:'Face Pull (Cable)',m:'Shoulders',ms:['Back'],t:'weight',c:'gym',anim:'anim-bench',tags:['Cable','Pull'],cols:['kg','reps'],
    tip:'Log the <strong>cable stack weight</strong>. Use a rope attachment at upper-chest to eye height.',
    s:['Rope at eye level, overhand grip on each end','Pull rope to face, hands going to ears','External rotation at end — elbows go wide and back','Control the return — don\'t let it slam']},
-  {n:'Cable Chest Fly',m:'Chest',t:'weight',c:'gym',anim:'anim-bench',
+  {id:68,n:'Chest Fly (Cable)',m:'Chest',ms:['Shoulders'],t:'weight',c:'gym',anim:'anim-bench',tags:['Cable','Push'],cols:['kg','reps'],
    tip:'Log the <strong>weight per side</strong> — both cables are usually set the same.',
    s:['Stand between two cables, handles at shoulder height','Slight forward lean, soft elbow bend','Bring hands together in front of chest','Control the return — full stretch at end']},
-  {n:'Low Cable Chest Fly',m:'Chest',t:'weight',c:'gym',anim:'anim-bench',
+  {id:69,n:'Low Chest Fly (Cable)',m:'Chest',ms:['Shoulders'],t:'weight',c:'gym',anim:'anim-bench',tags:['Cable','Push'],cols:['kg','reps'],
    tip:'Log the <strong>weight per side</strong>. Cables low — targets upper chest.',
    s:['Cables set low at hip level','Raise handles up and together, meeting at chest height','Arc movement — slight elbow bend','Squeeze chest at top, control lower']},
-  {n:'Cable Overhead Tricep Extension',m:'Arms',t:'weight',c:'gym',anim:'anim-ohp',
+  {id:70,n:'Overhead Tricep Extension (Cable)',m:'Triceps',t:'weight',c:'gym',anim:'anim-ohp',tags:['Cable','Push'],cols:['kg','reps'],
    tip:'Log the <strong>cable stack weight</strong>. Rope attachment from low pulley.',
    s:['Cable from low position, rope overhead grip','Step forward slightly for lean','Extend arms over head — elbows stay narrow','Lower rope behind head with control']},
-  {n:'Cable Bicep Curl',m:'Arms',t:'weight',c:'gym',anim:'anim-curl',
+  {id:71,n:'Bicep Curl (Cable)',m:'Biceps',t:'weight',c:'gym',anim:'anim-curl',tags:['Cable','Pull'],cols:['kg','reps'],
    tip:'Log the <strong>cable stack weight</strong>. Constant tension vs dumbbells.',
    s:['Stand facing low cable, underhand grip','Pin elbows at sides','Curl to full contraction','Control the lower — cable maintains tension throughout']},
-  {n:'Single-Arm Cable Curl',m:'Arms',t:'weight',c:'gym',anim:'anim-curl',
+  {id:72,n:'Single-Arm Bicep Curl (Cable)',m:'Biceps',t:'weight',c:'gym',anim:'anim-curl',tags:['Cable','Pull','Unilateral'],cols:['kg','reps'],
    tip:'Log the <strong>cable stack weight</strong> on one side.',
    s:['Stand sideways to cable, single handle at hip level','Curl across body or straight up','Full contraction — squeeze hard','Slow return to full extension']},
-  {n:'Cable Lateral Raise',m:'Shoulders',t:'weight',c:'gym',anim:'anim-ohp',
+  {id:73,n:'Lateral Raise (Cable)',m:'Shoulders',t:'weight',c:'gym',anim:'anim-ohp',tags:['Cable','Pull'],cols:['kg','reps'],
    tip:'Log the <strong>cable stack weight</strong> per side. Stand side-on to the cable.',
    s:['Single handle at hip, stand side-on to cable','Raise arm to shoulder height — slight elbow bend','No shrugging — keep traps down','Slow controlled lower']},
-  {n:'Cable Glute Kickback',m:'Glutes',t:'weight',c:'gym',anim:'anim-rdl',
+  {id:74,n:'Glute Kickback (Cable)',m:'Glutes',t:'weight',c:'gym',anim:'anim-rdl',tags:['Cable','Hinge'],cols:['kg','reps'],
    tip:'Log the <strong>cable stack weight</strong>. Use an ankle strap. Keep hips square.',
    s:['Ankle strap on low cable, face the machine','Slight hinge forward, hold onto the frame','Kick leg back until fully extended at hip','Squeeze glute at top, control return']},
-  {n:'Cable Hip Abduction',m:'Glutes',t:'weight',c:'gym',anim:'anim-squat',
+  {id:75,n:'Hip Abduction (Cable)',m:'Glutes',t:'weight',c:'gym',anim:'anim-squat',tags:['Cable'],cols:['kg','reps'],
    tip:'Log the <strong>cable stack weight</strong>. Ankle strap on low pulley, stand side-on.',
    s:['Ankle strap on working leg, stand side-on to cable','Stand on other leg, slight bend','Raise working leg out to side — lead with heel','Control return — don\'t let cable slam']},
-  {n:'Cable Pull-Through',m:'Glutes',t:'weight',c:'gym',anim:'anim-rdl',
+  {id:76,n:'Cable Pull-Through',m:'Glutes',ms:['Legs'],t:'weight',c:'gym',anim:'anim-rdl',tags:['Cable','Hinge'],cols:['kg','reps'],
    tip:'Log the <strong>cable stack weight</strong>. Stand facing away from a low cable.',
    s:['Face away from cable, hold rope between legs','Hinge at hips, rope goes back between legs','Drive hips forward to stand — glutes and hamstrings','Squeeze at top — this is a hip hinge not a squat']},
-  {n:'Cable Woodchop',m:'Core',t:'weight',c:'gym',anim:'anim-plank',
+  {id:77,n:'Woodchop (Cable)',m:'Core',ms:['Shoulders'],t:'weight',c:'gym',anim:'anim-plank',tags:['Cable','Rotation'],cols:['kg','reps'],
    tip:'Log the <strong>cable stack weight</strong>. Keep arms straight, rotate from core.',
    s:['Cable at top, stand side-on','Pull handle down and across body in diagonal','Rotate through torso — hips follow','Control the return — resist the cable']},
-  {n:'Cable Crunch',m:'Core',t:'weight',c:'gym',anim:'anim-plank',
+  {id:78,n:'Cable Crunch',m:'Core',t:'weight',c:'gym',anim:'anim-plank',tags:['Cable','Pull'],cols:['kg','reps'],
    tip:'Log the <strong>cable stack weight</strong>. Kneel below a high cable with a rope.',
    s:['Kneel below high cable, rope at ears','Crunch elbows to knees — don\'t pull with arms','Round your back into the crunch','Control the return']},
-  {n:'Straight-Arm Cable Pulldown',m:'Back',t:'weight',c:'gym',anim:'anim-pullup',
+  {id:79,n:'Straight-Arm Pulldown (Cable)',m:'Back',t:'weight',c:'gym',anim:'anim-pullup',tags:['Cable','Pull'],cols:['kg','reps'],
    tip:'Log the <strong>cable stack weight</strong>. Arms stay straight — this isolates the lats beautifully.',
    s:['High cable, overhand grip shoulder-width','Slight forward lean','Pull bar down to thighs — arms stay straight','Squeeze lats at bottom, slow return']},
-  {n:'Cable Rear Delt Fly',m:'Shoulders',t:'weight',c:'gym',anim:'anim-rdl',
+  {id:80,n:'Rear Delt Fly (Cable)',m:'Shoulders',t:'weight',c:'gym',anim:'anim-rdl',tags:['Cable','Pull'],cols:['kg','reps'],
    tip:'Log the <strong>cable stack weight</strong> per side. Cross cables — hold opposite handle.',
    s:['Cables at chest height, cross hands to hold opposite handles','Pull arms out to sides — elbows soft','Squeeze rear delts at top','Control return']},
 
   // ── KETTLEBELL ───────────────────────────────────────────────
-  {n:'KB Swing',m:'Glutes',t:'weight',c:'gym',anim:'anim-rdl',
+  {id:81,n:'KB Swing',m:'Glutes',ms:['Legs','Shoulders'],t:'weight',c:'gym',anim:'anim-rdl',tags:['Kettlebell','Hinge','Compound','Explosive'],cols:['kg','reps'],
    tip:'Log the <strong>kettlebell weight</strong>. This is a hip hinge, not a squat — the KB floats from hip drive.',
    s:['Hinge back — KB swings between legs','Explosively drive hips forward','KB floats to chest height from momentum','Hinge again as KB descends — continuous rhythm']},
-  {n:'KB Goblet Squat',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
-   tip:'Log the <strong>kettlebell weight</strong> held at chest.',
-   s:['Hold KB at chest by the horns or by the bell','Feet shoulder-width, toes slightly out','Sit deep — let elbows push knees out at bottom','Drive through whole foot']},
-  {n:'KB Turkish Get-Up',m:'Core',t:'weight',c:'gym',anim:'anim-plank',
+    {id:83,n:'Turkish Get-Up (KB)',m:'Core',ms:['Shoulders','Legs'],t:'weight',c:'gym',anim:'anim-plank',tags:['Kettlebell','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>kettlebell weight</strong>. Count reps per side. Eyes on the bell throughout.',
    s:['Lie on floor, KB pressed to ceiling with one arm','Roll to elbow then hand, sweep leg through','Stand up while keeping KB overhead throughout','Reverse the sequence to return']},
-  {n:'KB Single-Arm Press',m:'Shoulders',t:'weight',c:'gym',anim:'anim-ohp',
+  {id:84,n:'Single-Arm Press (KB)',m:'Shoulders',ms:['Triceps','Core'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Kettlebell','Push','Unilateral'],cols:['kg','reps'],
    tip:'Log the <strong>kettlebell weight</strong> per side.',
    s:['Clean KB to rack position at shoulder','Press straight up — KB rotates as arm extends','Lock out overhead — bicep by ear','Lower back to rack under control']},
-  {n:'KB Single-Arm Row',m:'Back',t:'weight',c:'gym',anim:'anim-dead',
+  {id:85,n:'Single-Arm Row (KB)',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Kettlebell','Pull','Unilateral'],cols:['kg','reps'],
    tip:'Log the <strong>kettlebell weight</strong> per side.',
    s:['Hinge forward, KB in one hand below shoulder','Drive elbow up and back','Keep hips square — no rotation','Full extension at bottom']},
-  {n:'KB Deadlift',m:'Back',t:'weight',c:'gym',anim:'anim-dead',
+  {id:86,n:'Deadlift (KB)',m:'Back',ms:['Glutes','Legs'],t:'weight',c:'gym',anim:'anim-dead',tags:['Kettlebell','Hinge'],cols:['kg','reps'],
    tip:'Log the <strong>kettlebell weight</strong>. Use two KBs for added load.',
    s:['KB between feet on floor, hinge to grip handles','Neutral spine, chest up','Drive floor away — stand tall','Lower with control, same path']},
-  {n:'KB Sumo Deadlift',m:'Legs',t:'weight',c:'gym',anim:'anim-dead',
+  {id:87,n:'Sumo Deadlift (KB)',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-dead',tags:['Kettlebell','Hinge'],cols:['kg','reps'],
    tip:'Log the <strong>kettlebell weight</strong>. Wider stance, KB between feet.',
    s:['Wide stance, toes out, KB between feet','Grip KB handle, keep chest up','Drive through whole foot, push knees out','Lock out hips — squeeze glutes at top']},
-  {n:'KB Clean',m:'Back',t:'weight',c:'gym',anim:'anim-dead',
+  {id:88,n:'Clean (KB)',m:'Back',ms:['Glutes','Legs','Shoulders'],t:'weight',c:'gym',anim:'anim-dead',tags:['Kettlebell','Compound','Explosive'],cols:['kg','reps'],
    tip:'Log the <strong>kettlebell weight</strong> per side. The KB should finish in rack position.',
    s:['Hike KB back like a swing','Drive hips and pull elbow high','Guide KB into rack at shoulder in one smooth movement','Brief pause in rack, then lower']},
-  {n:'KB Windmill',m:'Core',t:'weight',c:'gym',anim:'anim-plank',
-   tip:'Log the <strong>kettlebell weight</strong> held overhead.',
-   s:['KB pressed overhead, feet wide, toes angled away from KB side','Push hip out to KB side as you hinge','Reach other hand down leg toward floor','Keep eyes on the KB throughout']},
-  {n:'KB Romanian Deadlift',m:'Legs',t:'weight',c:'gym',anim:'anim-rdl',
+    {id:90,n:'Romanian Deadlift (KB)',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-rdl',tags:['Kettlebell','Hinge'],cols:['kg','reps'],
    tip:'Log the <strong>combined weight of both kettlebells</strong>, or one if doing single.',
    s:['KBs at hips, hinge back','Feel hamstring stretch — keep spine neutral','Drive hips forward to return','No knee bend — this is a hinge']},
-  {n:'KB Hip Thrust',m:'Glutes',t:'weight',c:'gym',anim:'anim-squat',
+  {id:91,n:'Hip Thrust (KB)',m:'Glutes',ms:['Legs'],t:'weight',c:'gym',anim:'anim-squat',tags:['Kettlebell','Hinge'],cols:['kg','reps'],
    tip:'Log the <strong>kettlebell weight</strong> placed across hips.',
    s:['Shoulders on bench, KB across hips','Drive hips up to full extension','Squeeze glutes hard at top','Lower just above floor and repeat']},
 
   // ── BODYWEIGHT ───────────────────────────────────────────────
-  {n:'Push-Up',m:'Chest',t:'reps',c:'gym',anim:'anim-bench',
+  {id:92,n:'Push-Up',m:'Chest',ms:['Shoulders','Triceps'],t:'reps',c:'gym',anim:'anim-bench',tags:['Bodyweight','Push','Compound'],cols:['reps'],
    tip:'Log <strong>reps</strong>. To add load, use a vest or plate on your back — then log the added weight too.',
    s:['Hands just outside shoulders, elbows at 45°','Lower chest to floor under control','Press up to full arm extension','Body stays rigid — no sagging hips']},
-  {n:'Wide Push-Up',m:'Chest',t:'reps',c:'gym',anim:'anim-bench',
-   tip:'Log <strong>reps</strong>. Wider hand placement shifts more load to the chest.',
-   s:['Hands wider than shoulders','Lower chest between hands','Press up — elbows flare more than standard','Keep core tight']},
-  {n:'Diamond Push-Up',m:'Arms',t:'reps',c:'gym',anim:'anim-bench',
+    {id:94,n:'Diamond Push-Up',m:'Chest',ms:['Triceps','Shoulders'],t:'reps',c:'gym',anim:'anim-bench',tags:['Bodyweight','Push'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Tricep-dominant. Keep elbows close to body.',
    s:['Hands together under chest, forming a diamond','Lower chest toward hands — elbows track back','Press to full extension','Hard squeeze at top']},
-  {n:'Chin-Up',m:'Back',t:'reps',c:'gym',anim:'anim-pullup',
+  {id:95,n:'Chin-Up',m:'Back',ms:['Biceps','Core'],t:'reps',c:'gym',anim:'anim-pullup',tags:['Bodyweight','Pull','Compound'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Add weight with a belt if needed — log the added weight.',
    s:['Underhand grip, shoulder-width','Pull until chin clears bar','Squeeze biceps and lats at top','Lower fully between reps']},
-  {n:'Neutral-Grip Pull-Up',m:'Back',t:'reps',c:'gym',anim:'anim-pullup',
+  {id:96,n:'Neutral-Grip Pull-Up',m:'Back',ms:['Biceps'],t:'reps',c:'gym',anim:'anim-pullup',tags:['Bodyweight','Pull','Compound'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Neutral grip (palms facing each other) — often easier on the shoulder.',
    s:['Parallel handles, palms facing each other','Pull chin to bar level','Squeeze lats and biceps at top','Full dead hang between reps']},
-  {n:'Ring Row',m:'Back',t:'reps',c:'gym',anim:'anim-dead',
+  {id:97,n:'Ring Row',m:'Back',ms:['Biceps'],t:'reps',c:'gym',anim:'anim-dead',tags:['Bodyweight','Pull'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Make harder by lowering your body angle. Easier = more upright.',
    s:['Grip rings, lean back — body straight','Pull chest to rings, lead with elbows','Squeeze at top','Lower under control to full extension']},
-  {n:'Dip',m:'Arms',t:'reps',c:'gym',anim:'anim-bench',
+  {id:98,n:'Dip',m:'Chest',ms:['Triceps','Shoulders'],t:'reps',c:'gym',anim:'anim-bench',tags:['Bodyweight','Push','Compound'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Add weight with a belt. Lean forward for more chest, upright for more tricep.',
    s:['Grip parallel bars, arms straight','Lower until upper arms are parallel to floor','Press up to full extension','Control throughout — no kipping']},
-  {n:'Pike Push-Up',m:'Shoulders',t:'reps',c:'gym',anim:'anim-ohp',
+  {id:99,n:'Pike Push-Up',m:'Shoulders',ms:['Triceps'],t:'reps',c:'gym',anim:'anim-ohp',tags:['Bodyweight','Push'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Hips high — the more vertical your body, the more shoulder-dominant.',
    s:['Hands on floor, hips high in inverted V','Lower head toward floor — elbows flare','Press back up through shoulders','Progress toward handstand push-ups']},
-  {n:'Glute Bridge',m:'Glutes',t:'reps',c:'gym',anim:'anim-squat',
+  {id:100,n:'Glute Bridge',m:'Glutes',ms:['Legs'],t:'reps',c:'gym',anim:'anim-squat',tags:['Bodyweight','Hinge'],cols:['reps'],
    tip:'Log <strong>reps</strong> or <strong>hold time in seconds</strong>. Add a plate across hips for load.',
    s:['Lie on back, knees bent, feet flat','Drive hips up to full extension','Squeeze glutes at top — don\'t hyperextend back','Lower with control']},
-  {n:'Single-Leg Glute Bridge',m:'Glutes',t:'reps',c:'gym',anim:'anim-squat',
+  {id:101,n:'Single-Leg Glute Bridge',m:'Glutes',ms:['Legs'],t:'reps',c:'gym',anim:'anim-squat',tags:['Bodyweight','Hinge','Unilateral'],cols:['reps'],
    tip:'Log <strong>reps per side</strong>. Much harder than bilateral — exposes imbalances.',
    s:['Lie on back, one knee bent, one leg extended','Drive hips up through bent leg','Hips stay level — don\'t let one side drop','Squeeze glute at top']},
-  {n:'Bodyweight Hip Thrust',m:'Glutes',t:'reps',c:'gym',anim:'anim-squat',
-   tip:'Log <strong>reps</strong>. Good starting point before adding load.',
-   s:['Shoulders on bench, feet flat','Drive hips to full extension','Squeeze glutes hard at top','Lower just above floor']},
-  {n:'Superman Hold',m:'Back',t:'time',c:'gym',anim:'anim-rdl',
+    {id:103,n:'Superman Hold',m:'Back',t:'time',c:'gym',anim:'anim-rdl',tags:['Bodyweight','Isometric'],cols:['time'],
    tip:'Log <strong>time in seconds</strong>. Great for lower back endurance.',
    s:['Lie face down, arms extended overhead','Raise arms, chest, and legs off floor simultaneously','Hold — squeeze glutes and back','Lower with control']},
-  {n:'Dead Bug',m:'Core',t:'reps',c:'gym',anim:'anim-plank',
+  {id:104,n:'Deadbug (Weighted)',m:'Core',t:'reps',c:'gym',anim:'anim-plank',tags:['Bodyweight'],cols:['reps'],
    tip:'Log <strong>reps per side</strong>. Lower back must stay pressed to floor — if it lifts, reduce range.',
    s:['Lie on back, arms up, knees at 90°','Lower opposite arm and leg to just above floor','Lower back stays in contact with floor','Return and alternate']},
-  {n:'Hollow Body Hold',m:'Core',t:'time',c:'gym',anim:'anim-plank',
+  {id:105,n:'Hollow Body Hold',m:'Core',t:'time',c:'gym',anim:'anim-plank',tags:['Bodyweight','Isometric'],cols:['time'],
    tip:'Log <strong>time in seconds</strong>. Foundational gymnastic core movement.',
    s:['Lie on back, arms overhead, legs extended','Brace abs and lift shoulders and legs off floor','Lower back pressed to floor — entire body in a curve','Hold — the smaller the curve, the harder']},
-  {n:'Copenhagen Plank',m:'Core',t:'time',c:'gym',anim:'anim-plank',
+  {id:106,n:'Copenhagen Plank',m:'Core',t:'time',c:'gym',anim:'anim-plank',tags:['Bodyweight','Isometric'],cols:['time'],
    tip:'Log <strong>time in seconds</strong>. Targets adductors and lateral core. Great injury prevention.',
    s:['Side plank — top foot on bench, bottom leg hangs free','Hips in line with shoulders and ankles','Lift bottom leg up toward bench if possible','Hold — don\'t let hips drop']},
-  {n:'Ab Wheel Rollout',m:'Core',t:'reps',c:'gym',anim:'anim-plank',
+  {id:107,n:'Ab Wheel Rollout',m:'Core',ms:['Shoulders'],t:'reps',c:'gym',anim:'anim-plank',tags:['Bodyweight','Pull'],cols:['reps'],
    tip:'Log <strong>reps</strong>. From knees progressing to standing. Build gradually.',
    s:['Kneel, grip ab wheel with both hands','Roll forward — lower hips, extend fully','Core braces the entire time — don\'t collapse','Pull back with lats and core']},
-  {n:'Pistol Squat',m:'Legs',t:'reps',c:'gym',anim:'anim-squat',
+  {id:108,n:'Pistol Squat',m:'Legs',ms:['Glutes','Core'],t:'reps',c:'gym',anim:'anim-squat',tags:['Bodyweight','Squat','Unilateral'],cols:['reps'],
    tip:'Log <strong>reps per side</strong>. Use a TRX or pole for assistance while building.',
    s:['Stand on one leg, other leg extended forward','Lower into deep single-leg squat','Extended leg stays up throughout','Drive through heel to stand']},
-  {n:'Box Jump',m:'Legs',t:'reps',c:'gym',anim:'anim-squat',
+  {id:109,n:'Box Jump',m:'Legs',ms:['Glutes'],t:'reps',c:'gym',anim:'anim-squat',tags:['Bodyweight','Plyometric','Explosive'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Note box height in your notes. Land softly.',
    s:['Stand facing box, athletic stance','Dip and explode — swing arms up','Land softly on full foot — hips and knees bend to absorb','Step down — don\'t jump down']},
-  {n:'Jump Squat',m:'Legs',t:'reps',c:'gym',anim:'anim-squat',
+  {id:110,n:'Jump Squat',m:'Legs',ms:['Glutes'],t:'reps',c:'gym',anim:'anim-squat',tags:['Bodyweight','Plyometric','Explosive'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Can add light dumbbells or vest for load.',
    s:['Feet shoulder-width, hands at chest','Dip into quarter squat','Explode up — fully extend hips, knees, ankles','Land softly — immediately into next rep']},
-  {n:'Reverse Hyper',m:'Glutes',t:'reps',c:'gym',anim:'anim-rdl',
+  {id:111,n:'Reverse Hyper',m:'Glutes',ms:['Back'],t:'reps',c:'gym',anim:'anim-rdl',tags:['Machine','Hinge'],cols:['reps'],
    tip:'Log <strong>reps</strong>. If using a machine, log the weight.',
    s:['Lie face down on bench, hips at edge','Raise both legs to hip height — squeeze glutes','Brief hold at top','Lower with control — don\'t swing']},
-  {n:'L-Sit',m:'Core',t:'time',c:'gym',anim:'anim-plank',
+  {id:112,n:'L-Sit',m:'Core',t:'time',c:'gym',anim:'anim-plank',tags:['Bodyweight','Isometric'],cols:['time'],
    tip:'Log <strong>time in seconds</strong>. On dip bars, parallettes or floor.',
    s:['Support on hands, arms straight','Raise legs to parallel with floor','Point toes, keep legs together','Hold — depression of shoulder blades is key']},
 
   // ── BANDED — GLUTES & ACTIVATION ────────────────────────────
-  {n:'Banded Glute Bridge',m:'Glutes',t:'reps',c:'physio',anim:'anim-squat',
+  {id:113,n:'Banded Glute Bridge',m:'Glutes',ms:['Legs'],t:'reps',c:'physio',anim:'anim-squat',tags:['Band','Hinge'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Band above knees adds abduction challenge. Note band resistance.',
    s:['Band above knees, lie on back, feet flat','Drive knees out against band as hips rise','Full hip extension at top — squeeze hard','Lower with control — keep tension on band']},
-  {n:'Banded Hip Thrust',m:'Glutes',t:'reps',c:'physio',anim:'anim-squat',
+  {id:114,n:'Banded Hip Thrust',m:'Glutes',ms:['Legs'],t:'reps',c:'physio',anim:'anim-squat',tags:['Band','Hinge'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Band above knees. Can progress to adding plate weight.',
    s:['Shoulders on bench, band above knees, feet flat','Push knees out as hips rise','Full extension — squeeze glutes hard','Lower just above floor — maintain band tension']},
-  {n:'Banded Squat',m:'Legs',t:'reps',c:'physio',anim:'anim-squat',
+  {id:115,n:'Banded Squat',m:'Legs',ms:['Glutes'],t:'reps',c:'physio',anim:'anim-squat',tags:['Band','Squat'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Band above knees cueing knees out — great activation or warm-up.',
    s:['Band above knees, feet shoulder-width','Push knees out against band throughout','Sit to depth — don\'t let knees cave','Drive up — keep knees out as you rise']},
-  {n:'Banded Lateral Walk',m:'Glutes',t:'reps',c:'physio',anim:'anim-squat',
+  {id:116,n:'Banded Lateral Walk',m:'Glutes',t:'reps',c:'physio',anim:'anim-squat',tags:['Band','Rehab'],cols:['reps'],
    tip:'Log <strong>total steps</strong> or steps per direction. Note band resistance level.',
    s:['Band above ankles or knees, slight squat stance','Step sideways — keep toes forward','Maintain tension on band — don\'t let feet come fully together','Reverse direction after target steps']},
-  {n:'Banded Fire Hydrant',m:'Glutes',t:'reps',c:'physio',anim:'anim-rdl',
+  {id:117,n:'Banded Fire Hydrant',m:'Glutes',t:'reps',c:'physio',anim:'anim-rdl',tags:['Band','Rehab'],cols:['reps'],
    tip:'Log <strong>reps per side</strong>. Band above knees. Keep spine neutral.',
    s:['On all fours, band above knees','Lift one knee out to the side — keeping knee at 90°','Don\'t let hips shift or rotate','Control return — maintain band tension']},
-  {n:'Banded Donkey Kick',m:'Glutes',t:'reps',c:'physio',anim:'anim-rdl',
+  {id:118,n:'Banded Donkey Kick',m:'Glutes',t:'reps',c:'physio',anim:'anim-rdl',tags:['Band','Rehab'],cols:['reps'],
    tip:'Log <strong>reps per side</strong>. Band around foot or ankle.',
    s:['On all fours, band looped around ankle or foot','Kick one leg back and up — squeeze glute at top','Keep spine neutral — don\'t arch lower back','Lower with control']},
-  {n:'Banded Seated Hip Abduction',m:'Glutes',t:'reps',c:'physio',anim:'anim-squat',
+  {id:119,n:'Banded Seated Hip Abduction',m:'Glutes',t:'reps',c:'physio',anim:'anim-squat',tags:['Band','Rehab'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Band above knees, sitting. Great for glute med activation.',
    s:['Sit on bench or floor, band above knees','Push knees apart against the band','Hold briefly at max range','Controlled return — keep band taut']},
-  {n:'Banded Pull-Apart',m:'Shoulders',t:'reps',c:'physio',anim:'anim-bench',
+  {id:120,n:'Banded Pull-Apart',m:'Shoulders',t:'reps',c:'physio',anim:'anim-bench',tags:['Band','Rehab'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Use a light band — this is activation, not a strength exercise.',
    s:['Hold band in front at shoulder height, arms straight','Pull apart until band touches chest','Squeeze shoulder blades together','Controlled return — maintain tension']},
-  {n:'Banded Face Pull',m:'Shoulders',t:'reps',c:'physio',anim:'anim-bench',
+  {id:121,n:'Banded Face Pull',m:'Shoulders',t:'reps',c:'physio',anim:'anim-bench',tags:['Band','Pull'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Anchor band at eye height. Great rotator cuff and rear delt work.',
    s:['Band anchored at eye level, grip each end','Pull toward face, hands going to ears','Externally rotate at end — elbows go wide and back','Control return']},
-  {n:'Banded Row',m:'Back',t:'reps',c:'physio',anim:'anim-dead',
+  {id:122,n:'Banded Row',m:'Back',ms:['Shoulders'],t:'reps',c:'physio',anim:'anim-dead',tags:['Band','Pull'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Anchor band at chest height. Good for rehab or warm-up.',
    s:['Band anchored in front at chest height','Step back to create tension, slight hinge','Drive elbows back, squeeze shoulder blades','Controlled return — maintain tension']},
-  {n:'Banded Good Morning',m:'Back',t:'reps',c:'physio',anim:'anim-rdl',
+  {id:123,n:'Banded Good Morning',m:'Back',t:'reps',c:'physio',anim:'anim-rdl',tags:['Band','Hinge'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Stand on band, loop over upper back.',
    s:['Stand on band, band over upper traps','Hinge at hips, soft knees','Feel hamstring stretch at bottom','Drive hips forward to return']},
-  {n:'Banded Tricep Pushdown',m:'Arms',t:'reps',c:'physio',anim:'anim-ohp',
-   tip:'Log <strong>reps</strong>. Anchor band above head. Note resistance level.',
-   s:['Band overhead, grip with both hands','Pin elbows to sides','Extend to lockout — hard squeeze','Control return — don\'t let band snap up']},
-  {n:'Banded Bicep Curl',m:'Arms',t:'reps',c:'physio',anim:'anim-curl',
+    {id:125,n:'Bicep Curl (Band)',m:'Biceps',t:'reps',c:'physio',anim:'anim-curl',tags:['Band','Pull'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Stand on band, grip at hip level.',
    s:['Stand on band, underhand grip','Pin elbows, curl to full contraction','Squeeze at top','Controlled lower against band resistance']},
-  {n:'Pallof Press',m:'Core',t:'reps',c:'physio',anim:'anim-plank',
+  {id:126,n:'Pallof Press (Cable)',m:'Core',t:'reps',c:'physio',anim:'anim-plank',tags:['Cable','Isometric'],cols:['reps'],
    tip:'Log <strong>reps per side</strong>. Anti-rotation core exercise. Band or cable anchored to side.',
    s:['Band or cable at chest height to one side','Hold in front of chest, step away for tension','Press straight out — resist rotation','Hold briefly extended, return to chest']},
-  {n:'Banded Deadbug',m:'Core',t:'reps',c:'physio',anim:'anim-plank',
+  {id:127,n:'Deadbug (Banded)',m:'Core',t:'reps',c:'physio',anim:'anim-plank',tags:['Band'],cols:['reps'],
    tip:'Log <strong>reps per side</strong>. Band adds resistance to arm movement.',
    s:['Lie on back, hold band overhead anchored above','Lower opposite arm and leg alternately','Lower back stays flat — don\'t let it arch','Return and alternate sides']},
 
   // ── ROPE & TRX ────────────────────────────────────────────────
-  {n:'Battle Rope Waves',m:'Arms',t:'time',c:'gym',anim:'anim-bench',
+  {id:128,n:'Battle Rope Waves',m:'Shoulders',ms:['Core','Legs'],t:'time',c:'gym',anim:'anim-bench',tags:['Cardio','Compound'],cols:['time'],
    tip:'Log <strong>time in seconds</strong>. Note wave style — alternating or simultaneous.',
    s:['Hold one end of rope in each hand','Alternate pumping arms up and down rapidly','Keep knees soft, core braced','Drive from hips — not just the arms']},
-  {n:'Rope Slam',m:'Core',t:'reps',c:'gym',anim:'anim-plank',
+  {id:129,n:'Rope Slam',m:'Core',ms:['Shoulders','Legs'],t:'reps',c:'gym',anim:'anim-plank',tags:['Cardio','Compound','Explosive'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Full body power exercise.',
    s:['Hold both ropes together, raise overhead','Slam down with full force — hinge and squat','Generate power from hips, not just arms','Reset quickly']},
-  {n:'TRX Row',m:'Back',t:'reps',c:'gym',anim:'anim-dead',
+  {id:130,n:'TRX Row',m:'Back',ms:['Biceps'],t:'reps',c:'gym',anim:'anim-dead',tags:['TRX','Pull'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Adjust angle — more horizontal = harder.',
    s:['Grip handles, lean back — body straight','Pull chest to hands, elbows drive back','Squeeze at top','Lower to full extension']},
-  {n:'TRX Push-Up',m:'Chest',t:'reps',c:'gym',anim:'anim-bench',
+  {id:131,n:'TRX Push-Up',m:'Chest',ms:['Shoulders','Triceps'],t:'reps',c:'gym',anim:'anim-bench',tags:['TRX','Push'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Feet in straps adds instability — harder than floor push-up.',
    s:['Feet in TRX straps, hands on floor','Lower chest to floor — control the instability','Press up to full extension','Core tight throughout — no hip drop']},
-  {n:'TRX Hamstring Curl',m:'Legs',t:'reps',c:'gym',anim:'anim-rdl',
+  {id:132,n:'TRX Hamstring Curl',m:'Legs',t:'reps',c:'gym',anim:'anim-rdl',tags:['TRX','Hinge'],cols:['reps'],
    tip:'Log <strong>reps</strong>. Lie on floor, heels in straps.',
    s:['Lie on back, heels in TRX straps','Drive hips up into bridge','Pull heels toward glutes — curl in','Extend back out under control']},
-  {n:'TRX Single-Leg Squat',m:'Legs',t:'reps',c:'gym',anim:'anim-squat',
+  {id:133,n:'Single-Leg Squat (Assisted)',m:'Legs',ms:['Glutes','Core'],t:'reps',c:'gym',anim:'anim-squat',tags:['TRX','Squat','Unilateral'],cols:['reps'],
    tip:'Log <strong>reps per side</strong>. Use TRX for balance assistance.',
    s:['Hold TRX for balance, stand on one leg','Lower into single-leg squat','Let TRX assist balance — not pull you up','Drive through heel to stand']},
 
   // ── MACHINE ───────────────────────────────────────────────────
-  {n:'Leg Extension',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
+  {id:134,n:'Leg Extension',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',tags:['Machine'],cols:['kg','reps'],
    tip:'Log the <strong>machine stack weight</strong>. Purely quad isolation.',
    s:['Sit with back of knees at seat edge, pad on shins','Extend legs to lockout','Brief squeeze at top','Lower with control — don\'t let weight slam']},
-  {n:'Leg Curl (Seated)',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
+  {id:135,n:'Leg Curl (Seated)',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',tags:['Machine'],cols:['kg','reps'],
    tip:'Log the <strong>machine stack weight</strong>. Hamstring isolation.',
    s:['Sit upright, pad on top of ankles','Curl heels back under seat','Squeeze hamstrings at bottom','Controlled return to full extension']},
-  {n:'Leg Curl (Lying)',m:'Legs',t:'weight',c:'gym',anim:'anim-rdl',
+  {id:136,n:'Leg Curl (Lying)',m:'Legs',t:'weight',c:'gym',anim:'anim-rdl',tags:['Machine'],cols:['kg','reps'],
    tip:'Log the <strong>machine stack weight</strong>.',
    s:['Lie face down, pad at ankle level','Curl heels toward glutes','Squeeze at top','Slow controlled extension']},
-  {n:'Hip Abduction Machine',m:'Glutes',t:'weight',c:'gym',anim:'anim-squat',
+  {id:137,n:'Hip Abduction Machine',m:'Glutes',t:'weight',c:'gym',anim:'anim-squat',tags:['Machine'],cols:['kg','reps'],
    tip:'Log the <strong>machine stack weight</strong>. Targets glute med — great for hip stability.',
    s:['Sit with pads on outside of knees','Push knees out against resistance','Brief hold at widest point','Controlled return']},
-  {n:'Hip Adduction Machine',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
+  {id:138,n:'Hip Adduction Machine',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',tags:['Machine'],cols:['kg','reps'],
    tip:'Log the <strong>machine stack weight</strong>. Inner thigh / adductor work.',
    s:['Sit with pads on inside of knees','Squeeze knees together','Brief hold at closest point','Controlled return — don\'t let pads fly open']},
-  {n:'Pec Deck',m:'Chest',t:'weight',c:'gym',anim:'anim-bench',
+  {id:139,n:'Chest Fly Machine',m:'Chest',t:'weight',c:'gym',anim:'anim-bench',tags:['Machine','Push'],cols:['kg','reps'],
    tip:'Log the <strong>machine stack weight</strong>. Chest fly movement on a machine.',
    s:['Sit upright, forearms on vertical pads','Bring arms together in front of chest','Squeeze pecs hard at full contraction','Slow return — feel the stretch']},
-  {n:'Smith Machine Squat',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',
+  {id:140,n:'Smith Machine Squat',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Smith Machine','Squat','Compound'],cols:['kg','reps'],
    tip:'Log the <strong>total bar + plate weight</strong>. Smith bar is typically 15–20kg.',
    s:['Bar on upper traps, feet slightly forward of bar','Squat to depth — bar guides the path','Drive through whole foot','Control — don\'t let bar drop']},
-  {n:'Smith Machine Hip Thrust',m:'Glutes',t:'weight',c:'gym',anim:'anim-squat',
+  {id:141,n:'Smith Machine Hip Thrust',m:'Glutes',ms:['Legs'],t:'weight',c:'gym',anim:'anim-squat',tags:['Smith Machine','Hinge'],cols:['kg','reps'],
    tip:'Log the <strong>total bar + plate weight</strong>. Smith bar keeps the load stable.',
    s:['Shoulders on bench, bar across hips with pad','Drive hips to full extension against bar','Squeeze glutes hard at top','Lower and repeat']},
   // Run / Field exercises
-  {n:'Easy Run',m:'Cardio',t:'run',c:'run',anim:'anim-plank',tip:'Log distance and duration. Easy pace — conversational effort, Z1–Z2 heart rate.',s:['Comfortable conversational pace','Nasal breathing if possible','Land midfoot, short stride','Great for recovery and aerobic base']},
-  {n:'Tempo Run',m:'Cardio',t:'run',c:'run',anim:'anim-plank',tip:'Log distance, duration and average HR. Comfortably hard — Z3–Z4.',s:['Sustained hard but controlled effort','Around 80–90% max HR','Can speak a few words only','Builds lactate threshold']},
-  {n:'Intervals',m:'Cardio',t:'run',c:'run',anim:'anim-plank',tip:'Log total distance and duration. Note reps and rest periods in the splits.',s:['Hard effort reps with recovery between','Z4–Z5 during reps','Full recovery between sets','Builds VO2 max and speed']},
-  {n:'Long Run',m:'Cardio',t:'run',c:'run',anim:'anim-plank',tip:'Log total distance and duration. Easy conversational pace throughout.',s:['Easy to moderate effort','Fuelling after 60+ min','Builds aerobic endurance','Longest run of the week']},
-  {n:'Trail Run',m:'Cardio',t:'run',c:'run',anim:'anim-plank',tip:'Log distance and duration. Trail pace is slower — focus on effort not pace.',s:['Adapt pace to terrain','Use arms for balance on climbs','Shorten stride on technical ground','More eccentric load on descents']},
-  {n:'Field Session',m:'Cardio',t:'run',c:'run',anim:'anim-plank',tip:'Log total duration. Note drills and distances in splits.',s:['Warm up with dynamic drills','Mix of speed, agility, power work','Rest between high-intensity efforts','Sport-specific conditioning']},
-  {n:'Track Session',m:'Cardio',t:'run',c:'run',anim:'anim-plank',tip:'Log distance and duration. Note lap splits for analysis.',s:['Precise pacing on measured surface','Spikes or flat shoes optional','Lap splits reveal pace consistency','Ideal for speed and threshold work']},
+  {id:142,n:'Outdoor Walk/ Run',m:'Cardio',t:'run',c:'run',anim:'anim-plank',tags:['Cardio'],cols:['dist','time'],tip:'Log distance and duration. Easy pace — conversational effort, Z1–Z2 heart rate.',s:['Comfortable conversational pace','Nasal breathing if possible','Land midfoot, short stride','Great for recovery and aerobic base']},
+    {id:144,n:'Running Intervals',m:'Cardio',t:'run',c:'run',anim:'anim-plank',tags:['Cardio','Explosive'],cols:['dist','time'],tip:'Log total distance and duration. Note reps and rest periods in the splits.',s:['Hard effort reps with recovery between','Z4–Z5 during reps','Full recovery between sets','Builds VO2 max and speed']},
+    {id:146,n:'Trail Run',m:'Cardio',t:'run',c:'run',anim:'anim-plank',tags:['Cardio'],cols:['dist','time'],tip:'Log distance and duration. Trail pace is slower — focus on effort not pace.',s:['Adapt pace to terrain','Use arms for balance on climbs','Shorten stride on technical ground','More eccentric load on descents']},
+  {id:147,n:'Field Session (Sport)',m:'Cardio',t:'run',c:'run',anim:'anim-plank',tags:['Cardio','Compound'],cols:['time'],tip:'Log total duration. Note drills and distances in splits.',s:['Warm up with dynamic drills','Mix of speed, agility, power work','Rest between high-intensity efforts','Sport-specific conditioning']},
+  {id:148,n:'Track Session',m:'Cardio',t:'run',c:'run',anim:'anim-plank',tags:['Cardio','Explosive'],cols:['dist','time'],tip:'Log distance and duration. Note lap splits for analysis.',s:['Precise pacing on measured surface','Spikes or flat shoes optional','Lap splits reveal pace consistency','Ideal for speed and threshold work']},
 
   // ── Cardio machines ──────────────────────────────────────────────────────
-  {n:'Assault Bike',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log duration, calories and/or average watts. Total-body — arms and legs drive together.',s:['Drive knees up and push handles hard','Maintain cadence over grip strength','Intervals hit harder than steady pace','Calories displayed are a useful relative measure']},
-  {n:'Assault Bike Intervals',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log total duration and calories. Note reps, duration per interval and rest in splits.',s:['Max effort each rep — 90–100%','Full rest between reps (2:1 work:rest minimum)','Builds anaerobic power and VO2 max','Damper irrelevant — just pedal harder']},
-  {n:'Spin Bike (Steady)',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log duration, distance and avg HR. Good aerobic base builder at Z2.',s:['Resistance set to moderate — cadence 85–95 rpm','Z2 effort — you can hold a conversation','Builds aerobic base and fat oxidation','Great for active recovery between hard days']},
-  {n:'Spin Bike Intervals',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log total duration and splits per interval. Note resistance and cadence per rep.',s:['Increase resistance for standing climbs','Seated sprints focus on cadence','Standing efforts build power','Recovery at easy cadence between reps']},
-  {n:'Rowing Erg',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log distance, duration and split pace (/500m). Stroke rate 22–26 spm for steady, 26–32 for hard efforts.',s:['Drive with legs first — 60% of the power','Connect core before pulling arms','Lean back slightly at the finish','Recover: arms, body, then slide forward']},
-  {n:'Rowing Erg Intervals',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log total distance and note split pace per interval. Common formats: 8×500m, 4×1000m.',s:['Target consistent split pace per rep','Legs-back-arms drive sequence','Rest equal or double work time','Damper 4–6 for most athletes']},
-  {n:'SkiErg',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log distance, duration and split pace. Lat-dominant — great shoulder and core conditioning.',s:['Hinge at hips, arms overhead to start','Pull down with lats — not just arms','Drive through to full hip extension','Keep chest tall, don\'t round the back']},
-  {n:'SkiErg Intervals',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log total distance. Note reps and split pace per interval.',s:['Max effort pull on each rep','Hip hinge drives the power','Short rests for conditioning, longer for power','Common: 10×1min on, 1min off']},
-  {n:'Stair Climber',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log duration and floors climbed. Glute and quad dominant — avoid leaning on rails.',s:['Stand tall — hands light on rails only','Full step through each rep','Posterior chain drives the movement','Tempo pace is very effective for glute loading']},
-  {n:'Elliptical',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log duration and distance. Low impact — useful for active recovery or when managing injury.',s:['Upright posture throughout','Push and pull handles equally','Resistance dictates effort — increase to raise HR','Reverse direction targets glutes and hamstrings more']},
-  {n:'Treadmill (Steady)',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log duration, distance and incline. Incline 1–2% mimics outdoor running effort.',s:['1% incline to offset belt assistance','Upright posture — don\'t hold rails','Easy effort — conversational pace','Good for controlled aerobic work year-round']},
-  {n:'Treadmill Intervals',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log total duration. Note speed and incline per rep.',s:['Set speed before stepping on','Incline sprints add glute and calf loading','Recovery: slow belt or straddle','Common: 10×30s hard, 90s easy']},
-  {n:'Treadmill Hill Sprints',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log duration, incline and speed. Incline 8–15% for hill effect. Excellent posterior chain loading.',s:['High incline — 8–15%','Shorter, powerful stride','Drive knee up and push through the hip','Full rest between reps — these are demanding']},
-  {n:'Air Runner (Curved Treadmill)',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log duration and distance. Self-powered — effort is direct. More demanding than motorised.',s:['Forward lean to drive the belt','Midfoot strike, high cadence','Much harder than standard treadmill at same speed','Start conservative — pace feels easier than it is']},
+  {id:149,n:'Assault Bike',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio'],cols:['time'],tip:'Log duration, calories and/or average watts. Total-body — arms and legs drive together.',s:['Drive knees up and push handles hard','Maintain cadence over grip strength','Intervals hit harder than steady pace','Calories displayed are a useful relative measure']},
+  {id:150,n:'Assault Bike Intervals',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio','Explosive'],cols:['time'],tip:'Log total duration and calories. Note reps, duration per interval and rest in splits.',s:['Max effort each rep — 90–100%','Full rest between reps (2:1 work:rest minimum)','Builds anaerobic power and VO2 max','Damper irrelevant — just pedal harder']},
+  {id:151,n:'Spin Bike',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio'],cols:['time'],tip:'Log duration, distance and avg HR. Good aerobic base builder at Z2.',s:['Resistance set to moderate — cadence 85–95 rpm','Z2 effort — you can hold a conversation','Builds aerobic base and fat oxidation','Great for active recovery between hard days']},
+  {id:152,n:'Spin Bike Intervals',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio','Explosive'],cols:['time'],tip:'Log total duration and splits per interval. Note resistance and cadence per rep.',s:['Increase resistance for standing climbs','Seated sprints focus on cadence','Standing efforts build power','Recovery at easy cadence between reps']},
+  {id:153,n:'Rowing Erg',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio'],cols:['dist','time'],tip:'Log distance, duration and split pace (/500m). Stroke rate 22–26 spm for steady, 26–32 for hard efforts.',s:['Drive with legs first — 60% of the power','Connect core before pulling arms','Lean back slightly at the finish','Recover: arms, body, then slide forward']},
+  {id:154,n:'Rowing Erg Intervals',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio','Explosive'],cols:['dist','time'],tip:'Log total distance and note split pace per interval. Common formats: 8×500m, 4×1000m.',s:['Target consistent split pace per rep','Legs-back-arms drive sequence','Rest equal or double work time','Damper 4–6 for most athletes']},
+  {id:155,n:'SkiErg',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio'],cols:['dist','time'],tip:'Log distance, duration and split pace. Lat-dominant — great shoulder and core conditioning.',s:['Hinge at hips, arms overhead to start','Pull down with lats — not just arms','Drive through to full hip extension','Keep chest tall, don\'t round the back']},
+  {id:156,n:'SkiErg Intervals',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio','Explosive'],cols:['dist','time'],tip:'Log total distance. Note reps and split pace per interval.',s:['Max effort pull on each rep','Hip hinge drives the power','Short rests for conditioning, longer for power','Common: 10×1min on, 1min off']},
+  {id:157,n:'Stair Climber',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio'],cols:['time'],tip:'Log duration and floors climbed. Glute and quad dominant — avoid leaning on rails.',s:['Stand tall — hands light on rails only','Full step through each rep','Posterior chain drives the movement','Tempo pace is very effective for glute loading']},
+  {id:158,n:'Elliptical',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio'],cols:['time'],tip:'Log duration and distance. Low impact — useful for active recovery or when managing injury.',s:['Upright posture throughout','Push and pull handles equally','Resistance dictates effort — increase to raise HR','Reverse direction targets glutes and hamstrings more']},
+  {id:159,n:'Treadmill Walk/ Run',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio'],cols:['dist','time'],tip:'Log duration, distance and incline. Incline 1–2% mimics outdoor running effort.',s:['1% incline to offset belt assistance','Upright posture — don\'t hold rails','Easy effort — conversational pace','Good for controlled aerobic work year-round']},
+  {id:160,n:'Treadmill Intervals',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio','Explosive'],cols:['dist','time'],tip:'Log total duration. Note speed and incline per rep.',s:['Set speed before stepping on','Incline sprints add glute and calf loading','Recovery: slow belt or straddle','Common: 10×30s hard, 90s easy']},
+    {id:162,n:'Air Runner (Curved Treadmill)',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio'],cols:['dist','time'],tip:'Log duration and distance. Self-powered — effort is direct. More demanding than motorised.',s:['Forward lean to drive the belt','Midfoot strike, high cadence','Much harder than standard treadmill at same speed','Start conservative — pace feels easier than it is']},
 
   // ── Hyrox ────────────────────────────────────────────────────────────────
-  {n:'Hyrox Race Simulation',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log total time. 8×1km runs + 8 functional stations. Note individual station splits.',s:['Pace the 1km runs — don\'t go out too hard','Transition quickly between run and station','Ski Erg and SkiErg early — don\'t blow up','Sled and lunges late — manage fatigue']},
-  {n:'Ski Erg (1000m)',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log time for 1000m. Station 1 of Hyrox — set your pace here, it\'s early in the race.',s:['Controlled pace — race is long','Hip hinge generates most power','Pull down with lats not just arms','Target 3:30–5:00 for recreational athletes']},
-  {n:'Sled Push',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log time and weight. 50m push. Quad and glute dominant. Weight: 102kg men / 78kg women (standard).',s:['Low body position — drive from hips','Short fast steps, stay low','Breathe — don\'t hold','Brace core hard throughout']},
-  {n:'Sled Pull',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log time and weight. 50m pull with rope. Posterior chain — hamstrings, back and grip.',s:['Sit back as you pull the rope','Hand over hand — stay rhythmic','Glutes and hamstrings drive the lean-back','Recover your breathing immediately after']},
-  {n:'Burpee Broad Jump',m:'Cardio',t:'reps',c:'gym',anim:'anim-plank',tip:'Log reps (standard: 80m = ~16 reps). Full burpee then two-foot broad jump forward.',s:['Chest to floor on the burpee','Jump as far as possible — every cm counts','Absorb landing with bent knees','Pace yourself — these accumulate fast']},
-  {n:'Rowing (1000m)',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log time for 1000m on rowing erg. Legs-back-arms sequence. Target split: 1:50–2:30/500m.',s:['Drive hard with legs each stroke','Don\'t sacrifice form for pace','Stroke rate 26–30 spm at race effort','Breathe every stroke']},
-  {n:'Farmers Carry',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log time and weight. 200m carry. Weight: 2×24kg men / 2×16kg women (standard).',s:['Tall posture — resist the lean','Short steps, stay composed','Grip endurance is a limiting factor','Don\'t drop — costs time and rhythm']},
-  {n:'Sandbag Lunges',m:'Cardio',t:'reps',c:'gym',anim:'anim-plank',tip:'Log reps (standard: 100m = ~60 reps). Sandbag on shoulders. Weight: 20kg men / 10kg women.',s:['Keep torso upright','Full knee to floor — judge will call no-reps','Alternate legs in a walking pattern','Break early if needed — don\'t crumple']},
-  {n:'Wall Balls',m:'Cardio',t:'reps',c:'gym',anim:'anim-plank',tip:'Log reps (standard: 100 reps). Ball: 9kg to 10ft target (men) / 6kg to 9ft (women).',s:['Squat deep — hip crease below knee','Explode up and throw in one motion','Catch at chest and flow into next squat','Breathe rhythmically — don\'t sprint then stop']},
-  {n:'Box Step-Up',m:'Cardio',t:'reps',c:'gym',anim:'anim-plank',tip:'Log reps. Hyrox Doubles only. Box height 60cm men / 50cm women. Dumbbell or sandbag loaded.',s:['Full hip extension at the top','Alternate legs — no double-stepping','Drive through the heel','Keep chest proud — don\'t cave forward']},
+  {id:163,n:'Hyrox Race',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio','Compound'],cols:['time'],tip:'Log total time. 8×1km runs + 8 functional stations. Note individual station splits.',s:['Pace the 1km runs — don\'t go out too hard','Transition quickly between run and station','Ski Erg and SkiErg early — don\'t blow up','Sled and lunges late — manage fatigue']},
+  {id:164,n:'Ski Erg (1000m)',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio','Explosive'],cols:['dist','time'],tip:'Log time for 1000m. Station 1 of Hyrox — set your pace here, it\'s early in the race.',s:['Controlled pace — race is long','Hip hinge generates most power','Pull down with lats not just arms','Target 3:30–5:00 for recreational athletes']},
+  {id:165,n:'Sled Push',m:'Cardio',ms:['Legs','Glutes'],t:'time',c:'gym',anim:'anim-plank',tags:['Cardio','Compound','Push'],cols:['kg','dist'],tip:'Log time and weight. 50m push. Quad and glute dominant. Weight: 102kg men / 78kg women (standard).',s:['Low body position — drive from hips','Short fast steps, stay low','Breathe — don\'t hold','Brace core hard throughout']},
+  {id:166,n:'Sled Pull',m:'Cardio',ms:['Back','Legs'],t:'time',c:'gym',anim:'anim-plank',tags:['Cardio','Compound','Pull'],cols:['kg','dist'],tip:'Log time and weight. 50m pull with rope. Posterior chain — hamstrings, back and grip.',s:['Sit back as you pull the rope','Hand over hand — stay rhythmic','Glutes and hamstrings drive the lean-back','Recover your breathing immediately after']},
+  {id:167,n:'Burpee Broad Jump',m:'Cardio',ms:['Legs','Shoulders'],t:'reps',c:'gym',anim:'anim-plank',tags:['Bodyweight','Compound','Explosive'],cols:['reps'],tip:'Log reps (standard: 80m = ~16 reps). Full burpee then two-foot broad jump forward.',s:['Chest to floor on the burpee','Jump as far as possible — every cm counts','Absorb landing with bent knees','Pace yourself — these accumulate fast']},
+  {id:168,n:'Rowing (1000m)',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio','Explosive'],cols:['dist','time'],tip:'Log time for 1000m on rowing erg. Legs-back-arms sequence. Target split: 1:50–2:30/500m.',s:['Drive hard with legs each stroke','Don\'t sacrifice form for pace','Stroke rate 26–30 spm at race effort','Breathe every stroke']},
+  {id:169,n:'Farmers Carry',m:'Cardio',ms:['Core','Legs'],t:'time',c:'gym',anim:'anim-plank',tags:['Dumbbell','Carry'],cols:['kg','time'],tip:'Log time and weight. 200m carry. Weight: 2×24kg men / 2×16kg women (standard).',s:['Tall posture — resist the lean','Short steps, stay composed','Grip endurance is a limiting factor','Don\'t drop — costs time and rhythm']},
+  {id:170,n:'Sandbag Lunges',m:'Cardio',ms:['Glutes','Core'],t:'reps',c:'gym',anim:'anim-plank',tags:['Cardio','Squat','Unilateral'],cols:['kg','reps'],tip:'Log reps (standard: 100m = ~60 reps). Sandbag on shoulders. Weight: 20kg men / 10kg women.',s:['Keep torso upright','Full knee to floor — judge will call no-reps','Alternate legs in a walking pattern','Break early if needed — don\'t crumple']},
+  {id:171,n:'Wall Balls',m:'Cardio',ms:['Legs','Shoulders'],t:'reps',c:'gym',anim:'anim-plank',tags:['Cardio','Compound'],cols:['kg','reps'],tip:'Log reps (standard: 100 reps). Ball: 9kg to 10ft target (men) / 6kg to 9ft (women).',s:['Squat deep — hip crease below knee','Explode up and throw in one motion','Catch at chest and flow into next squat','Breathe rhythmically — don\'t sprint then stop']},
+  {id:172,n:'Box Step-Up',m:'Cardio',t:'reps',c:'gym',anim:'anim-plank',tags:['Bodyweight','Squat'],cols:['reps'],tip:'Log reps. Hyrox Doubles only. Box height 60cm men / 50cm women. Dumbbell or sandbag loaded.',s:['Full hip extension at the top','Alternate legs — no double-stepping','Drive through the heel','Keep chest proud — don\'t cave forward']},
 
   // ── Bodyweight / Circuit ─────────────────────────────────────────────────
-  {n:'Burpee',m:'Cardio',t:'reps',c:'gym',anim:'anim-plank',tip:'Log reps and optionally time to track pace. Full-body conditioning — chest to floor, jump and clap overhead.',s:['Chest contacts the floor','Jump feet to hands in one snap','Explode up — full hip extension','Arms overhead clap at the top']},
-  {n:'Burpee Box Jump',m:'Cardio',t:'reps',c:'gym',anim:'anim-plank',tip:'Log reps. Burpee then jump onto a box. Power + conditioning combined.',s:['Chest to floor on the burpee','Explosive two-foot jump onto box','Land soft — absorb with bent knees','Step or jump down and repeat']},
-  {n:'Mountain Climbers',m:'Core',t:'time',c:'gym',anim:'anim-plank',tip:'Log time or reps (each leg). Core stability under load with cardio demand.',s:['Straight plank position — hips level','Drive knee towards chest','Alternate legs quickly but controlled','Don\'t let hips pike or sag']},
-  {n:'Jump Lunge',m:'Legs',t:'reps',c:'gym',anim:'anim-squat',tip:'Log reps (each leg). Explosive alternating lunges — builds power and conditioning.',s:['Front knee tracks over toes','Explosive drive off the floor','Switch legs in the air','Soft landing — absorb through the hips']},
-  {n:'Tuck Jump',m:'Legs',t:'reps',c:'gym',anim:'anim-squat',tip:'Log reps. Max height jump with knee tuck — power and coordination.',s:['Full squat dip, then explode','Tuck knees to chest at peak','Land softly with bent knees','Reset fast — quality over speed']},
-  {n:'Star Jump (Jumping Jack)',m:'Cardio',t:'reps',c:'gym',anim:'anim-plank',tip:'Log reps or time. Warm-up and conditioning staple.',s:['Arms and legs simultaneous','Full extension at the top','Land lightly on balls of feet','Keep core braced throughout']},
-  {n:'High Knees',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tip:'Log time. Running on the spot with high knee drive — hip flexor and cardio.',s:['Drive knee above hip crease','Arm drive mirrors the legs','Stay on balls of feet','Fast cadence — rate over height']},
-  {n:'Push-Up',m:'Chest',t:'reps',c:'gym',anim:'anim-bench',tip:'Log reps. The fundamental pushing pattern — no equipment needed.',s:['Hands shoulder-width, elbows 45° out','Lower chest to floor','Squeeze glutes and brace core','Full lockout at the top']},
-  {n:'Diamond Push-Up',m:'Arms',t:'reps',c:'gym',anim:'anim-bench',tip:'Log reps. Hands form a diamond — shifts emphasis to triceps.',s:['Thumbs and index fingers touch','Elbows track close to body','Lower chest to hands','Full tricep lockout at top']},
-  {n:'Wide Push-Up',m:'Chest',t:'reps',c:'gym',anim:'anim-bench',tip:'Log reps. Wide hand position increases chest emphasis.',s:['Hands wider than shoulders','Elbows flare more than standard','Lower chest between hands','Squeeze chest at top']},
-  {n:'Decline Push-Up',m:'Chest',t:'reps',c:'gym',anim:'anim-bench',tip:'Log reps. Feet elevated shifts load to upper chest and shoulders.',s:['Feet on bench or box','Body in a straight line','Lower chest toward floor','Full extension at the top']},
-  {n:'Bodyweight Squat',m:'Legs',t:'reps',c:'gym',anim:'anim-squat',tip:'Log reps. Foundation movement — great for warm-up and circuit work.',s:['Feet shoulder-width, toes slightly out','Hip crease below parallel','Chest proud, knees track toes','Drive through full foot to stand']},
-  {n:'Bodyweight Lunge',m:'Legs',t:'reps',c:'gym',anim:'anim-squat',tip:'Log reps (each leg). Unilateral lower body — balance and strength.',s:['Step forward, lower back knee to floor','Front knee over ankle','Push back to start through front heel','Keep torso upright throughout']},
-  {n:'Glute Bridge March',m:'Glutes',t:'reps',c:'gym',anim:'anim-squat',tip:'Log reps. Bridge position with alternating knee lifts — glute and core stability.',s:['Hold bridge at the top','Lift one knee to 90°','Keep hips level throughout','Squeeze glute of planted leg']},
-  {n:'Bear Crawl',m:'Core',t:'time',c:'gym',anim:'anim-plank',tip:'Log time or distance. Quadrupedal movement — full-body stability and coordination.',s:['Knees 2 inches off the floor','Opposite hand and foot move together','Hips stay low and level','Control — don\'t rush']},
-  {n:'Inchworm',m:'Core',t:'reps',c:'gym',anim:'anim-plank',tip:'Log reps. Warm-up and mobility classic — hamstrings, core and shoulder stability.',s:['Stand tall, fold to touch floor','Walk hands out to a plank','Optional push-up','Walk feet to hands and repeat']},
-  {n:'Squat to Press (Thruster)',m:'Shoulders',t:'reps',c:'gym',anim:'anim-squat',tip:'Log reps and weight if loaded. Full-body compound — squat drives the press.',s:['Squat deep, then explode','Use the upward drive to press overhead','Arms fully lock out at top','Lower to front rack and repeat']},
+  {id:173,n:'Burpee',m:'Cardio',ms:['Legs','Shoulders'],t:'reps',c:'gym',anim:'anim-plank',tags:['Bodyweight','Compound','Explosive'],cols:['reps'],tip:'Log reps and optionally time to track pace. Full-body conditioning — chest to floor, jump and clap overhead.',s:['Chest contacts the floor','Jump feet to hands in one snap','Explode up — full hip extension','Arms overhead clap at the top']},
+  {id:174,n:'Burpee Box Jump',m:'Cardio',ms:['Legs','Shoulders'],t:'reps',c:'gym',anim:'anim-plank',tags:['Bodyweight','Compound','Explosive'],cols:['reps'],tip:'Log reps. Burpee then jump onto a box. Power + conditioning combined.',s:['Chest to floor on the burpee','Explosive two-foot jump onto box','Land soft — absorb with bent knees','Step or jump down and repeat']},
+  {id:175,n:'Mountain Climbers',m:'Core',t:'time',c:'gym',anim:'anim-plank',tags:['Bodyweight','Cardio'],cols:['reps'],tip:'Log time or reps (each leg). Core stability under load with cardio demand.',s:['Straight plank position — hips level','Drive knee towards chest','Alternate legs quickly but controlled','Don\'t let hips pike or sag']},
+  {id:176,n:'Jumping Lunge',m:'Legs',ms:['Glutes'],t:'reps',c:'gym',anim:'anim-squat',tags:['Bodyweight','Plyometric','Explosive'],cols:['reps'],tip:'Log reps (each leg). Explosive alternating lunges — builds power and conditioning.',s:['Front knee tracks over toes','Explosive drive off the floor','Switch legs in the air','Soft landing — absorb through the hips']},
+  {id:177,n:'Tuck Jump',m:'Legs',t:'reps',c:'gym',anim:'anim-squat',tags:['Bodyweight','Plyometric','Explosive'],cols:['reps'],tip:'Log reps. Max height jump with knee tuck — power and coordination.',s:['Full squat dip, then explode','Tuck knees to chest at peak','Land softly with bent knees','Reset fast — quality over speed']},
+  {id:178,n:'Star Jump (Jumping Jack)',m:'Cardio',t:'reps',c:'gym',anim:'anim-plank',tags:['Bodyweight','Cardio'],cols:['reps'],tip:'Log reps or time. Warm-up and conditioning staple.',s:['Arms and legs simultaneous','Full extension at the top','Land lightly on balls of feet','Keep core braced throughout']},
+  {id:179,n:'High Knees',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Bodyweight','Cardio'],cols:['reps'],tip:'Log time. Running on the spot with high knee drive — hip flexor and cardio.',s:['Drive knee above hip crease','Arm drive mirrors the legs','Stay on balls of feet','Fast cadence — rate over height']},
+        {id:183,n:'Decline Push-Up',m:'Chest',ms:['Shoulders','Triceps'],t:'reps',c:'gym',anim:'anim-bench',tags:['Bodyweight','Push'],cols:['reps'],tip:'Log reps. Feet elevated shifts load to upper chest and shoulders.',s:['Feet on bench or box','Body in a straight line','Lower chest toward floor','Full extension at the top']},
+  {id:184,n:'Bodyweight Squat',m:'Legs',ms:['Glutes'],t:'reps',c:'gym',anim:'anim-squat',tags:['Bodyweight','Squat'],cols:['reps'],tip:'Log reps. Foundation movement — great for warm-up and circuit work.',s:['Feet shoulder-width, toes slightly out','Hip crease below parallel','Chest proud, knees track toes','Drive through full foot to stand']},
+  {id:185,n:'Bodyweight Lunge',m:'Legs',ms:['Glutes'],t:'reps',c:'gym',anim:'anim-squat',tags:['Bodyweight','Squat','Unilateral'],cols:['reps'],tip:'Log reps (each leg). Unilateral lower body — balance and strength.',s:['Step forward, lower back knee to floor','Front knee over ankle','Push back to start through front heel','Keep torso upright throughout']},
+  {id:186,n:'Glute Bridge March',m:'Glutes',t:'reps',c:'gym',anim:'anim-squat',tags:['Bodyweight','Hinge'],cols:['reps'],tip:'Log reps. Bridge position with alternating knee lifts — glute and core stability.',s:['Hold bridge at the top','Lift one knee to 90°','Keep hips level throughout','Squeeze glute of planted leg']},
+  {id:187,n:'Bear Crawl',m:'Core',t:'time',c:'gym',anim:'anim-plank',tags:['Bodyweight'],cols:['time'],tip:'Log time or distance. Quadrupedal movement — full-body stability and coordination.',s:['Knees 2 inches off the floor','Opposite hand and foot move together','Hips stay low and level','Control — don\'t rush']},
+  {id:188,n:'Inchworm',m:'Core',t:'reps',c:'gym',anim:'anim-plank',tags:['Bodyweight'],cols:['reps'],tip:'Log reps. Warm-up and mobility classic — hamstrings, core and shoulder stability.',s:['Stand tall, fold to touch floor','Walk hands out to a plank','Optional push-up','Walk feet to hands and repeat']},
+  {id:189,n:'Squat to Press (Thruster)',m:'Shoulders',ms:['Legs'],t:'reps',c:'gym',anim:'anim-squat',tags:['Compound','Explosive'],cols:['kg','reps'],tip:'Log reps and weight if loaded. Full-body compound — squat drives the press.',s:['Squat deep, then explode','Use the upward drive to press overhead','Arms fully lock out at top','Lower to front rack and repeat']},
+
+  {id:190,n:'Decline Press (Barbell)',m:'Chest',ms:['Shoulders','Triceps'],t:'weight',c:'gym',anim:'anim-bench',tags:['Barbell','Push','Compound'],cols:['kg','reps'],
+   tip:'Log the <strong>total bar weight</strong>. Angle the bench 15–30° decline.',
+   s:['Grip just outside shoulder-width','Lower bar to lower chest under control','Press back up explosively','Lock out and squeeze at top']},
+  {id:191,n:'Skullcrusher (Barbell)',m:'Triceps',t:'weight',c:'gym',anim:'anim-bench',tags:['Barbell','Push'],cols:['kg','reps'],
+   tip:'Log the <strong>total bar weight</strong>. Keep elbows pointing to the ceiling throughout.',
+   s:['Grip narrow, arms vertical','Lower bar to forehead under control','Press back to full extension','Elbows stay fixed — don\'t flare']},
+  {id:192,n:'Landmine Press (Kneeling)',m:'Shoulders',ms:['Chest','Triceps'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Barbell','Push','Compound'],cols:['kg','reps'],
+   tip:'Log the <strong>weight on the bar</strong> (not including bar). Single-knee or double-knee — note it.',
+   s:['Kneel facing the landmine','Hold end of bar at shoulder','Press up and forward to full extension','Control the descent back to shoulder']},
+  {id:193,n:'Chest Supported Row (Barbell)',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Barbell','Pull','Compound'],cols:['kg','reps'],
+   tip:'Log the <strong>total bar weight</strong>. Chest on pad removes lower back from the equation.',
+   s:['Lie prone on incline bench','Grip bar just outside shoulder-width','Row elbows back to lower abdomen','Lower with control — full stretch']},
+  {id:194,n:'Step-Up (Barbell)',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Barbell','Squat','Unilateral'],cols:['kg','reps'],
+   tip:'Log the <strong>total bar weight</strong>. Note box height if you vary it.',
+   s:['Bar on upper traps, stand facing box','Drive leading foot through the box','Fully extend at the top','Step down under control']},
+  {id:195,n:'Step-Over (DB)',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Dumbbell','Squat','Unilateral'],cols:['kg','reps'],
+   tip:'Log the <strong>weight of one dumbbell</strong>. Note box height.',
+   s:['Stand beside box, DBs in hand','Step up and fully over the box','Control descent on the other side','Alternate lead leg each rep']},
+  {id:196,n:'Single-Arm Press (DB)',m:'Shoulders',ms:['Triceps'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Dumbbell','Push','Unilateral'],cols:['kg','reps'],
+   tip:'Log the <strong>weight of one dumbbell</strong>. Note if seated or standing.',
+   s:['Hold DB at shoulder, palm forward','Press overhead to full extension','Control the descent back to shoulder','Brace core — avoid lateral lean']},
+  {id:197,n:'Decline Press (DB)',m:'Chest',ms:['Shoulders','Triceps'],t:'weight',c:'gym',anim:'anim-bench',tags:['Dumbbell','Push','Compound'],cols:['kg','reps'],
+   tip:'Log the <strong>weight of one dumbbell</strong>. Bench at 15–30° decline.',
+   s:['DBs at chest level, elbows flared slightly','Press up and in, DBs nearly touching at top','Lower under control to chest level','Full range of motion each rep']},
+  {id:198,n:'Seated Shoulder Press (DB)',m:'Shoulders',ms:['Triceps'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Dumbbell','Push'],cols:['kg','reps'],
+   tip:'Log the <strong>weight of one dumbbell</strong>.',
+   s:['Sit upright, DBs at ear level','Press overhead to full extension','Lower under control to ear level','Avoid arching the lower back']},
+  {id:199,n:'Suitcase Carry',m:'Core',t:'time',c:'gym',anim:'anim-plank',tags:['Dumbbell','Carry','Unilateral'],cols:['kg','time'],
+   tip:'Log <strong>time or distance</strong> and the weight of one dumbbell/KB.',
+   s:['Hold one weight at your side','Walk tall — resist lateral lean','Brace core throughout','Switch sides each set']},
+  {id:200,n:'Skullcrusher (DB)',m:'Triceps',t:'weight',c:'gym',anim:'anim-bench',tags:['Dumbbell','Push'],cols:['kg','reps'],
+   tip:'Log the <strong>weight of one dumbbell</strong>.',
+   s:['DBs above chest, arms vertical','Lower DBs to temples under control','Extend back to start','Elbows stay fixed — don\'t flare']},
+  {id:201,n:'Overhead Press (DB)',m:'Shoulders',ms:['Triceps'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Dumbbell','Push'],cols:['kg','reps'],
+   tip:'Log the <strong>weight of one dumbbell</strong>. If pressing both, log one DB weight.',
+   s:['DBs at ear level, palms forward','Press overhead to full extension','Lower under control','Brace and avoid excessive arch']},
+  {id:202,n:'Single-Arm Clean (DB)',m:'Shoulders',ms:['Glutes','Legs'],t:'weight',c:'gym',anim:'anim-dead',tags:['Dumbbell','Compound','Explosive'],cols:['kg','reps'],
+   tip:'Log the <strong>weight of one dumbbell</strong>.',
+   s:['Hinge at hip, DB hanging','Drive hips and shrug to pull DB up','Catch in front-rack position','Reset and repeat']},
+  {id:203,n:'Single-Arm Clean and Press (DB)',m:'Shoulders',ms:['Glutes','Legs','Triceps'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Dumbbell','Compound','Explosive'],cols:['kg','reps'],
+   tip:'Log the <strong>weight of one dumbbell</strong>.',
+   s:['Clean DB to front rack','From the catch, press overhead','Lower to shoulder then to start','Control both phases']},
+  {id:204,n:'Single-Arm Snatch (DB)',m:'Shoulders',ms:['Glutes','Legs'],t:'weight',c:'gym',anim:'anim-dead',tags:['Dumbbell','Compound','Explosive'],cols:['kg','reps'],
+   tip:'Log the <strong>weight of one dumbbell</strong>.',
+   s:['Hinge at hip, DB between feet','Explosive drive — pull DB straight up','Punch through at the top','Receive overhead with arm locked']},
+  {id:205,n:'Cable Lat Pulldown (Narrow)',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-pullup',tags:['Cable','Pull','Compound'],cols:['kg','reps'],
+   tip:'Log the <strong>cable stack weight</strong>. Neutral or supinated grip, hands closer together.',
+   s:['Sit tall, grip inside shoulder-width','Pull elbows down to lower ribcage','Brief hold at bottom','Controlled return to full stretch']},
+  {id:206,n:'Pallof Hold (Cable)',m:'Core',t:'time',c:'gym',anim:'anim-plank',tags:['Cable','Isometric'],cols:['time'],
+   tip:'Log <strong>hold time</strong> and the cable stack weight. Anti-rotation isometric.',
+   s:['Stand side-on to cable, arms extended','Hold position — resist rotation','Brace hard throughout','Equal time each side']},
+  {id:207,n:'Tricep Pushdown Rope (Cable)',m:'Triceps',t:'weight',c:'gym',anim:'anim-ohp',tags:['Cable','Push'],cols:['kg','reps'],
+   tip:'Log the <strong>cable stack weight</strong>. Rope allows wrists to rotate at the bottom.',
+   s:['Elbows pinned to sides','Push to full extension, split rope at bottom','Hard squeeze','Controlled return to start']},
+  {id:208,n:'Single-Leg Leg Press',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Machine','Push','Unilateral'],cols:['kg','reps'],
+   tip:'Log the <strong>plate/stack weight</strong> per leg. Unilateral — great for identifying imbalances.',
+   s:['One foot centred on platform','Lower under control until 90° knee angle','Press through heel to full extension','Don\'t lock out the knee']},
+  {id:209,n:'Single-Leg Leg Extension',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',tags:['Machine','Unilateral'],cols:['kg','reps'],
+   tip:'Log the <strong>stack weight</strong>. Unilateral — address quad imbalances.',
+   s:['One leg hooked under pad','Extend to full lockout','Squeeze quad at top','Lower under control']},
+  {id:210,n:'Single-Leg Leg Curl (Lying)',m:'Legs',t:'weight',c:'gym',anim:'anim-rdl',tags:['Machine','Unilateral'],cols:['kg','reps'],
+   tip:'Log the <strong>stack weight</strong>. Unilateral version — note if left/right differs.',
+   s:['Lie prone, one ankle under pad','Curl heel to glute','Brief hold at top','Lower with full control']},
+  {id:211,n:'Single-Leg Leg Curl (Seated)',m:'Legs',t:'weight',c:'gym',anim:'anim-rdl',tags:['Machine','Unilateral'],cols:['kg','reps'],
+   tip:'Log the <strong>stack weight</strong>. Seated position keeps hip flexion constant.',
+   s:['Sit upright, one ankle under pad','Curl toward the seat','Brief hold at full flexion','Controlled return']},
+  {id:212,n:'Reverse Fly Machine',m:'Back',t:'weight',c:'gym',anim:'anim-dead',tags:['Machine','Pull'],cols:['kg','reps'],
+   tip:'Log the <strong>stack weight</strong>. Targets rear delts and upper back.',
+   s:['Sit facing the machine, chest against pad','Grip handles, arms slightly bent','Drive elbows back and wide','Control the return — don\'t let weights crash']},
+  {id:213,n:'Smith Machine Lunge',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Smith Machine','Squat','Unilateral'],cols:['kg','reps'],
+   tip:'Log the <strong>total bar weight</strong>. Smith provides a fixed path — useful for loading the pattern safely.',
+   s:['Bar on upper traps, stagger stance','Lower rear knee toward floor','Drive through front heel to stand','Alternate legs or complete one side']},
+  {id:214,n:'Burpee Over-Barbell',m:'Cardio',t:'reps',c:'gym',anim:'anim-plank',tags:['Bodyweight','Plyometric','Explosive'],cols:['reps'],
+   tip:'Log reps. Barbell on floor — jump over it laterally at the top of each rep.',
+   s:['Perform a standard burpee','At the top, jump laterally over the barbell','Land and go straight into the next rep','Keep a consistent pace']},
+  {id:215,n:'Drop Squats',m:'Legs',t:'reps',c:'gym',anim:'anim-squat',tags:['Bodyweight','Plyometric'],cols:['reps'],
+   tip:'Log reps. Reactive speed drill — focus on fast ground contact and landing position.',
+   s:['Stand tall, feet hip-width','Drop fast into squat position','Land soft, absorb through hips and knees','Reset and repeat with speed']},
+  {id:216,n:'Overhead Press (KB)',m:'Shoulders',ms:['Triceps','Core'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Kettlebell','Push'],cols:['kg','reps'],
+   tip:'Log the <strong>weight of one kettlebell</strong>.',
+   s:['Clean KB to rack position','Press overhead to full lockout','KB balanced over wrist and elbow','Lower under control to rack']},
+  {id:217,n:'Bentover Row (KB)',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Kettlebell','Pull'],cols:['kg','reps'],
+   tip:'Log the <strong>weight of one kettlebell</strong>.',
+   s:['Hinge to ~45°, KB hanging','Row elbow back and up','Brief hold at top','Lower with control']},
+  {id:218,n:'Snatch (KB)',m:'Shoulders',ms:['Glutes','Legs'],t:'weight',c:'gym',anim:'anim-dead',tags:['Kettlebell','Compound','Explosive'],cols:['kg','reps'],
+   tip:'Log the <strong>weight of one kettlebell</strong>.',
+   s:['Start in hike position','Drive hips and pull KB up in a straight line','Punch through at the top to lockout','Control descent to rack or swing']},
+  {id:219,n:'Hip Airplane (KB)',m:'Glutes',t:'reps',c:'gym',anim:'anim-rdl',tags:['Kettlebell','Hinge','Unilateral'],cols:['reps'],
+   tip:'Log reps per side. Single-leg balance drill for hip stability and glute activation.',
+   s:['Balance on one leg','Hinge forward, rotate pelvis to open hip','Hold briefly at end range','Return and repeat']},
+  {id:220,n:'Pallof Press (Banded)',m:'Core',t:'reps',c:'gym',anim:'anim-plank',tags:['Band','Isometric'],cols:['reps'],
+   tip:'Log reps per side. Anti-rotation press using a resistance band anchored at chest height.',
+   s:['Stand side-on to anchor, band at chest','Press straight out to full extension','Hold briefly','Return to chest under control']},
+  {id:221,n:'Back Extension',m:'Back',ms:['Glutes','Legs'],t:'reps',c:'gym',anim:'anim-rdl',tags:['Bodyweight','Hinge'],cols:['reps'],
+   tip:'Log reps. On a 45° or GHD machine. Can be loaded — log weight if so.',
+   s:['Hips at the pad edge, cross arms or hold plate','Hinge down under control','Drive hips into pad to extend back','Squeeze glutes and back at the top']},
+  {id:222,n:'Cycling',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio'],cols:['dist','time'],
+   tip:'Log <strong>duration and distance</strong>. Outdoor or stationary.',
+   s:['Set resistance or route','Maintain steady cadence','Note distance and average power if available','Cool down gradually']},
+  {id:223,n:'Pilates',m:'Core',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio'],cols:['time'],
+   tip:'Log <strong>session duration</strong>.',
+   s:['Follow class or programme','Focus on breath and control','Note any specific focus area','Log how you felt']},
+  {id:224,n:'Yoga',m:'Core',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio'],cols:['time'],
+   tip:'Log <strong>session duration</strong>.',
+   s:['Follow class or programme','Focus on breath and mobility','Note style — flow, yin, restorative','Log how you felt']},
+  {id:225,n:'Swimming',m:'Cardio',t:'time',c:'gym',anim:'anim-plank',tags:['Cardio'],cols:['dist','time'],
+   tip:'Log <strong>duration and distance</strong>. Note stroke style if relevant.',
+   s:['Warm up with easy lengths','Complete main set','Note stroke, distance, rest intervals','Cool down']},
 ];
+
+
+
+// ── Exercise ID helpers ───────────────────────────────────────────────────────
+// Match a history exercise entry to a name, using stable id when present
+function exMatch(histEx, nameOrId){
+  if(typeof nameOrId === 'number') return histEx.id === nameOrId;
+  return (histEx.id !== undefined && EX.find(e=>e.n===nameOrId)?.id === histEx.id) || histEx.n === nameOrId;
+}
+// Get current display name for a history exercise entry (id takes priority)
+function exDisplayName(histEx){
+  if(histEx.id !== undefined){
+    const def = EX.find(e=>e.id===histEx.id);
+    if(def) return def.n;
+  }
+  return histEx.n;
+}
+// Find EX def by id or name
+function findEx(idOrName){
+  if(typeof idOrName === 'number') return EX.find(e=>e.id===idOrName);
+  return EX.find(e=>e.n===idOrName);
+}
 
 const PHASES=[
   {n:'Menstrual',short:'Mens.',col:'#E24B4A',bg:'rgba(226,75,74,0.12)',brd:'rgba(226,75,74,0.28)',str:3.5,end:4.0,en:3.0,read:35,intensityPct:35,intensityNote:'Keep it light — 50–65% of your usual working weight. Focus on movement quality and how you feel.',loadLabel:'Light load',adv:'Your body is in recovery mode. Prioritise gentle movement, mobility work and listening to how you feel.',recs:['Yoga','Hip mobility','Gentle walk','Light bands','Rest'],
@@ -3258,6 +3455,7 @@ let curEx=[],splitN=0,timerI=null;
 let buildEx=[];          // exercises being built in Create Workout
 let libFromBuild=false;  // whether lib was opened from build view
 let savedWorkouts=[];    // persisted workout templates
+let customExs=[];        // user-created exercises (merged into EX on load)
 let libSelected=new Set(); // currently selected exercise names in library
 let poWindow=3; // months: 3, 6, or 12
 let cycDay=14,cycLen=28,cycView='graph',cycChartInst=null;
@@ -3407,12 +3605,30 @@ function toggleLiteMode(){
 }
 
 /* ── Stress ──────────────────────────────────────── */
+
+// ── Multi-muscle volume attribution ──────────────────────────────────────────
+// Attributes volume across primary (100%) and secondary (50%) muscles.
+function attributeVolume(exDef, sets) {
+  const result = {};
+  const vol = sets.reduce((a, s) => a + (s.w || 0) * (s.r || 0), 0);
+  if (!vol || !exDef) return result;
+  result[exDef.m] = (result[exDef.m] || 0) + vol;
+  (exDef.ms || []).forEach(sec => {
+    result[sec] = (result[sec] || 0) + vol * 0.5;
+  });
+  return result;
+}
+function mergeVol(acc, contrib) {
+  Object.entries(contrib).forEach(([m, v]) => { acc[m] = (acc[m] || 0) + v; });
+}
+
 // Muscle-size decay constants (per 24h exponential half-life)
 // Small muscles (biceps, delts, core): fast recovery ~50%/day
 // Medium muscles (chest, quads, lats, glutes): moderate ~30%/day
 // Systemic/CNS (back — deadlifts/rows, heavy legs): slow ~20%/day
 const MUSCLE_DECAY={
-  'Arms':   0.50,
+  'Biceps':  0.50,
+  'Triceps': 0.50,
   'Shoulders': 0.50,
   'Core':   0.50,
   'Chest':  0.30,
@@ -3514,9 +3730,16 @@ function computeStress(){
   const dayLoads={};  // 'YYYY-MM-DD:muscle' -> load
   hist.filter(h=>h.type==='wo').forEach(w=>{
     (w.ex||[]).forEach(e=>{
-      const def=EX.find(x=>x.n===e.n);const muscle=def?def.m:null;if(!muscle)return;
-      const key=`${w.date}:${muscle}`;
-      dayLoads[key]=(dayLoads[key]||0)+exRawLoad(e);
+      const def=EX.find(x=>x.id!==undefined?x.id===(e.id||null):x.n===e.n)||EX.find(x=>x.n===e.n);
+      if(!def)return;
+      const baseLoad=exRawLoad(e);
+      // Primary: 100%, secondary: 50%
+      const key=`${w.date}:${def.m}`;
+      dayLoads[key]=(dayLoads[key]||0)+baseLoad;
+      (def.ms||[]).forEach(sec=>{
+        const sk=`${w.date}:${sec}`;
+        dayLoads[sk]=(dayLoads[sk]||0)+baseLoad*0.5;
+      });
     });
   });
   // Also fold in runs
@@ -3540,13 +3763,20 @@ function computeStress(){
     const dN=Math.floor((TODAY-sd)/86400000);
     if(dN>14)return;
     (w.ex||[]).forEach(e=>{
-      const def=EX.find(x=>x.n===e.n);const muscle=def?def.m:null;if(!muscle)return;
-      const load=exRawLoad(e);
-      const k=MUSCLE_DECAY[muscle]||0.30;
-      const decay=Math.exp(-k*dN);
-      raw[muscle]=(raw[muscle]||0)+load*decay*cycleMultiplier;
-      exByMuscle[muscle].add(e.n);
-      if(lastTrained[muscle]===null||dN<lastTrained[muscle])lastTrained[muscle]=dN;
+      const def=EX.find(x=>x.id!==undefined?x.id===(e.id||null):x.n===e.n)||EX.find(x=>x.n===e.n);
+      if(!def)return;
+      const baseLoad=exRawLoad(e);
+      // Primary: 100%
+      const applyLoad=(muscle,load)=>{
+        const k=MUSCLE_DECAY[muscle]||0.30;
+        const decay=Math.exp(-k*dN);
+        raw[muscle]=(raw[muscle]||0)+load*decay*cycleMultiplier;
+        if(exByMuscle[muscle])exByMuscle[muscle].add(e.n||exDisplayName(e));
+        if(lastTrained[muscle]===null||dN<lastTrained[muscle])lastTrained[muscle]=dN;
+      };
+      applyLoad(def.m, baseLoad);
+      // Secondary: 50%
+      (def.ms||[]).forEach(sec=>applyLoad(sec, baseLoad*0.5));
     });
   });
   hist.filter(h=>h.type==='run').forEach(run=>{
@@ -3673,7 +3903,7 @@ function renderDials(){
       <div class="tbl-hc">Since</div><div class="tbl-hc">Status</div>
     </div>
     <div class="tbl-body">${rows}</div>
-    <div class="tbl-note">Score is personal — 100 means your heaviest ever session for that muscle done today. Adapts to your own training volume and PBs, so scores are meaningful whether you're a beginner or lifting 300kg. Decay: Arms/Shoulders/Core 50%/day · Chest/Legs/Glutes 30%/day · Back 20%/day.${trackCycles&&getCycPhaseIdx()===3?' · Luteal +25% active.':''}</div>`;
+    <div class="tbl-note">Score is personal — 100 means your heaviest ever session for that muscle done today. Adapts to your own training volume and PBs, so scores are meaningful whether you're a beginner or lifting 300kg. Decay: Biceps/Triceps/Shoulders/Core 50%/day · Chest/Legs/Glutes 30%/day · Back 20%/day.${trackCycles&&getCycPhaseIdx()===3?' · Luteal +25% active.':''}</div>`;
 }
 
 // Keep old names as aliases so any other callers don't break
@@ -3845,7 +4075,7 @@ function buildWorkoutSuggestions(scores){
         if(used.has(ex.n))return;
         used.add(ex.n);
         suggestions.push({
-          name:ex.n, muscle, lastKg:0, lastReps:0,
+          name:ex.n, muscle, secondary:ex.ms||[], lastKg:0, lastReps:0,
           suggestKg:null, suggestReps:null,
           isNew:true,
           suggestHtml:`<div class="sug-ex-new">✨ Try it — no history yet</div>`
@@ -3899,7 +4129,8 @@ function buildWorkoutSuggestions(scores){
         suggestHtml=`<div class="sug-ex-new">✨ No weight logged yet — focus on form</div>`;
       }
 
-      suggestions.push({name, muscle, lastKg:f.lastKg, lastReps:f.lastReps, suggestKg, suggestReps, suggestHtml});
+      const _def2=EX.find(e=>e.n===name);
+      suggestions.push({name, muscle, secondary:_def2&&_def2.ms||[], lastKg:f.lastKg, lastReps:f.lastReps, suggestKg, suggestReps, suggestHtml});
     }
     if(suggestions.length>=5)break;
   }
@@ -3917,7 +4148,7 @@ function addSuggestionToLog(i){
   // Add to curEx
   const def=EX.find(e=>e.n===s.name);if(!def)return;
   if(!curEx.find(e=>e.n===s.name)){
-    const cols=def.t==='weight'?['kg','reps']:def.t==='time'?['time']:['reps'];
+    const cols=def.cols||(def.t==='weight'?['kg','reps']:def.t==='time'?['time']:['reps']);
     // Pre-fill the set with the suggestion
     const set={r:s.suggestReps||'', w:s.suggestKg||'', dist:'', time:'', rpe:null, d:false};
     curEx.push({n:s.name,m:def.m,t:def.t,c:def.c,anim:def.anim||'',tip:def.tip||'',cols,sets:[set]});
@@ -3950,7 +4181,7 @@ function showCheckin(){
       <div class="sug-ex-thumb">${equipIcon(s.name,s.muscle,32)}</div>
       <div class="sug-ex-info">
         <div class="sug-ex-name">${s.name}</div>
-        <div class="sug-ex-meta">${s.muscle}
+        <div class="sug-ex-meta">${s.muscle}${s.secondary&&s.secondary.length?' · <span style="opacity:0.6">'+s.secondary.join(', ')+'</span>':''}
           ${s.lastKg?`<span style="color:rgba(255,255,255,0.35)">· last ${s.lastKg}kg×${s.lastReps}</span>`:''}
         </div>
         ${s.suggestHtml}
@@ -4257,7 +4488,7 @@ function equipIcon(name, muscle, size){
   const ac2=ac;
 
   // Gym exercises with a known muscle group — use the muscle diagram image
-  const gymMuscles=['Chest','Back','Shoulders','Arms','Core','Glutes','Legs'];
+  const gymMuscles=['Chest','Back','Shoulders','Biceps','Triceps','Core','Glutes','Legs'];
   if(muscle&&gymMuscles.includes(muscle)){
     const img=getMuscleImg(muscle,s);
     if(img)return img;
@@ -4324,9 +4555,10 @@ function openM(name){
     <div class="m-info">
       <div class="mttl">${name}</div>
       <div class="mmus">
-        <span>${muscle}${def&&def.c==='physio'?' · Rehab':''}</span>
+        <span class="mmus-primary">${muscle}</span>${def&&def.ms&&def.ms.length?def.ms.map(s=>`<span class="mmus-secondary">${s}</span>`).join(''):''}${def&&def.c==='physio'?'<span style="font-size:11px;opacity:0.6"> · Rehab</span>':''}
       </div>
       ${hasSessions?`<button onclick="this.closest('.modal-bg').remove();openProgForEx('${name.replace(/'/g,"\\'")}')" style="width:100%;padding:9px;font-size:13px;font-weight:500;border-radius:10px;cursor:pointer;margin-bottom:12px;color:var(--ac)!important;background:rgba(149,188,43,0.1)!important;border:1px solid rgba(149,188,43,0.3)!important">View analytics →</button>`:''}
+      ${def&&def.tags&&def.tags.length?renderTagRow(def.tags):''}
       ${tip?`<div class="m-log-tip"><span class="m-log-tip-icon">ⓘ</span><div class="m-log-tip-text">${tip}</div></div>`:''}
       <ul class="steps">${def?def.s.map((step,i)=>`<li><span class="sn2">${i+1}</span><span>${step}</span></li>`).join(''):'<li>No cues.</li>'}</ul>
     </div>
@@ -4345,9 +4577,23 @@ function getPB(name){
   let best=0;
   hist.filter(h=>h.type==='wo').forEach(w=>{
     const ex=(w.ex||[]).find(e=>e.n===name);
-    if(ex)(ex.sets||[]).forEach(s=>{if((s.w||0)>best)best=s.w;});
+    if(ex)(ex.sets||[]).forEach(s=>{const w=parseFloat(s.w)||0;if(w>best)best=w;});
   });
   return best;
+}
+
+function getVolumePB(name){
+  // Best single-set volume (kg × reps) ever logged for this exercise
+  let bestVol=0;
+  hist.filter(h=>h.type==='wo').forEach(w=>{
+    const ex=(w.ex||[]).find(e=>e.n===name);
+    if(!ex)return;
+    (ex.sets||[]).forEach(s=>{
+      const vol=(parseFloat(s.w)||0)*(parseFloat(s.r)||0);
+      if(vol>bestVol)bestVol=vol;
+    });
+  });
+  return bestVol;
 }
 
 function renderLog(){
@@ -4513,11 +4759,11 @@ function renderLog(){
       }).join('');
       return`<div class="set-swipe-wrap" id="ssw-${ei}-${si}">
         <div class="set-del" id="sdel-${ei}-${si}" onclick="removeSet(${ei},${si})"><div class="set-del-icon">✕</div></div>
-        <div class="set-row" id="sr-${ei}-${si}" data-ei="${ei}" data-si="${si}" style="grid-template-columns:${gridCols}">
+        <div class="set-row${isDone?' done':''}" id="sr-${ei}-${si}" data-ei="${ei}" data-si="${si}" style="grid-template-columns:${gridCols}">
           <span class="sn">${si+1}</span>
           ${dataInputs}
           <input type="number" class="rpe-input ${dc}" value="${s.rpe||''}" placeholder="—" min="1" max="10" oninput="upd(${ei},${si},'rpe',this.value)"/>
-          <span style="text-align:center;font-size:14px;line-height:1">${s.pb?'🏆':''}</span>
+          <span style="text-align:center;font-size:14px;line-height:1" title="${s.pb==='weight'?'Weight PB':s.pb==='volume'?'Volume PB':''}">${s.pb==='weight'?'🏆':s.pb==='volume'?'📈':''}</span>
           <button class="ck ${isDone?'done':''}" onclick="tog(${ei},${si})">${isDone?'✓':''}</button>
         </div>
       </div>`;
@@ -4755,7 +5001,7 @@ function toggleCol(ei, col){
   renderLog(); // full re-render to update grid
 }
 function toggleInfoTip(ei){const t=document.getElementById('tip-'+ei);if(t)t.classList.toggle('show')}
-function upd(ei,si,f,v){if(curEx[ei]&&curEx[ei].sets[si])curEx[ei].sets[si][f]=f==='rpe'?parseInt(v)||null:parseFloat(v)||v}
+function upd(ei,si,f,v){if(curEx[ei]&&curEx[ei].sets[si])curEx[ei].sets[si][f]=f==='rpe'?parseInt(v)||null:(parseFloat(v)||parseFloat(v)===0?parseFloat(v):v)}
 /* ── Rest timer ──────────────────────────────────── */
 let restInterval=null;
 let restRemaining=0;
@@ -4846,22 +5092,45 @@ function tog(ei,si){
   const set=curEx[ei].sets[si];
   set.d=!set.d;
   if(set.d){
-    // PB check
-    if(set.w){
-      const histPB=getPB(curEx[ei].n);
-      const sessionBest=curEx[ei].sets.reduce((mx,s,i)=>i!==si&&s.d?(Math.max(mx,s.w||0)):mx,0);
-      const prevBest=Math.max(histPB,sessionBest);
-      set.pb=(set.w>prevBest);
-      if(set.pb)confettiBurst();
+    const w=parseFloat(set.w)||0;
+    const r=parseFloat(set.r)||0;
+    const ex=curEx[ei];
+    const isWeightEx=ex.cols&&ex.cols.includes('kg');
+
+    // ── Weight PB: this set's weight beats all history + other done sets this session ──
+    let newPb=false;
+    if(w>0){
+      const histPB=getPB(ex.n);
+      const sessionBest=ex.sets.reduce((mx,s,i)=>{
+        if(i===si||!s.d)return mx;
+        return Math.max(mx,parseFloat(s.w)||0);
+      },0);
+      if(w>Math.max(histPB,sessionBest)) newPb='weight';
     }
-    // Only start rest timer on the TOP exercise of a superset (or non-superset exercises)
-    const ssGroup=curEx[ei].ssGroup;
+
+    // ── Volume PB: this set's kg × reps beats best single set ever ──
+    if(!newPb && isWeightEx && w>0 && r>0){
+      const histVolPB=getVolumePB(ex.n);
+      const setVol=w*r;
+      // Also beat any other done set in this session
+      const sessionSetBest=ex.sets.reduce((mx,s,i)=>{
+        if(i===si||!s.d)return mx;
+        return Math.max(mx,(parseFloat(s.w)||0)*(parseFloat(s.r)||0));
+      },0);
+      if(setVol>Math.max(histVolPB,sessionSetBest)) newPb='volume';
+    }
+
+    set.pb=newPb;
+
+    if(newPb==='weight') confettiBurst();
+
+    // Rest timer
+    const ssGroup=ex.ssGroup;
     const isSSTop=ssGroup===undefined||(ei===0||curEx[ei-1].ssGroup!==ssGroup);
     if(isSSTop){
-      const exRest=curEx[ei].rest!==undefined?curEx[ei].rest:undefined;
+      const exRest=ex.rest!==undefined?ex.rest:undefined;
       startRestTimer(exRest);
     }
-    // If this is the last exercise in a superset, start rest from the top exercise
     const isSSLast=ssGroup!==undefined&&(ei===curEx.length-1||curEx[ei+1].ssGroup!==ssGroup);
     if(!isSSTop&&isSSLast){
       let topIdx=ei;while(topIdx>0&&curEx[topIdx-1].ssGroup===ssGroup)topIdx--;
@@ -5016,26 +5285,15 @@ function addToLog(name, silent=false){
   // If coming from build view, add to buildEx instead
   if(libFromBuild){
     if(buildEx.find(e=>e.n===name)) return;
-    let cols;
-    if(def.t==='weight') cols=['kg','reps'];
-    else if(def.t==='time') cols=['time'];
-    else cols=['reps'];
-    if(/sled|carry/i.test(def.n)) cols=['kg','time'];
-    if(/lunge|broad|wall ball|step.up/i.test(def.n)) cols=['kg','reps'];
-    buildEx.push({n:name,m:def.m,t:def.t,c:def.c,anim:def.anim||'',tip:def.tip||'',cols});
+    const cols=def.cols||(def.t==='weight'?['kg','reps']:def.t==='time'?['time']:['reps']);
+    buildEx.push({id:def.id,n:name,m:def.m,t:def.t,c:def.c,anim:def.anim||'',tip:def.tip||'',cols,custom:def.custom||false});
     if(!silent){libFromBuild=false;go('build');renderBuild();}
     return;
   }
   // Normal log add
   if(curEx.find(e=>e.n===name)) return;
-  let cols;
-  if(def.t==='weight') cols=['kg','reps'];
-  else if(def.t==='time') cols=['time'];
-  else if(def.t==='reps') cols=['reps'];
-  else cols=['reps'];
-  if(/sled|carry/i.test(def.n)) cols=['kg','time'];
-  if(/lunge|broad|wall ball|step.up/i.test(def.n)) cols=['kg','reps'];
-  curEx.push({n:name,m:def.m,t:def.t,c:def.c,anim:def.anim||'',tip:def.tip||'',cols,sets:[{r:'',w:'',dist:'',time:'',rpe:null,d:false}]});
+  const cols=def.cols||(def.t==='weight'?['kg','reps']:def.t==='time'?['time']:['reps']);
+  curEx.push({id:def.id,n:name,m:def.m,t:def.t,c:def.c,anim:def.anim||'',tip:def.tip||'',cols,custom:def.custom||false,sets:[{r:'',w:'',dist:'',time:'',rpe:null,d:false}]});
   if(!timerI)startWoTimer();
   if(!silent){go('log');libFromLog=false;renderSavedShelf();}
 }
@@ -5071,7 +5329,7 @@ function editWorkout(histIdx){
   editingHistIdx=histIdx;
   curEx=(wo.ex||[]).map(e=>{
     const def=EX.find(d=>d.n===e.n)||{};
-    const cols=def.t==='weight'?['kg','reps']:def.t==='time'?['time']:['reps'];
+    const cols=def.cols||(def.t==='weight'?['kg','reps']:def.t==='time'?['time']:['reps']);
     return {
       n:e.n, m:def.m||'', t:def.t||'reps', c:def.c||'gym',
       anim:def.anim||'', tip:def.tip||'', cols,
@@ -5116,26 +5374,44 @@ function showPostWo(dur){
   const totalKg=curEx.reduce((a,ex)=>a+ex.sets.filter(s=>s.d||s.r).reduce((b,s)=>b+(s.w||0)*(s.r||0),0),0);
   const totalSets=curEx.reduce((a,ex)=>a+ex.sets.filter(s=>s.d||s.r).length,0);
 
-  // Per-muscle volume from this session
+  // Per-muscle volume from this session (primary 100%, secondary 50%)
   const muscleVol={};
   curEx.forEach(ex=>{
-    const def=EX.find(e=>e.n===ex.n);const m=def?def.m:null;if(!m)return;
-    const vol=ex.sets.filter(s=>s.d||s.r).reduce((a,s)=>a+(s.w||0)*(s.r||0),0);
-    muscleVol[m]=(muscleVol[m]||0)+vol;
+    const def=EX.find(e=>e.id!==undefined?e.id===(ex.id||null):e.n===ex.n)||EX.find(e=>e.n===ex.n);
+    if(!def)return;
+    mergeVol(muscleVol, attributeVolume(def, ex.sets.filter(s=>s.d||s.r)));
   });
   const muscleEntries=Object.entries(muscleVol).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);
   const maxMVol=Math.max(...muscleEntries.map(([,v])=>v),1);
 
-  // New PBs — compare best weight this session vs best weight in history
+  // New PBs — weight PBs first, then volume PBs for exercises without a weight PB
   const pbs=[];
   curEx.forEach(ex=>{
-    const sessionBest=ex.sets.filter(s=>s.d||s.r).reduce((mx,s)=>Math.max(mx,s.w||0),0);
-    if(!sessionBest)return;
+    const doneSets=ex.sets.filter(s=>s.d||s.r);
+    if(!doneSets.length)return;
+    const isWeightEx=ex.cols&&ex.cols.includes('kg');
+
+    // Weight PB
+    const sessionBest=doneSets.reduce((mx,s)=>Math.max(mx,parseFloat(s.w)||0),0);
     const histBest=hist.filter(h=>h.type==='wo').reduce((mx,w)=>{
-      const e=(w.ex||[]).find(x=>x.n===ex.n);
-      return e?Math.max(mx,...e.sets.map(s=>s.w||0)):mx;
+      const e=(w.ex||[]).find(x=>exMatch(x,ex.id||ex.n));
+      return e?Math.max(mx,...e.sets.map(s=>parseFloat(s.w)||0)):mx;
     },0);
-    if(sessionBest>histBest)pbs.push({n:ex.n,kg:sessionBest,prev:histBest});
+    if(sessionBest>0&&sessionBest>histBest){
+      pbs.push({n:ex.n,type:'weight',kg:sessionBest,prev:histBest});
+      return; // weight PB takes priority — don't also check volume
+    }
+
+    // Volume PB — best single set (kg × reps) this session vs history
+    if(isWeightEx){
+      const sessionSetBest=doneSets.reduce((mx,s)=>{
+        return Math.max(mx,(parseFloat(s.w)||0)*(parseFloat(s.r)||0));
+      },0);
+      const histVolBest=getVolumePB(ex.n);
+      if(sessionSetBest>0&&sessionSetBest>histVolBest){
+        pbs.push({n:ex.n,type:'volume',vol:Math.round(sessionSetBest),prev:Math.round(histVolBest)});
+      }
+    }
   });
 
   const moodHtml=POST_MOODS.map((m,i)=>
@@ -5152,12 +5428,22 @@ function showPostWo(dur){
     </div>`).join('')
     :'<div style="font-size:12px;color:rgba(255,255,255,0.3)">No weighted sets logged</div>';
 
-  const pbHtml=pbs.length?pbs.map(p=>`
-    <div class="postwo-pb-row">
-      <div class="postwo-pb-name">${p.n}</div>
-      <div class="postwo-pb-val">${p.kg}kg</div>
-      <span class="postwo-pb-badge">New PB${p.prev?` +${Math.round((p.kg-p.prev)*10)/10}kg`:''}</span>
-    </div>`).join('')
+  const pbHtml=pbs.length?pbs.map(p=>{
+    if(p.type==='weight') return`
+      <div class="postwo-pb-row">
+        <span class="postwo-pb-icon">🏆</span>
+        <div class="postwo-pb-name">${p.n}</div>
+        <div class="postwo-pb-val">${p.kg}kg</div>
+        <span class="postwo-pb-badge">New PB${p.prev?` +${Math.round((p.kg-p.prev)*10)/10}kg`:''}</span>
+      </div>`;
+    return`
+      <div class="postwo-pb-row">
+        <span class="postwo-pb-icon">📈</span>
+        <div class="postwo-pb-name">${p.n}</div>
+        <div class="postwo-pb-val">${p.vol.toLocaleString()}kg</div>
+        <span class="postwo-pb-badge postwo-pb-badge-vol">Best set vol${p.prev?` +${(p.vol-p.prev).toLocaleString()}kg`:''}</span>
+      </div>`;
+  }).join('')
     :'<div style="font-size:12px;color:rgba(255,255,255,0.35);padding:4px 0">No new PBs this session</div>';
 
   const overlay=document.createElement('div');
@@ -5169,7 +5455,7 @@ function showPostWo(dur){
     'Back,Arms':'Pull','Back,Legs':'Back & Legs','Back,Glutes':'Pull',
     'Legs,Glutes':'Legs','Glutes,Legs':'Legs',
     'Chest':'Chest','Back':'Back','Legs':'Legs','Shoulders':'Shoulders',
-    'Arms':'Arms','Core':'Core','Glutes':'Glutes',
+    'Biceps':'Arms','Triceps':'Arms','Core':'Core','Glutes':'Glutes',
   };
   const muscleKey=topMuscles.join(',');
   const suggestedName=nameMap[muscleKey]||nameMap[topMuscles[0]]||'Workout';
@@ -5250,7 +5536,7 @@ function saveWo(){
     const entry={
       type:'wo', date, mode:woMode, dur,
       name, mood:postWoMood,
-      ex:gymExs.map(e=>({n:e.n,sets:e.sets.filter(s=>s.d||s.r),...(e.rounds?.length?{rounds:e.rounds}:{})}))
+      ex:gymExs.map(e=>({id:e.id,n:e.n,sets:e.sets.filter(s=>s.d||s.r),...(e.rounds?.length?{rounds:e.rounds}:{})}))
     };
     if(editingHistIdx!==null){
       // Edit mode — update in place, preserve original date if not changed
@@ -5461,7 +5747,7 @@ function confirmDiscard(){
 }
 
 /* ── Library ─────────────────────────────────────── */
-const muscles=['All','Chest','Back','Shoulders','Legs','Arms','Core','Glutes'];
+const muscles=['All','Chest','Back','Shoulders','Legs','Glutes','Core','Biceps','Triceps'];
 function renderLib(f='',m=selM){
   // Clear selection on a fresh filter/category change but not on re-render
   const mfEl=document.getElementById('mf');if(!mfEl)return;
@@ -5483,21 +5769,156 @@ function renderLib(f='',m=selM){
     const added=alreadyAdded.has(e.n);
     const esc=e.n.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     const clickAttr=added?'':`onclick="toggleLibSel('${esc}')"`;
+    const tagHtml=e.custom
+      ?`<span class="lib-tag-custom">Custom</span>`
+      :`<span class="lib-tag" style="${catColor[e.c]||''}">${catLabel[e.c]||'Gym'}</span>`;
     return`<div class="lib-item${sel||added?' lib-selected':''}" ${clickAttr} style="${added?'opacity:0.45;cursor:default':''}">
       <div class="lib-check">${sel||added?'✓':''}</div>
       <div class="lib-thumb" onclick="event.stopPropagation();openM('${esc}')">${equipIcon(e.n,e.m,34)}</div>
       <div style="flex:1;min-width:0">
         <div class="lib-en">${e.n}${added?' <span style="font-size:10px;opacity:0.5">(added)</span>':''}</div>
-        <div class="lib-em">${e.m}</div>
-        <span class="lib-tag" style="${catColor[e.c]||''}">${catLabel[e.c]||'Gym'}</span>
+        <div class="lib-em">${e.m}${e.ms&&e.ms.length?' · <span style="opacity:0.55">' + e.ms.join(', ') + '</span>':''}</div>
+        ${tagHtml}
+        ${e.tags&&e.tags.length?renderTagRow(e.tags):''}
       </div>
     </div>`;
   }).join('');
+  // Show create hint when search has results OR always (at bottom)
+  const hint=document.getElementById('lib-create-hint');
+  if(hint) hint.style.display=filtered.length===0?'block':'none';
   updateLibAddBar();
 }
 function setCat(c){catF=c;selM='All';libSelected.clear();renderLib(document.getElementById('lsrc')?.value||'')}
 function setMus(m){selM=m;catF='m';libSelected.clear();renderLib(document.getElementById('lsrc')?.value||'',m)}
 function filterLib(v){renderLib(v,selM)}
+
+
+
+// ── Exercise tag helpers ──────────────────────────────────────────────────────
+const TAG_EQUIP   = new Set(['Barbell','Dumbbell','Cable','Machine','Kettlebell','Band','Bodyweight','TRX','Smith Machine']);
+const TAG_PATTERN = new Set(['Push','Pull','Hinge','Squat','Carry','Rotation','Isometric','Plyometric']);
+const TAG_REHAB   = new Set(['Rehab']);
+// Everything else: Compound, Unilateral, Bilateral, Explosive, Cardio etc. → context
+
+function tagClass(tag){
+  if(TAG_EQUIP.has(tag))   return 'ex-tag ex-tag-equip';
+  if(TAG_PATTERN.has(tag)) return 'ex-tag ex-tag-pattern';
+  if(TAG_REHAB.has(tag))   return 'ex-tag ex-tag-rehab';
+  return 'ex-tag ex-tag-context';
+}
+
+function renderTagRow(tags){
+  if(!tags||!tags.length) return '';
+  return `<div class="ex-tag-row">${tags.map(t=>`<span class="${tagClass(t)}">${t}</span>`).join('')}</div>`;
+}
+
+// ── Rename exercise ───────────────────────────────────────────────────────────
+function renameExercise(exId, newName){
+  newName = newName.trim();
+  if(!newName) return false;
+  const def = EX.find(e=>e.id===exId);
+  if(!def) return false;
+  // Check for duplicate name (excluding self)
+  if(EX.find(e=>e.n.toLowerCase()===newName.toLowerCase()&&e.id!==exId)) return false;
+  const oldName = def.n;
+  def.n = newName;
+  // Update any custom exercise record too
+  const ce = customExs.find(e=>e.id===exId);
+  if(ce) ce.n = newName;
+  // Update in-progress workout if loaded
+  curEx.forEach(e=>{ if(e.id===exId) e.n=newName; });
+  // Note: hist entries keep their old .n string but .id links them correctly.
+  // exDisplayName() will resolve to the new name automatically via the id.
+  saveState();
+  console.log(`[TRK] Renamed exercise ${exId}: "${oldName}" → "${newName}"`);
+  return true;
+}
+
+// ── Custom exercises ──────────────────────────────────────────────────────────
+
+function mergeCustomExs(){
+  // Add custom exercises into EX if not already present (by name)
+  customExs.forEach(ce=>{
+    if(!EX.find(e=>e.n===ce.n)) EX.push(ce);
+  });
+}
+
+let cexType='weight';
+
+function openCreateEx(){
+  const nameInput=document.getElementById('cex-name');
+  // Pre-fill from current search query if any
+  const q=document.getElementById('lsrc')?.value||'';
+  if(nameInput) nameInput.value=q?q.charAt(0).toUpperCase()+q.slice(1):'';
+  // Build muscle pills
+  const pillsEl=document.getElementById('cex-muscle-pills');
+  if(pillsEl){
+    const mGroups=muscles.slice(1); // skip 'All'
+    pillsEl.innerHTML=mGroups.map((m,i)=>
+      `<button class="create-ex-pill${i===0?' active':''}" id="cex-m-${m}" onclick="setCexMuscle('${m}')">${m}</button>`
+    ).join('');
+  }
+  // Reset type to weight
+  cexType='weight';
+  ['weight','reps','time'].forEach(t=>{
+    document.getElementById(`cex-t-${t}`)?.classList.toggle('active',t==='weight');
+  });
+  validateCreateEx();
+  const ov=document.getElementById('create-ex-overlay');
+  if(ov){ov.style.display='flex';}
+  setTimeout(()=>document.getElementById('cex-name')?.focus(),100);
+}
+
+function closeCreateEx(){
+  const ov=document.getElementById('create-ex-overlay');
+  if(ov) ov.style.display='none';
+}
+
+function setCexMuscle(m){
+  document.querySelectorAll('#cex-muscle-pills .create-ex-pill').forEach(el=>{
+    el.classList.toggle('active', el.textContent===m);
+  });
+}
+
+function setCexType(t){
+  cexType=t;
+  ['weight','reps','time'].forEach(x=>{
+    document.getElementById(`cex-t-${x}`)?.classList.toggle('active',x===t);
+  });
+}
+
+function validateCreateEx(){
+  const name=(document.getElementById('cex-name')?.value||'').trim();
+  const btn=document.getElementById('cex-save-btn');
+  if(!btn)return;
+  // Valid if name is non-empty and not already in library
+  const duplicate=EX.find(e=>e.n.toLowerCase()===name.toLowerCase());
+  btn.classList.toggle('ready', name.length>0 && !duplicate);
+  btn.title=duplicate?'An exercise with this name already exists':'';
+}
+
+function saveCreateEx(){
+  const name=(document.getElementById('cex-name')?.value||'').trim();
+  if(!name)return;
+  if(EX.find(e=>e.n.toLowerCase()===name.toLowerCase()))return;
+  // Get selected muscle
+  const activeM=document.querySelector('#cex-muscle-pills .create-ex-pill.active');
+  const muscle=activeM?activeM.textContent:'Chest';
+  // Build cols from type
+  let cols;
+  // Custom exercise: derive cols from type (user can edit EX entry later)
+  if(cexType==='weight') cols=['kg','reps'];
+  else if(cexType==='time') cols=['time'];
+  else cols=['reps'];
+  const newEx={n:name,m:muscle,t:cexType,c:'custom',anim:'',tip:'',s:[],cols,custom:true};
+  customExs.push(newEx);
+  EX.push(newEx);
+  saveState();
+  closeCreateEx();
+  // Select it and refresh lib
+  libSelected.add(name);
+  renderLib(document.getElementById('lsrc')?.value||'');
+}
 
 function toggleLibSel(name){
   if(libSelected.has(name)) libSelected.delete(name);
@@ -5903,7 +6324,7 @@ function setProgEx(name){
 function est1RM(w,r){return r===1?w:Math.round(w*(1+r/30)*10)/10;}
 
 function renderProg(){
-  const allEx=[...new Set(hist.filter(h=>h.type==='wo').flatMap(w=>(w.ex||[]).map(e=>e.n)))];
+  const allEx=[...new Set(hist.filter(h=>h.type==='wo').flatMap(w=>(w.ex||[]).map(e=>exDisplayName(e))))];
   if(!progExercise||!allEx.includes(progExercise))progExercise=allEx[0]||null;
 
   // Exercise pills
@@ -5923,9 +6344,9 @@ function renderProg(){
 function getProgPts(){
   if(!progExercise)return[];
   const fromStr=new Date(TODAY.getTime()-progWin*30*24*3600*1000).toISOString().split('T')[0];
-  return hist.filter(h=>h.type==='wo'&&h.date>=fromStr&&(h.ex||[]).find(e=>e.n===progExercise))
+  return hist.filter(h=>h.type==='wo'&&h.date>=fromStr&&(h.ex||[]).find(e=>exMatch(e,progExercise)))
     .map(w=>{
-      const ex=(w.ex||[]).find(e=>e.n===progExercise);
+      const ex=(w.ex||[]).find(e=>exMatch(e,progExercise));
       const sets=ex?ex.sets.filter(s=>s.r):[];
       const vol=sets.reduce((a,s)=>a+(s.w||0)*(s.r||0),0);
       const maxW=sets.reduce((mx,s)=>Math.max(mx,s.w||0),0);
@@ -6033,7 +6454,7 @@ function renderProgPRs(){
   const fromStr=new Date(TODAY.getTime()-progWin*30*24*3600*1000).toISOString().split('T')[0];
   if(noteEl)noteEl.textContent=`last ${progWin}m`;
 
-  const allEx=[...new Set(hist.filter(h=>h.type==='wo').flatMap(w=>(w.ex||[]).map(e=>e.n)))];
+  const allEx=[...new Set(hist.filter(h=>h.type==='wo').flatMap(w=>(w.ex||[]).map(e=>exDisplayName(e))))];
   const prs=allEx.map(name=>{
     const allTimeBest=hist.filter(h=>h.type==='wo').reduce((mx,w)=>{
       const ex=(w.ex||[]).find(e=>e.n===name);
@@ -6062,9 +6483,9 @@ function renderProgMuscle(){
   const muscleVol={};
   hist.filter(h=>h.type==='wo'&&h.date>=fromStr).forEach(w=>{
     (w.ex||[]).forEach(ex=>{
-      const def=EX.find(e=>e.n===ex.n);const m=def?def.m:null;if(!m)return;
-      const vol=(ex.sets||[]).reduce((a,s)=>a+(s.w||0)*(s.r||0),0);
-      muscleVol[m]=(muscleVol[m]||0)+vol;
+      const def=EX.find(e=>e.id!==undefined?e.id===(ex.id||null):e.n===ex.n)||EX.find(e=>e.n===ex.n);
+      if(!def)return;
+      mergeVol(muscleVol, attributeVolume(def, ex.sets||[]));
     });
   });
   const entries=Object.entries(muscleVol).sort((a,b)=>b[1]-a[1]);
@@ -6402,10 +6823,10 @@ function renderCycWeek(){
   const today=TODAY.getDay();// 0=Sun
   const mondayOffset=today===0?-6:1-today;
   const phaseExMap={
-    0:{load:'Light / mobility',col:'#E24B4A',exs:['Hip Thrust (Band)','Clamshell','Plank','Band Pull-Apart'],note:'Keep intensity low. Focus on mobility and recovery.'},
-    1:{load:'Moderate–heavy',col:'#EF9F27',exs:['Squat','Bench Press','Barbell Row','Romanian Deadlift'],note:'Strength is building — a good time to push weight and volume.'},
-    2:{load:'Push hard',col:'#95bc2b',exs:['Deadlift','Squat','Overhead Press','Bench Press'],note:'You\'re at your strongest. Go heavy and make the most of it.'},
-    3:{load:'Moderate',col:'#7F77DD',exs:['Incline DB Press','Leg Press','Barbell Curl','Lateral Raise'],note:'Shift to higher reps and moderate weight. Endurance work suits well.'},
+    0:{load:'Light / mobility',col:'#E24B4A',exs:['Hip Thrust (Band)','Clamshell','Plank','Banded Pull-Apart'],note:'Keep intensity low. Focus on mobility and recovery.'},
+    1:{load:'Moderate–heavy',col:'#EF9F27',exs:['Back Squat (Barbell)','Bench Press (Barbell)','Bentover Row (Barbell)','Romanian Deadlift (Barbell)'],note:'Strength is building — a good time to push weight and volume.'},
+    2:{load:'Push hard',col:'#95bc2b',exs:['Deadlift (Barbell)','Back Squat (Barbell)','Overhead Press (Barbell)','Bench Press (Barbell)'],note:'You\'re at your strongest. Go heavy and make the most of it.'},
+    3:{load:'Moderate',col:'#7F77DD',exs:['Incline Press (DB)','Leg Press','Bicep Curl (Barbell)','Lateral Raise (DB)'],note:'Shift to higher reps and moderate weight. Endurance work suits well.'},
   };
   const html=days.map((day,i)=>{
     const d=new Date(TODAY);d.setDate(TODAY.getDate()+mondayOffset+i);
@@ -6495,7 +6916,7 @@ function renderCycInsights(){
   });
 
   // Find PBs set per phase
-  const allEx=[...new Set(hist.filter(h=>h.type==='wo').flatMap(w=>(w.ex||[]).map(e=>e.n)))];
+  const allEx=[...new Set(hist.filter(h=>h.type==='wo').flatMap(w=>(w.ex||[]).map(e=>exDisplayName(e))))];
   allEx.forEach(name=>{
     let runningMax=0;
     [...hist].filter(h=>h.type==='wo').reverse().forEach(w=>{
@@ -7470,7 +7891,7 @@ const BADGES = [
     compute(){
       let best=0;
       hist.filter(h=>h.type==='wo').forEach(w=>{
-        (w.ex||[]).filter(e=>e.n==='Squat').forEach(e=>{
+        (w.ex||[]).filter(e=>exMatch(e,5)).forEach(e=>{
           e.sets.forEach(s=>{if((s.w||0)>best)best=s.w;});
         });
       });
@@ -7489,7 +7910,7 @@ const BADGES = [
     compute(){
       let best=0;
       hist.filter(h=>h.type==='wo').forEach(w=>{
-        (w.ex||[]).filter(e=>e.n==='Bench Press').forEach(e=>{
+        (w.ex||[]).filter(e=>exMatch(e,1)).forEach(e=>{
           e.sets.forEach(s=>{if((s.w||0)>best)best=s.w;});
         });
       });
@@ -7903,6 +8324,7 @@ const LS = {
   curEx:          'gt_curEx',          // active workout in progress
   editingHistIdx: 'gt_editingHistIdx', // hist index being edited
   woStartTime:    'gt_woStartTime',    // workout timer start
+  customExs:      'gt_customExs',      // user-created exercises
 };
 
 function setTheme(mode, skipSave){
@@ -7972,6 +8394,7 @@ function saveState(){
     localStorage.setItem(LS.onboarded,   '1');
     localStorage.setItem(LS.theme,          appTheme);
     localStorage.setItem(LS.savedWorkouts,  JSON.stringify(savedWorkouts));
+    localStorage.setItem(LS.customExs,      JSON.stringify(customExs));
     // Active workout — save on every change so it survives backgrounding
     if(curEx.length){
       localStorage.setItem(LS.curEx,          JSON.stringify(curEx));
@@ -8021,6 +8444,9 @@ function loadState(){
     const sw = localStorage.getItem(LS.savedWorkouts);
     if(sw) savedWorkouts = JSON.parse(sw);
 
+    const cx = localStorage.getItem(LS.customExs);
+    if(cx){ customExs = JSON.parse(cx); mergeCustomExs(); }
+
     // Restore active workout if one was in progress
     const ce = localStorage.getItem(LS.curEx);
     if(ce){
@@ -8045,6 +8471,25 @@ function hasOnboarded(){
   return localStorage.getItem(LS.onboarded) === '1';
 }
 
+
+// ── One-time migration: stamp exercise IDs onto existing history ──────────────
+function migrateExerciseIds(){
+  const key = 'gymtrack_ex_id_migrated_v1';
+  if(localStorage.getItem(key)) return; // already done
+  let changed = 0;
+  hist.forEach(w => {
+    if(w.type !== 'wo') return;
+    (w.ex || []).forEach(e => {
+      if(e.id !== undefined) return; // already has an id
+      const def = EX.find(d => d.n === e.n);
+      if(def){ e.id = def.id; changed++; }
+    });
+  });
+  if(changed > 0) saveState();
+  localStorage.setItem(key, '1');
+  if(changed > 0) console.log(`[TRK] Migrated ${changed} exercise entries to use stable IDs.`);
+}
+
 // Boot onboarding
 (function init(){
   // Apply saved theme immediately (or dark if nothing saved) to prevent flash
@@ -8052,6 +8497,7 @@ function hasOnboarded(){
   setTheme(savedTheme || 'dark', true);
   // Load persisted data (loadState will also call setTheme if theme is saved, harmless)
   loadState();
+  migrateExerciseIds();
 
   // Sync cycle UI from loaded state
   document.getElementById('cyc-chk')?.classList.toggle('checked', trackCycles);
