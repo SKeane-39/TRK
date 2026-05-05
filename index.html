@@ -4357,6 +4357,13 @@ function renderPO(){
 }
 
 function renderHome(){
+  // Always recompute cycDay from stored period date before rendering
+  if(trackCycles&&periodHistory.length){
+    const _s=new Date(periodHistory[0]);_s.setHours(0,0,0,0);
+    const _diff=Math.floor((TODAY-_s)/86400000)+1;
+    if(_diff>=1) cycDay=(((_diff-1)%cycLen)+1);
+    else cycDay=1;
+  }
   updateWoBar();
   const lite=appSettings.liteMode;
   // Show/hide advanced sections
@@ -4669,13 +4676,8 @@ function renderLog(){
           ${isIntRun?`
           <div style="background:rgba(149,188,43,0.07);border:0.5px solid rgba(149,188,43,0.22);border-radius:10px;padding:10px 10px 6px;margin-bottom:8px">
             <div style="font-size:10px;font-weight:600;color:rgba(149,188,43,0.8);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:8px">⚡ Interval rounds</div>
-            <div style="display:grid;grid-template-columns:22px 1fr 1fr 1fr 24px;gap:6px;margin-bottom:6px">
-              <span></span>
-              <span style="font-size:10px;color:rgba(255,255,255,0.28);text-align:center">Dist (km)</span>
-              <span style="font-size:10px;color:rgba(255,255,255,0.28);text-align:center">Time (sec)</span>
-              <span style="font-size:10px;color:rgba(255,255,255,0.28);text-align:center">Speed (km/h)</span>
-              <span></span>
-            </div>
+            ${roundColChipsHTML(ei)}
+            ${roundHeaderHTML(ei)}
             <div id="cardio-rounds-${ei}">${(ex.rounds||[]).map((r,ri)=>roundRowHTML(ri,r,ei)).join('')}</div>
             <button class="add-split-btn" style="margin-top:2px" onclick="addIntervalRound(${ei})">+ Round</button>
             <div id="cardio-round-summary-${ei}" style="font-size:12px;color:rgba(149,188,43,0.6);margin-top:6px;min-height:14px"></div>
@@ -4811,17 +4813,12 @@ function renderLog(){
         ${isIntervalEx(ex.n)?`
         <div style="background:rgba(149,188,43,0.07);border:0.5px solid rgba(149,188,43,0.22);border-radius:10px;padding:10px 10px 6px;margin-bottom:8px">
           <div style="font-size:10px;font-weight:600;color:rgba(149,188,43,0.8);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:8px">⚡ Interval rounds</div>
-          <div style="display:grid;grid-template-columns:22px 1fr 1fr 1fr 24px;gap:6px;margin-bottom:6px">
-            <span></span>
-            <span style="font-size:10px;color:rgba(255,255,255,0.28);text-align:center">Dist (km)</span>
-            <span style="font-size:10px;color:rgba(255,255,255,0.28);text-align:center">Time (sec)</span>
-            <span style="font-size:10px;color:rgba(255,255,255,0.28);text-align:center">Speed (km/h)</span>
-            <span></span>
-          </div>
+          ${roundColChipsHTML(ei)}
+          ${roundHeaderHTML(ei)}
           <div id="cardio-rounds-${ei}">${(ex.rounds||[]).map((r,ri)=>roundRowHTML(ri,r,ei)).join('')}</div>
           <button class="add-split-btn" style="margin-top:2px" onclick="addIntervalRound(${ei})">+ Round</button>
-          <div id="cardio-round-summary-${ei}" style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:6px;min-height:14px"></div>
-        </div>`:''}
+          <div id="cardio-round-summary-${ei}" style="font-size:12px;color:rgba(149,188,43,0.6);margin-top:6px;min-height:14px"></div>
+        </div>`:`
         <div class="sets-head" style="grid-template-columns:${gridCols}">
           <span>Set</span>
           ${headCols}
@@ -4830,7 +4827,7 @@ function renderLog(){
           <span></span>
         </div>
         <div id="sets-${ei}">${rows}</div>
-        <button class="add-set" onclick="addSet(${ei})">+ Add set</button>
+        <button class="add-set" onclick="addSet(${ei})">+ Add set</button>`}
       </div>`;
     c.appendChild(card);
   });
@@ -5975,12 +5972,12 @@ function onRunTypeChange(){
 // Generic interval round add — context: 'run' or exercise index (ei)
 function addIntervalRound(ctx){
   if(ctx==='run'){
-    runRounds.push({dist:'',time:'',speed:''});
+    runRounds.push({dist:'',time:'',speed:'',kcal:''});
     renderRunRounds();
   } else {
     const ex=curEx[ctx];if(!ex)return;
     if(!ex.rounds)ex.rounds=[];
-    ex.rounds.push({dist:'',time:'',speed:''});
+    ex.rounds.push({dist:'',time:'',speed:'',kcal:''});
     renderCardioRounds(ctx);
   }
 }
@@ -6007,14 +6004,65 @@ function updRound(ctx,ri,field,val){
   }
 }
 
+// Round column definitions
+const ROUND_COLS={
+  dist: {label:'Dist (km)', field:'dist', step:'0.05', ph:'—'},
+  time: {label:'Time (sec)', field:'time', step:'1', ph:'—'},
+  speed:{label:'Speed (km/h)', field:'speed', step:'0.1', ph:'—'},
+  kcal: {label:'kcal', field:'kcal', step:'1', ph:'—'},
+};
+const ROUND_COL_ORDER=['dist','time','speed','kcal'];
+
+function getRoundCols(ctx){
+  // ctx is either 'run' or an exercise index
+  if(ctx==='run') return window._runRoundCols||['time'];
+  const ex=curEx[ctx];
+  if(!ex) return ['time'];
+  if(!ex.roundCols) ex.roundCols=['time'];
+  return ex.roundCols;
+}
+
+function toggleRoundCol(ctx, col){
+  const cols = ctx==='run'
+    ? (window._runRoundCols=window._runRoundCols||['time'])
+    : (curEx[ctx].roundCols=curEx[ctx].roundCols||['time']);
+  const i=cols.indexOf(col);
+  if(i>=0) cols.splice(i,1); else cols.push(col);
+  if(ctx==='run') renderRunRounds();
+  else { renderCardioRounds(ctx); renderLog(); }
+}
+
 function roundRowHTML(ri,r,ctx){
-  return`<div style="display:grid;grid-template-columns:22px 1fr 1fr 1fr 24px;gap:6px;margin-bottom:5px;align-items:center">
+  const cols=getRoundCols(ctx);
+  const nCols=cols.length;
+  const grid=`22px ${Array(nCols).fill('1fr').join(' ')} 24px`;
+  const inputs=cols.map(c=>{
+    const def=ROUND_COLS[c];
+    return`<input type="number" class="set-input" value="${r[def.field]||''}" placeholder="${def.ph}" step="${def.step}" min="0" style="text-align:center;padding:5px 4px;font-size:12px" oninput="updRound(${JSON.stringify(ctx)},${ri},'${def.field}',this.value)"/>`;
+  }).join('');
+  return`<div style="display:grid;grid-template-columns:${grid};gap:6px;margin-bottom:5px;align-items:center">
     <span style="font-size:11px;color:rgba(255,255,255,0.35);text-align:center">${ri+1}</span>
-    <input type="number" class="set-input" value="${r.dist||''}" placeholder="—" step="0.05" min="0" style="text-align:center;padding:5px 4px;font-size:12px" oninput="updRound(${JSON.stringify(ctx)},${ri},'dist',this.value)"/>
-    <input type="number" class="set-input" value="${r.time||''}" placeholder="—" step="1" min="0" style="text-align:center;padding:5px 4px;font-size:12px" oninput="updRound(${JSON.stringify(ctx)},${ri},'time',this.value)"/>
-    <input type="number" class="set-input" value="${r.speed||''}" placeholder="—" step="0.1" min="0" style="text-align:center;padding:5px 4px;font-size:12px" oninput="updRound(${JSON.stringify(ctx)},${ri},'speed',this.value)"/>
+    ${inputs}
     <span style="font-size:16px;color:rgba(255,255,255,0.22);cursor:pointer;text-align:center;line-height:1" onclick="removeIntervalRound(${JSON.stringify(ctx)},${ri})">×</span>
   </div>`;
+}
+
+function roundHeaderHTML(ctx){
+  const cols=getRoundCols(ctx);
+  const nCols=cols.length;
+  const grid=`22px ${Array(nCols).fill('1fr').join(' ')} 24px`;
+  const heads=cols.map(c=>`<span style="font-size:10px;color:rgba(255,255,255,0.28);text-align:center">${ROUND_COLS[c].label}</span>`).join('');
+  return`<div style="display:grid;grid-template-columns:${grid};gap:6px;margin-bottom:6px"><span></span>${heads}<span></span></div>`;
+}
+
+function roundColChipsHTML(ctx){
+  const cols=getRoundCols(ctx);
+  return`<div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px">`+
+    ROUND_COL_ORDER.map(c=>{
+      const active=cols.includes(c);
+      return`<span onclick="toggleRoundCol(${JSON.stringify(ctx)},'${c}')" style="font-size:11px;padding:3px 9px;border-radius:20px;cursor:pointer;border:0.5px solid ${active?'rgba(149,188,43,0.5)'  :'rgba(255,255,255,0.15)'};background:${active?'rgba(149,188,43,0.15)'  :'transparent'};color:${active?'rgba(149,188,43,0.9)'  :'rgba(255,255,255,0.35)'}">${ROUND_COLS[c].label}</span>`;
+    }).join('')
+  +`</div>`;
 }
 
 function renderRunRounds(){
@@ -6051,13 +6099,16 @@ function updateCardioRoundSummary(ei){
   const withDist=rounds.filter(r=>r.dist);
   const withTime=rounds.filter(r=>r.time);
   const withSpeed=rounds.filter(r=>r.speed);
+  const withKcal=rounds.filter(r=>r.kcal);
   const totalDist=withDist.reduce((a,r)=>a+parseFloat(r.dist),0);
+  const totalKcal=withKcal.reduce((a,r)=>a+parseFloat(r.kcal),0);
   const avgSpeed=withSpeed.length?withSpeed.reduce((a,r)=>a+parseFloat(r.speed),0)/withSpeed.length:0;
   const avgTime=withTime.length?withTime.reduce((a,r)=>a+parseFloat(r.time),0)/withTime.length:0;
   let parts=[`${rounds.length} round${rounds.length!==1?'s':''}`];
   if(totalDist) parts.push(`${totalDist.toFixed(2)}km total`);
   if(avgTime) parts.push(`avg ${Math.round(avgTime)}s/round`);
   if(avgSpeed){const pm=60/avgSpeed;parts.push(`avg ${p2(Math.floor(pm))}:${p2(Math.round((pm%1)*60))}/km`);}
+  if(totalKcal) parts.push(`${Math.round(totalKcal)} kcal`);
   el.textContent=parts.join(' · ');
 }
 
@@ -6571,13 +6622,15 @@ function ovulationFlagHTML(compact=false){
 function buildCycCurve(type){const pts=[];for(let d=1;d<=cycLen;d++){const r=d/cycLen;let v;if(type==='str'){if(r<0.18)v=35+15*(r/0.18);else if(r<0.46)v=50+46*((r-0.18)/0.28);else if(r<0.57)v=96-10*((r-0.46)/0.11);else v=86-36*((r-0.57)/0.43);}else if(type==='end'){if(r<0.18)v=42+5*(r/0.18);else if(r<0.46)v=47+23*((r-0.18)/0.28);else if(r<0.57)v=70+15*((r-0.46)/0.11);else if(r<0.75)v=85+5*((r-0.57)/0.18);else v=90-50*((r-0.75)/0.25);}else{if(r<0.18)v=20+8*(r/0.18);else if(r<0.46)v=28+67*((r-0.18)/0.28);else if(r<0.57)v=95-10*((r-0.46)/0.11);else if(r<0.75)v=85-35*((r-0.57)/0.18);else v=50-35*((r-0.75)/0.25);}pts.push(Math.max(5,Math.min(100,Math.round(v))));}return pts;}
 function cycRecalc(){
   cycLen=Math.max(21,Math.min(35,parseInt(document.getElementById('cycLen').value)||28));
-  const dv=document.getElementById('cycDate').value;const adEl=document.getElementById('cycAutoDay');
+  const _ci=document.getElementById('cycDate');const dv=(_ci&&_ci.value)||periodHistory[0]||'';if(_ci&&!_ci.value&&dv)_ci.value=dv;const adEl=document.getElementById('cycAutoDay');
   if(dv){const start=new Date(dv);start.setHours(0,0,0,0);const diff=Math.floor((TODAY-start)/86400000)+1;if(diff>=1){cycDay=((diff-1)%cycLen)+1;const cn=Math.floor((diff-1)/cycLen)+1;if(adEl)adEl.innerHTML=`Today is <span>day ${cycDay}</span> of your cycle${cn>1?' (cycle '+cn+')':''}`;}else{cycDay=1;if(adEl)adEl.innerHTML=`Period starts in <span>${Math.abs(diff)+1}</span> day${Math.abs(diff)+1!==1?'s':''}`;}
   }else{if(adEl)adEl.textContent='Enter your last period date above';}
   renderCyclePhaseUI();
   if(cycChartInst)updateCycChart();
   // Refresh active tab
   if(cycCurrentTab)setCycTab(cycCurrentTab,null);
+  // Keep home card in sync
+  if(trackCycles&&typeof renderCycleHome==='function')renderCycleHome();
 }
 function setCycView(v){if(cycChartInst)updateCycChart();}
 function renderCyclePhaseUI(){
