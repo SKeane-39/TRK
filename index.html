@@ -466,17 +466,17 @@ body.light-mode .mmus-secondary{color:rgba(0,0,0,0.45);background:rgba(0,0,0,0.0
 .prewo-sec{font-size:11px;font-weight:500;color:rgba(255,255,255,0.32);letter-spacing:0.9px;text-transform:uppercase;margin:14px 0 8px}
 /* Mood faces */
 .mood-row{display:flex;gap:6px}
-.mood-opt{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 4px;border-radius:12px;border:1px solid rgba(255,255,255,0.09);background:rgba(255,255,255,0.04);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:border-color 0.15s,background 0.15s}
-.mood-opt.sel{border-color:var(--ac);background:rgba(149,188,43,0.1)}
+.mood-opt{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 4px;border-radius:12px;border:1px solid rgba(255,255,255,0.09);background:rgba(255,255,255,0.04);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:border-color 0.15s,background 0.15s;font-family:inherit;font-size:inherit;-webkit-appearance:none;appearance:none}
+.mood-opt.sel{border-color:var(--ac);background:rgba(149,188,43,0.18)}
 .mood-face{font-size:24px;line-height:1}
 .mood-lbl{font-size:10px;color:rgba(255,255,255,0.38);text-align:center}
 .mood-opt.sel .mood-lbl{color:var(--ac)}
 /* Symptom chips */
 .sym-grid{display:flex;flex-wrap:wrap;gap:6px}
-.sym-chip{display:flex;align-items:center;gap:5px;padding:6px 11px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.58);transition:all 0.15s}
+.sym-chip{display:flex;align-items:center;gap:5px;padding:6px 11px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.58);transition:all 0.15s;font-family:inherit;-webkit-appearance:none;appearance:none}
 .sym-chip .sc-icon{font-size:14px;line-height:1}
-.sym-chip.sel-g{border-color:var(--ac);background:rgba(149,188,43,0.12);color:#5DCAA5}
-.sym-chip.sel-r{border-color:#E24B4A;background:rgba(226,75,74,0.1);color:#F09595}
+.sym-chip.sel-g{border-color:var(--ac);background:rgba(149,188,43,0.18);color:#5DCAA5}
+.sym-chip.sel-r{border-color:#E24B4A;background:rgba(226,75,74,0.18);color:#F09595}
 /* Phase banner (cycle mode) */
 .ci-phase-banner{border-radius:11px;padding:11px 13px;margin-bottom:4px;display:flex;align-items:center;gap:10px}
 .ci-phase-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
@@ -529,8 +529,8 @@ body.light-mode .mmus-secondary{color:rgba(0,0,0,0.45);background:rgba(0,0,0,0.0
 .postwo-title{font-size:17px;font-weight:500;color:#fff}
 .postwo-sec{font-size:11px;font-weight:500;color:rgba(255,255,255,0.32);letter-spacing:0.9px;text-transform:uppercase;margin:14px 0 8px}
 .postwo-moods{display:flex;gap:6px}
-.postwo-mood{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:12px;border:1px solid rgba(255,255,255,0.09);background:rgba(255,255,255,0.04);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:all 0.15s}
-.postwo-mood.sel{border-color:var(--ac);background:rgba(149,188,43,0.1)}
+.postwo-mood{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:12px;border:1px solid rgba(255,255,255,0.09);background:rgba(255,255,255,0.04);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:all 0.15s;font-family:inherit;font-size:inherit;-webkit-appearance:none;appearance:none}
+.postwo-mood.sel{border-color:var(--ac);background:rgba(149,188,43,0.18)}
 .postwo-mood-face{font-size:22px;line-height:1}
 .postwo-mood-lbl{font-size:10px;color:rgba(255,255,255,0.38);text-align:center}
 .postwo-mood.sel .postwo-mood-lbl{color:var(--ac)}
@@ -1119,6 +1119,12 @@ body.light-mode .postwo-title{color:#1a1a1a}
 body.light-mode .postwo-sec{color:rgba(0,0,0,0.38)}
 body.light-mode .postwo-mood{border-color:rgba(0,0,0,0.09);background:rgba(0,0,0,0.03)}
 body.light-mode .postwo-mood-lbl{color:rgba(0,0,0,0.42)}
+body.light-mode .mood-opt.sel{border-color:var(--ac);background:rgba(149,188,43,0.18)!important}
+body.light-mode .mood-opt.sel .mood-lbl{color:var(--ac)!important}
+body.light-mode .sym-chip.sel-g{border-color:var(--ac);background:rgba(149,188,43,0.2)!important;color:rgba(60,120,0,0.9)!important}
+body.light-mode .sym-chip.sel-r{border-color:#E24B4A;background:rgba(226,75,74,0.15)!important;color:rgba(180,30,30,0.9)!important}
+body.light-mode .postwo-mood.sel{border-color:var(--ac);background:rgba(149,188,43,0.18)!important}
+body.light-mode .postwo-mood.sel .postwo-mood-lbl{color:var(--ac)!important}
 body.light-mode .postwo-input{background:rgba(255,255,255,0.7);border-color:rgba(0,0,0,0.14);color:#1a1a1a}
 body.light-mode .postwo-input::placeholder{color:rgba(0,0,0,0.25)}
 body.light-mode .postwo-dur-input{background:rgba(255,255,255,0.7);border-color:rgba(0,0,0,0.14);color:#1a1a1a}
@@ -1393,6 +1399,12 @@ body.light-mode .postwo-title{color:#1a1a1a!important}
 body.light-mode .postwo-sec{color:rgba(0,0,0,0.42)!important}
 body.light-mode .postwo-mood{border-color:rgba(0,0,0,0.1)!important;background:rgba(0,0,0,0.04)!important}
 body.light-mode .postwo-mood-lbl{color:rgba(0,0,0,0.5)!important}
+body.light-mode .mood-opt.sel{border-color:var(--ac)!important;background:rgba(149,188,43,0.18)!important}
+body.light-mode .mood-opt.sel .mood-lbl{color:var(--ac)!important}
+body.light-mode .sym-chip.sel-g{border-color:var(--ac)!important;background:rgba(149,188,43,0.2)!important;color:rgba(60,120,0,0.9)!important}
+body.light-mode .sym-chip.sel-r{border-color:#E24B4A!important;background:rgba(226,75,74,0.15)!important;color:rgba(180,30,30,0.9)!important}
+body.light-mode .postwo-mood.sel{border-color:var(--ac)!important;background:rgba(149,188,43,0.18)!important}
+body.light-mode .postwo-mood.sel .postwo-mood-lbl{color:var(--ac)!important}
 body.light-mode .postwo-input{background:rgba(255,255,255,0.8)!important;border-color:rgba(0,0,0,0.14)!important;color:#1a1a1a!important}
 body.light-mode .postwo-dur-input{background:rgba(255,255,255,0.8)!important;border-color:rgba(0,0,0,0.14)!important;color:#1a1a1a!important}
 body.light-mode .postwo-dur-lbl{color:rgba(0,0,0,0.52)!important}
@@ -4238,35 +4250,87 @@ function showCheckin(){
   }
 
   const symHtml=syms.map((s,i)=>
-    `<div class="sym-chip" id="sym-${i}" onclick="ciToggleSym(${i},this,'${s.pos?'g':'r'}')">`+
-    `<span class="sc-icon">${s.i}</span>${s.l}</div>`
+    `<button class="sym-chip" id="sym-${i}" onclick="ciToggleSym(${i},this,'${s.pos?'g':'r'}')" type="button">`+
+    `<span class="sc-icon">${s.i}</span>${s.l}</button>`
   ).join('');
 
   const moodHtml=MOODS.map((m,i)=>
-    `<div class="mood-opt" id="mood-${i}" onclick="ciSelMood(${i})"><div class="mood-face">${m.e}</div><div class="mood-lbl">${m.l}</div></div>`
+    `<button class="mood-opt" id="mood-${i}" onclick="ciSelMood(${i})" type="button"><div class="mood-face">${m.e}</div><div class="mood-lbl">${m.l}</div></button>`
   ).join('');
 
   const el=document.createElement('div');
   el.id='prewo-overlay';el.className='prewo-overlay';
-  el.innerHTML=`
-    <div class="prewo-topbar">
-      <div class="prewo-title">Before you start</div>
-      <div class="prewo-skip" onclick="ciComplete(true)">Skip</div>
-    </div>
-    <div class="prewo-scroll">
-      ${phaseHtml}
-      <div class="prewo-sec" style="margin-top:0">How are you feeling?</div>
-      <div class="mood-row">${moodHtml}</div>
-      <div class="prewo-sec">Anything to flag?</div>
-      <div class="sym-grid">${symHtml}</div>
-      <div class="prewo-sec">Suggested workout</div>
-      <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:10px">Tap to add to your session — or skip and build your own</div>
-      ${sugCardHtml||'<div style="font-size:12px;color:rgba(255,255,255,0.28);padding:8px 0">Log a few sessions and suggestions will appear here</div>'}
-      ${avoidHtml}
-    </div>
-    <div class="prewo-footer" style="display:flex;gap:8px">
-      <button class="prewo-complete" style="flex:1" onclick="ciComplete(false)">Start workout</button>
-    </div>`;
+
+  // Topbar
+  const topbar=document.createElement('div');
+  topbar.className='prewo-topbar';
+  topbar.innerHTML=`<div class="prewo-title">Before you start</div>`;
+  const skipBtn=document.createElement('button');
+  skipBtn.className='prewo-skip';skipBtn.type='button';skipBtn.textContent='Skip';
+  skipBtn.addEventListener('click',()=>ciComplete(true));
+  topbar.appendChild(skipBtn);
+  el.appendChild(topbar);
+
+  // Scroll area
+  const scroll=document.createElement('div');
+  scroll.className='prewo-scroll';
+
+  // Phase block (static HTML OK — no interactive elements)
+  if(phaseHtml) scroll.insertAdjacentHTML('beforeend', phaseHtml);
+
+  // Mood section — built with createElement
+  const moodSec=document.createElement('div');
+  moodSec.className='prewo-sec';moodSec.style.marginTop='0';moodSec.textContent='How are you feeling?';
+  scroll.appendChild(moodSec);
+  const moodRow=document.createElement('div');moodRow.className='mood-row';
+  MOODS.forEach((m,i)=>{
+    const btn=document.createElement('button');
+    btn.className='mood-opt';btn.type='button';btn.id=`mood-${i}`;
+    btn.innerHTML=`<div class="mood-face">${m.e}</div><div class="mood-lbl">${m.l}</div>`;
+    btn.addEventListener('click',()=>ciSelMood(i));
+    moodRow.appendChild(btn);
+  });
+  scroll.appendChild(moodRow);
+
+  // Sym section — built with createElement
+  const symSec=document.createElement('div');
+  symSec.className='prewo-sec';symSec.textContent='Anything to flag?';
+  scroll.appendChild(symSec);
+  const symGrid=document.createElement('div');symGrid.className='sym-grid';
+  syms.forEach((s,i)=>{
+    const btn=document.createElement('button');
+    btn.className='sym-chip';btn.type='button';btn.id=`sym-${i}`;
+    btn.innerHTML=`<span class="sc-icon">${s.i}</span>${s.l}`;
+    btn.addEventListener('click',()=>ciToggleSym(i,btn,s.pos?'g':'r'));
+    symGrid.appendChild(btn);
+  });
+  scroll.appendChild(symGrid);
+
+  // Suggested workout (static HTML — suggestion cards work fine with innerHTML)
+  const sugSec=document.createElement('div');
+  sugSec.className='prewo-sec';sugSec.textContent='Suggested workout';
+  scroll.appendChild(sugSec);
+  const sugNote=document.createElement('div');
+  sugNote.style.cssText='font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:10px';
+  sugNote.textContent='Tap to add to your session — or skip and build your own';
+  scroll.appendChild(sugNote);
+  const sugWrap=document.createElement('div');
+  sugWrap.innerHTML=sugCardHtml||'<div style="font-size:12px;color:rgba(255,255,255,0.28);padding:8px 0">Log a few sessions and suggestions will appear here</div>';
+  scroll.appendChild(sugWrap);
+  if(avoidHtml){const av=document.createElement('div');av.innerHTML=avoidHtml;scroll.appendChild(av);}
+
+  el.appendChild(scroll);
+
+  // Footer
+  const footer=document.createElement('div');
+  footer.className='prewo-footer';footer.style.display='flex';footer.style.gap='8px';
+  const startBtn=document.createElement('button');
+  startBtn.className='prewo-complete';startBtn.type='button';startBtn.style.flex='1';
+  startBtn.textContent='Start workout';
+  startBtn.addEventListener('click',()=>ciComplete(false));
+  footer.appendChild(startBtn);
+  el.appendChild(footer);
+
   document.body.appendChild(el);
 }
 
@@ -5432,11 +5496,7 @@ function showPostWo(dur){
     }
   });
 
-  const moodHtml=POST_MOODS.map((m,i)=>
-    `<div class="postwo-mood" id="pm-${i}" onclick="postWoSelMood(${i})">
-      <div class="postwo-mood-face">${m.e}</div>
-      <div class="postwo-mood-lbl">${m.l}</div>
-    </div>`).join('');
+  const moodHtml=''; // moods built via createElement after append
 
   const muscleHtml=muscleEntries.length?muscleEntries.map(([m,v])=>`
     <div class="postwo-muscle-row">
@@ -5494,7 +5554,7 @@ function showPostWo(dur){
       <input type="date" class="postwo-input" id="pw-date" value="${editingHistIdx!==null&&hist[editingHistIdx]?.date?hist[editingHistIdx].date:new Date().toISOString().split('T')[0]}" style="font-size:14px"/>
 
       <div class="postwo-sec">How did it go?</div>
-      <div class="postwo-moods">${moodHtml}</div>
+      <div class="postwo-moods" id="pw-mood-row"></div>
 
       <div class="postwo-sec">Duration</div>
       <div class="postwo-dur-row">
@@ -5527,6 +5587,17 @@ function showPostWo(dur){
     </div>`;
 
   document.body.appendChild(overlay);
+  // Build mood buttons with createElement for iOS reliability
+  const _moodRow=document.getElementById('pw-mood-row');
+  if(_moodRow){
+    POST_MOODS.forEach((m,i)=>{
+      const btn=document.createElement('button');
+      btn.className='postwo-mood';btn.type='button';btn.id=`pm-${i}`;
+      btn.innerHTML=`<div class="postwo-mood-face">${m.e}</div><div class="postwo-mood-lbl">${m.l}</div>`;
+      btn.addEventListener('click',()=>postWoSelMood(i));
+      _moodRow.appendChild(btn);
+    });
+  }
   postWoMood=null;
 }
 
