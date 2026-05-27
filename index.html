@@ -5923,7 +5923,7 @@ function renderLog(){
         const suggVal=_lastLogged?_lastLogged[m.field]:'';
         const ph=(!hasVal&&suggVal)?suggVal:m.ph;
         const suggClass=(!hasVal&&suggVal)?'set-input-suggest':'';
-        return`<input type="number" class="set-input ${dc} ${suggClass}" value="${hasVal?s[m.field]:''}" placeholder="${ph}" min="${m.min}" step="${m.step}" oninput="upd(${ei},${si},'${m.field}',this.value)"/>`;
+        return`<input type="number" class="set-input ${dc} ${suggClass}" value="${hasVal?s[m.field]:''}" placeholder="${ph}" min="${m.min}" step="${m.step}" oninput="upd(${ei},${si},'${m.field}',this.value)" onblur="if(curEx.length)saveDraft()"/>`;
       }).join('');
       return`<div class="set-swipe-wrap" id="ssw-${ei}-${si}">
         <div class="set-del" id="sdel-${ei}-${si}" onclick="removeSet(${ei},${si})"><div class="set-del-icon">✕</div></div>
@@ -6534,8 +6534,39 @@ function finishWo(){
   dismissRestTimer();
   const dur=Math.round((Date.now()-woStartTime)/60000)||1;
   stopWoTimer();
+
+  // ── Save to history immediately so the workout is never lost ──
+  // The post-workout screen then updates this entry with name/mood.
+  const date=localDateKey(TODAY);
+  const gymExs=curEx.filter(e=>e.t!=='run');
+  const runExs=curEx.filter(e=>e.t==='run');
+
+  runExs.forEach(e=>{
+    const r=e.run||{};
+    if(r.dist||r.dur) hist.unshift({type:'run',date,st:e.n,dist:r.dist||0,dur:r.dur||0,rpe:r.rpe||0,surf:'Road'});
+  });
+
+  if(gymExs.length){
+    const entry={
+      type:'wo', date, mode:woMode, dur,
+      name:null, mood:null,
+      ex:gymExs.map(e=>({id:e.id,n:e.n,sets:e.sets.filter(s=>s.d||s.r),...(e.rounds?.length?{rounds:e.rounds}:{})}))
+    };
+    if(editingHistIdx!==null){
+      hist[editingHistIdx]=entry;
+      _postWoHistIdx=editingHistIdx;
+    } else {
+      hist.unshift(entry);
+      _postWoHistIdx=0;
+    }
+  } else {
+    _postWoHistIdx=null;
+  }
+
+  saveState(); // persists immediately — workout is safe
   showPostWo(dur);
 }
+let _postWoHistIdx=null; // index into hist of the just-saved entry
 
 /* ── Post-workout check-in ───────────────────────── */
 const POST_MOODS=[{e:'🏆',l:'Crushed it'},{e:'💪',l:'Strong'},{e:'😊',l:'Good'},{e:'😐',l:'OK'},{e:'😓',l:'Tough'}];
@@ -6701,33 +6732,25 @@ function postWoSelMood(i){
 function saveWo(){
   const name=document.getElementById('pw-name')?.value.trim()||null;
   const dur=parseInt(document.getElementById('pw-dur')?.value)||1;
-  const date=document.getElementById('pw-date')?.value||localDateKey(new Date());
+  const date=document.getElementById('pw-date')?.value||localDateKey(TODAY);
 
-  const runExs=curEx.filter(e=>e.t==='run');
-  const gymExs=curEx.filter(e=>e.t!=='run');
-
-  runExs.forEach(e=>{
-    const r=e.run||{};
-    if(r.dist||r.dur){
-      hist.unshift({type:'run',date,st:e.n,dist:r.dist||0,dur:r.dur||0,rpe:r.rpe||0,surf:'Road'});
-    }
-  });
-
-  if(gymExs.length){
-    const entry={
-      type:'wo', date, mode:woMode, dur,
-      name, mood:postWoMood,
-      ex:gymExs.map(e=>({id:e.id,n:e.n,sets:e.sets.filter(s=>s.d||s.r),...(e.rounds?.length?{rounds:e.rounds}:{})}))
-    };
-    if(editingHistIdx!==null){
-      // Edit mode — update in place, preserve original date if not changed
-      hist[editingHistIdx]=entry;
-    } else {
-      hist.unshift(entry);
-    }
+  // Update the entry already saved to hist by finishWo() with name, mood, date, dur
+  if(_postWoHistIdx!==null&&hist[_postWoHistIdx]){
+    const entry=hist[_postWoHistIdx];
+    entry.name=name;
+    entry.mood=postWoMood;
+    entry.dur=dur;
+    entry.date=date;
+  }
+  // Also update run entries date if changed
+  if(date!==localDateKey(TODAY)){
+    curEx.filter(e=>e.t==='run').forEach((_,i)=>{
+      if(hist[i]&&hist[i].type==='run') hist[i].date=date;
+    });
   }
 
   editingHistIdx=null;
+  _postWoHistIdx=null;
   curEx=[];
   document.getElementById('postwo-overlay')?.remove();
   document.getElementById('wo-bar')?.classList.remove('active');
@@ -10406,11 +10429,18 @@ function saveDraft(){
       try{sessionStorage.setItem(LS.curEx,ce);
           sessionStorage.setItem(LS.woStartTime,wst);
           sessionStorage.setItem(LS.editingHistIdx,ehi);}catch(e2){}
+      // URL hash backup — survives force-close in many WebViews
+      // Encode compactly: base64 of JSON so it's URL-safe
+      try{
+        const payload=btoa(unescape(encodeURIComponent(JSON.stringify({ce,wst,ehi}))));
+        if(payload.length<8000)history.replaceState(null,'','#wo='+payload);
+      }catch(e3){}
     } else {
       // Workout finished — clear both stores
       [localStorage,sessionStorage].forEach(s=>{
         try{s.removeItem(LS.curEx);s.removeItem(LS.woStartTime);s.removeItem(LS.editingHistIdx);}catch(e){}
       });
+      try{if(location.hash.startsWith('#wo='))history.replaceState(null,'','#');}catch(e){}
     }
   } catch(e){ console.warn('saveDraft failed', e); }
 }
@@ -10493,27 +10523,46 @@ function loadState(){
     if(ck) checkins = JSON.parse(ck);
 
     // Restore active workout if one was in progress
-    // Try localStorage first, fall back to sessionStorage
-    const ce = localStorage.getItem(LS.curEx)||sessionStorage.getItem(LS.curEx);
-    if(ce){
-      curEx = JSON.parse(ce);
-      const wst = localStorage.getItem(LS.woStartTime)||sessionStorage.getItem(LS.woStartTime);
-      if(wst) woStartTime = parseInt(wst)||Date.now();
-      const ehi = localStorage.getItem(LS.editingHistIdx)||sessionStorage.getItem(LS.editingHistIdx);
-      editingHistIdx = ehi ? parseInt(ehi) : null;
+    // Try localStorage first, then sessionStorage, then URL hash backup
+    let ce = localStorage.getItem(LS.curEx)||sessionStorage.getItem(LS.curEx);
+    let wst = localStorage.getItem(LS.woStartTime)||sessionStorage.getItem(LS.woStartTime);
+    let ehi = localStorage.getItem(LS.editingHistIdx)||sessionStorage.getItem(LS.editingHistIdx);
+    // URL hash fallback — recovers from force-close when localStorage was wiped
+    if(!ce&&location.hash.startsWith('#wo=')){
+      try{
+        const payload=JSON.parse(decodeURIComponent(escape(atob(location.hash.slice(4)))));
+        ce=payload.ce; wst=payload.wst; ehi=payload.ehi;
+      }catch(e){}
     }
+    if(ce){
+      try{
+        curEx = JSON.parse(ce);
+        if(wst) woStartTime = parseInt(wst)||Date.now();
+        editingHistIdx = ehi ? parseInt(ehi) : null;
+      }catch(e){ curEx=[]; }
+    }
+    // Clear hash once restored so it doesn't replay on next fresh load
+    if(curEx.length&&location.hash.startsWith('#wo='))history.replaceState(null,'','#');
   } catch(e){ console.warn('loadState failed', e); }
 }
 
 // Save active workout immediately when app is backgrounded or tab loses focus
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='hidden'&&curEx.length) saveState();
+  // Also save when becoming visible again — catches cases where save was missed
+  if(document.visibilityState==='visible'&&curEx.length) saveDraft();
 });
 window.addEventListener('pagehide',()=>{
   if(curEx.length) saveState();
 });
+window.addEventListener('beforeunload',()=>{
+  if(curEx.length) saveState();
+});
+window.addEventListener('freeze',()=>{
+  if(curEx.length) saveState();
+});
 // Periodic auto-save every 15s during active workout — belt-and-braces against crashes
-setInterval(()=>{ if(curEx.length) saveDraft(); }, 15000);
+setInterval(()=>{ if(curEx.length) saveDraft(); }, 5000);
 
 function hasOnboarded(){
   return localStorage.getItem(LS.onboarded) === '1';
