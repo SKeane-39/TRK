@@ -3092,6 +3092,7 @@ function getToday(){const d=new Date();d.setHours(0,0,0,0);return d;}
 Object.defineProperty(window,'TODAY',{get:getToday});
 // Always use local calendar date (not UTC) so BST/DST users don't get off-by-one errors
 function localDateKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function parseLocalDate(s){const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}
 const COLS=['#95bc2b','#378ADD','#D85A30','#D4537E','#7F77DD','#BA7517','#E24B4A','#888780'];
 const MUSCLES=['Chest','Back','Shoulders','Legs','Glutes','Core','Biceps','Triceps'];
 const MUSCLE_EX={Chest:['Bench Press (Barbell)','Incline Press (DB)'],Back:['Pull-Up','Bentover Row (Barbell)','Deadlift (Barbell)'],Shoulders:['Overhead Press (Barbell)','Lateral Raise (DB)'],Legs:['Back Squat (Barbell)','Romanian Deadlift (Barbell)','Leg Press','Spanish Squat','Nordic Curl'],Biceps:['Bicep Curl (Barbell)','Hammer Curl (DB)'],Triceps:['Tricep Pushdown Bar (Cable)','Overhead Tricep Extension (Cable)'],Core:['Plank'],Glutes:['Hip Thrust (Band)','Monster Walk','Clamshell']};
@@ -4523,7 +4524,7 @@ function computeStress(){
 
   // ── Pass 2: compute decayed stress for the last 14 days (current state) ──
   hist.filter(h=>h.type==='wo').forEach(w=>{
-    const sd=new Date(w.date);sd.setHours(0,0,0,0);
+    const sd=parseLocalDate(w.date);
     const dN=Math.floor((TODAY-sd)/86400000);
     if(dN>14)return;
     (w.ex||[]).forEach(e=>{
@@ -4544,7 +4545,7 @@ function computeStress(){
     });
   });
   hist.filter(h=>h.type==='run').forEach(run=>{
-    const sd=new Date(run.date);sd.setHours(0,0,0,0);
+    const sd=parseLocalDate(run.date);
     const dN=Math.floor((TODAY-sd)/86400000);
     if(dN>14)return;
     const{base,dist}=runLoad(run);
@@ -4963,7 +4964,7 @@ function buildWorkoutSuggestions(scores){
       if(!exFreq[e.n]) exFreq[e.n]={count:0,lastDate:null,lastKg:0,lastReps:0,muscle:def.m};
       const f=exFreq[e.n];
       f.count++;
-      const d=new Date(w.date);
+      const d=parseLocalDate(w.date);
       if(!f.lastDate||d>new Date(f.lastDate)){
         f.lastDate=w.date;
         // Find best set from this session
@@ -5529,7 +5530,7 @@ function histCard(w,idx,ns){
     return`<div class="hist-card">
       <div class="hist-header" onclick="toggleHist('${id}')">
         <div style="flex:1;min-width:0">
-          <div class="hist-date">${new Date(w.date).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}</div>
+          <div class="hist-date">${parseLocalDate(w.date).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}</div>
           <div class="hist-title">${w.st}</div>
           <div class="hist-meta">
             <div class="hist-stat"><span>${w.dist}km</span></div>
@@ -5566,7 +5567,7 @@ function histCard(w,idx,ns){
   return`<div class="hist-card">
     <div class="hist-header" onclick="toggleHist('${id}')">
       <div style="flex:1;min-width:0">
-        <div class="hist-date">${new Date(w.date).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}</div>
+        <div class="hist-date">${parseLocalDate(w.date).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}</div>
         <div class="hist-title" style="display:flex;align-items:center;gap:4px;overflow:hidden">
           <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px">${displayTitle}</span>${moodHtml}
         </div>
@@ -7908,7 +7909,7 @@ function renderWeeklyVol(){
   // Bucket workouts into ISO weeks
   const weekMap=new Map();
   hist.filter(h=>h.type==='wo'&&h.date>=fromStr).forEach(w=>{
-    const d=new Date(w.date+'T00:00:00');
+    const d=parseLocalDate(w.date);
     // ISO week start (Monday)
     const day=d.getDay()||7;
     d.setDate(d.getDate()-day+1);
@@ -8147,7 +8148,7 @@ function renderProgCyc(){
   hist.filter(h=>h.type==='wo'&&h.date>=fromStr).forEach(w=>{
     const vol=(w.ex||[]).reduce((a,e)=>a+(e.sets||[]).reduce((b,s)=>b+(s.w||0)*(s.r||0),0),0);
     // Use a hash of the date to assign a phase (approximation without stored cycle data)
-    const d=new Date(w.date);const dayOfYear=Math.floor((d-new Date(d.getFullYear(),0,0))/86400000);
+    const d=parseLocalDate(w.date);const dayOfYear=Math.floor((d-new Date(d.getFullYear(),0,0))/86400000);
     const phIdx=Math.floor((dayOfYear%cycLen)/(cycLen/4))%4;
     phaseVols[phIdx].vol+=vol;phaseVols[phIdx].n++;
   });
@@ -8582,7 +8583,7 @@ function renderCycToday(){
         }).join('');
         return`<div style="padding:10px 12px;border-bottom:0.5px solid rgba(255,255,255,0.05)${idx===recentCI.length-1?';border-bottom:none':''}">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
-            <span style="font-size:11px;color:${isLight()?'rgba(0,0,0,0.45)':'rgba(255,255,255,0.3)'}">${new Date(h.date).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}</span>
+            <span style="font-size:11px;color:${isLight()?'rgba(0,0,0,0.45)':'rgba(255,255,255,0.3)'}">${parseLocalDate(h.date).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}</span>
             ${postMood?`<span style="font-size:12px;color:${isLight()?'rgba(0,0,0,0.55)':'rgba(255,255,255,0.5)'}">${pm?pm.e:''} ${postMood} after</span>`:''}
           </div>
           ${preChips?`<div style="font-size:11px;color:${isLight()?'rgba(0,0,0,0.45)':'rgba(255,255,255,0.28)'};margin-bottom:4px">Before</div><div style="display:flex;flex-wrap:wrap;gap:4px">${preChips}</div>`:`<div style="font-size:12px;color:${isLight()?'rgba(0,0,0,0.45)':'rgba(255,255,255,0.28)'}">No pre-workout symptoms logged</div>`}
@@ -8813,7 +8814,7 @@ function renderCycInsights(){
           <div class="cyc-perf-stat"><div class="cyc-perf-stat-v">${pd.pbSessions.length}</div><div class="cyc-perf-stat-l">PBs set</div></div>
         </div>
 
-        ${allTimePhasePB?`<div class="cyc-pb-line" style="margin-bottom:10px">🏆 <span style="color:rgba(255,255,255,0.7)">${allTimePhasePB.ex}</span> <span style="color:#5DCAA5;font-weight:500">${allTimePhasePB.w}kg</span> <span style="color:rgba(255,255,255,0.28);font-size:10px">${new Date(allTimePhasePB.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span></div>`:''}
+        ${allTimePhasePB?`<div class="cyc-pb-line" style="margin-bottom:10px">🏆 <span style="color:rgba(255,255,255,0.7)">${allTimePhasePB.ex}</span> <span style="color:#5DCAA5;font-weight:500">${allTimePhasePB.w}kg</span> <span style="color:rgba(255,255,255,0.28);font-size:10px">${parseLocalDate(allTimePhasePB.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span></div>`:''}
 
         ${volContext?`<div style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:10px;line-height:1.55">${volContext}</div>`:''}
 
@@ -9157,7 +9158,7 @@ function renderWeightGraph(){
       const col=ph?ph.col:'#fff';
       const brd=ph?ph.brd:'rgba(255,255,255,0.1)';
       return`<span style="font-size:11px;padding:3px 9px;border-radius:8px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);border:0.5px solid ${brd}">
-        ${new Date(e.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}
+        ${parseLocalDate(e.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}
         <strong style="color:${col}">${e.w}${profData.weightUnit==='lbs'?'lbs':'kg'}</strong>
         ${ph?`<span style="font-size:9px;color:${col};opacity:0.7"> ${ph.short}</span>`:''}
       </span>`;
