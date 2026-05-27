@@ -242,6 +242,8 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0}body{font-family:system
 .col-chip.active{background:rgba(149,188,43,0.12);border-color:rgba(149,188,43,0.45);color:rgba(149,188,43,0.9)}
 .col-chip-lbl{font-size:10px;color:rgba(255,255,255,0.2);letter-spacing:0.3px;margin-right:2px}
 .set-input{width:100%;text-align:center;border:0.5px solid rgba(255,255,255,0.12);border-radius:7px;padding:5px 2px;font-size:13px;background:rgba(255,255,255,0.07);color:#fff;-moz-appearance:textfield}
+.set-input-suggest::placeholder{color:rgba(255,255,255,0.3);font-style:italic}
+body.light-mode .set-input-suggest::placeholder{color:rgba(0,0,0,0.25);font-style:italic}
 .set-input::-webkit-outer-spin-button,.set-input::-webkit-inner-spin-button{-webkit-appearance:none}
 .set-input:focus{outline:none;border-color:var(--ac);background:rgba(149,188,43,0.08)}
 .set-input.done-input{border-color:rgba(149,188,43,0.3);background:rgba(149,188,43,0.07);color:rgba(255,255,255,0.7)}
@@ -645,10 +647,9 @@ body.light-mode .mmus-secondary{color:rgba(0,0,0,0.45);background:rgba(0,0,0,0.0
 .acwr-zone-lbl{font-size:10px;color:rgba(255,255,255,0.38);text-transform:uppercase;letter-spacing:0.3px}
 
 /* Progress / Analytics screen */
-.prog-ex-selector{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
-.prog-ex-selector::-webkit-scrollbar{display:none}
-.prog-ex-pill{padding:6px 13px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;color:rgba(255,255,255,0.65)!important;background:rgba(255,255,255,0.07)!important;border:1px solid rgba(255,255,255,0.16)!important;flex-shrink:0}
-.prog-ex-pill.active{color:#fff!important;background:var(--ac)!important;border-color:var(--ac)!important}
+.prog-ex-result{padding:10px 14px;font-size:13px;color:rgba(255,255,255,0.8);cursor:pointer;border-bottom:0.5px solid rgba(255,255,255,0.06)}
+.prog-ex-result:last-child{border-bottom:none}
+.prog-ex-result:active{background:rgba(255,255,255,0.08)}
 .prog-metric-row{display:flex;background:rgba(255,255,255,0.06);border-radius:10px;padding:3px;margin-bottom:10px}
 .prog-metric-btn{flex:1;padding:7px 6px;border-radius:7px;font-size:11px;font-weight:500;text-align:center;cursor:pointer;color:rgba(255,255,255,0.42);border:none!important;background:transparent!important;transition:all 0.15s;white-space:nowrap}
 .prog-metric-btn.active{background:rgba(255,255,255,0.16)!important;color:#fff!important}
@@ -1088,6 +1089,8 @@ body.light-mode .wo-sets-done{color:rgba(0,0,0,0.38)}
 body.light-mode .info-toast{background:rgba(255,255,255,0.9);border-color:rgba(0,0,0,0.1);color:rgba(0,0,0,0.65)}
 /* Library */
 body.light-mode .lib-search{background:rgba(255,255,255,0.7);border-color:rgba(0,0,0,0.14)!important;color:#1a1a1a}
+body.light-mode .prog-ex-result{color:rgba(0,0,0,0.75);border-bottom-color:rgba(0,0,0,0.06)}
+body.light-mode #prog-ex-results{background:rgba(255,255,255,0.9);border-color:rgba(0,0,0,0.1)}
 body.light-mode #lib-search-ctx{color:rgba(0,0,0,0.4)}
 body.light-mode .lib-search::placeholder{color:rgba(0,0,0,0.28)}
 body.light-mode .mp{color:rgba(0,0,0,0.65)!important;background:rgba(0,0,0,0.05)!important;border-color:rgba(0,0,0,0.16)!important}
@@ -2185,7 +2188,10 @@ body.light-mode .dual-dial-card{
 <div id="v-lib" class="view">
   <div class="screen-pad">
     <div class="screen-back"><div class="screen-back-left" onclick="libBack()"><span>&#8592;</span><span>Library</span></div><div class="screen-topbar-right"><div class="hamburger" onclick="openDD()"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></div></div></div>
-    <input class="lib-search" placeholder="Search by name, muscle, equipment…" oninput="filterLib(this.value)" id="lsrc" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+      <input class="lib-search" placeholder="Search by name, muscle, equipment…" oninput="filterLib(this.value)" id="lsrc" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="margin-bottom:0;flex:1"/>
+      <button onclick="openCreateEx()" style="flex-shrink:0;padding:8px 12px;border-radius:12px;font-size:12px;font-weight:600;white-space:nowrap;cursor:pointer;color:var(--ac)!important;background:rgba(149,188,43,0.1)!important;border:1px solid rgba(149,188,43,0.3)!important">+ Custom</button>
+    </div>
     <div id="lib-search-ctx" style="display:none;font-size:11px;color:rgba(255,255,255,0.35);margin:-4px 0 6px 2px;line-height:1.4"></div>
     <div class="mf" id="mf"></div>
     <div id="ll"></div>
@@ -2385,8 +2391,24 @@ body.light-mode .dual-dial-card{
   <div class="screen-pad">
     <div class="screen-back"><div class="screen-back-left" onclick="go('home')"><span>&#8592;</span><span>Analytics</span></div><div class="screen-topbar-right"><div class="hamburger" onclick="openDD()"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></div></div></div>
 
-    <!-- Exercise selector (scrollable pills) -->
-    <div class="prog-ex-selector" id="prog-ex-pills"></div>
+    <!-- Exercise search -->
+    <div style="position:relative;margin-bottom:10px">
+      <input id="prog-ex-search" class="lib-search" placeholder="Search exercise to analyse…"
+        oninput="filterProgEx(this.value)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+        style="padding-right:32px"/>
+      <span id="prog-ex-clear" onclick="clearProgEx()" style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:16px;color:rgba(255,255,255,0.35);cursor:pointer;line-height:1">×</span>
+    </div>
+    <div id="prog-ex-results" style="display:none;background:rgba(0,0,0,0.5);border:0.5px solid rgba(255,255,255,0.12);border-radius:12px;margin-bottom:10px;max-height:180px;overflow-y:auto"></div>
+    <div id="prog-ex-selected" style="display:none;margin-bottom:8px">
+      <span id="prog-ex-chip" style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:var(--ac);border-radius:20px;font-size:12px;font-weight:500;color:#fff"></span>
+    </div>
+
+    <!-- Weekly volume chart -->
+    <div class="sec-lbl" style="margin-bottom:6px">Overall volume per week</div>
+    <div class="prog-chart-card" style="margin-bottom:10px">
+      <div class="prog-chart-sub" id="weekly-vol-sub">Total kg lifted across all exercises</div>
+      <svg width="100%" viewBox="0 0 330 90" id="weekly-vol-svg" style="overflow:visible"></svg>
+    </div>
 
     <!-- Metric toggle -->
     <div class="prog-metric-row">
@@ -2834,6 +2856,7 @@ body.light-mode .dual-dial-card{
     <button class="dd-item" id="dd-cyc" onclick="ddGo('cycle')" style="display:none">Cycle tracker</button>
     <div class="dd-div"></div>
     <button class="dd-item" onclick="ddGo('settings')">Settings</button>
+    <button class="dd-item" onclick="ddGo('legal')" style="margin-top:auto;opacity:0.5;font-size:11px">Legal & Terms</button>
   </div>
 </div>
 
@@ -2985,6 +3008,52 @@ body.light-mode .dual-dial-card{
 
 
 <!-- ── Session Plan screen — shown when tapping Start workout ──────── -->
+<div id="v-legal" class="view">
+  <div class="screen-pad">
+    <div class="screen-back"><div class="screen-back-left" onclick="go('home')"><span>&#8592;</span><span>Legal &amp; Terms</span></div><div class="screen-topbar-right"><div class="hamburger" onclick="openDD()"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></div></div></div>
+
+    <div class="sec-lbl" style="margin-bottom:6px">TRK — Legal Notices &amp; Terms of Use</div>
+
+    <div class="card" style="padding:16px 15px;margin-bottom:9px">
+      <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.9);margin-bottom:6px;letter-spacing:0.2px">Beta Software Notice</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.6">TRK is currently provided as beta software. It is incomplete, may contain errors, and is subject to change or discontinuation at any time without notice. Features may be added, modified, or removed. Data stored within the app may be lost. You use this software entirely at your own risk.</div>
+    </div>
+
+    <div class="card" style="padding:16px 15px;margin-bottom:9px">
+      <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.9);margin-bottom:6px;letter-spacing:0.2px">Not Medical Advice</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.6">TRK is a personal fitness tracking tool designed solely to help you log and organise your own workout data. Nothing within this application — including but not limited to exercise suggestions, workout recommendations, readiness scores, cycle phase guidance, load management indicators, or any other output — constitutes medical advice, clinical guidance, diagnosis, or treatment. TRK is not a medical device and has not been evaluated or approved by any regulatory authority.</div>
+    </div>
+
+    <div class="card" style="padding:16px 15px;margin-bottom:9px">
+      <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.9);margin-bottom:6px;letter-spacing:0.2px">Assumption of Risk</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.6">Physical exercise carries inherent risks including but not limited to musculoskeletal injury, cardiovascular events, and death. By using this application you acknowledge that you are voluntarily participating in physical activity and assume full and sole responsibility for any injury, illness, loss, or damage that may result. You represent that you are physically capable of undertaking the activities you choose to log or perform, and that you have sought appropriate professional medical clearance where required.</div>
+    </div>
+
+    <div class="card" style="padding:16px 15px;margin-bottom:9px">
+      <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.9);margin-bottom:6px;letter-spacing:0.2px">No Liability</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.6">To the fullest extent permitted by applicable law, the developer of TRK and any associated parties expressly disclaim all liability for any direct, indirect, incidental, consequential, or special damages arising from your use of this application, including but not limited to personal injury, loss of data, or reliance on any content, suggestion, or output generated by the app. Your use of this application is entirely at your own discretion and risk.</div>
+    </div>
+
+    <div class="card" style="padding:16px 15px;margin-bottom:9px">
+      <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.9);margin-bottom:6px;letter-spacing:0.2px">Your Responsibility</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.6">You, as the user of this application, are solely responsible for all decisions relating to your health, fitness, and training. You should consult a qualified medical professional before beginning any new exercise programme, particularly if you have any pre-existing health conditions, injuries, or concerns. Exercise suggestions within this app are algorithmically generated and are not tailored to your individual medical history or physical condition.</div>
+    </div>
+
+    <div class="card" style="padding:16px 15px;margin-bottom:9px">
+      <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.9);margin-bottom:6px;letter-spacing:0.2px">Data &amp; Privacy</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.6">All data you enter into TRK is stored locally on your device. No personal data is transmitted to external servers by this application. You are responsible for maintaining backups of your own data.</div>
+    </div>
+
+    <div class="card" style="padding:16px 15px;margin-bottom:9px">
+      <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.9);margin-bottom:6px;letter-spacing:0.2px">Acceptance</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.6">By continuing to use TRK you confirm that you have read, understood, and agree to be bound by these terms in full.</div>
+    </div>
+
+    <div style="font-size:11px;color:rgba(255,255,255,0.25);text-align:center;padding:8px 0 24px;line-height:1.6">Last updated: May 2026<br>TRK is provided "as is" without warranty of any kind.</div>
+
+  </div>
+</div>
+
 <div id="v-session-plan" class="view">
   <div class="screen-pad">
     <div class="screen-back">
@@ -3116,7 +3185,7 @@ const EX=[
   {id:21,n:'Tibialis Raise',m:'Legs',t:'reps',c:'physio',anim:'anim-squat',tags:['Bodyweight','Rehab'],cols:['reps'],
    tip:'Log total reps. When adding weight, log the weight of any band or plate used.',
    s:['Bodyweight','Rehab']},
-  {id:22,n:'Single-Leg RDL',m:'Legs',ms:['Glutes'],t:'weight',c:'physio',anim:'anim-rdl',tags:['Bodyweight','Hinge','Unilateral'],cols:['kg','reps'],
+  {id:22,n:'Single Leg RDL',m:'Legs',ms:['Glutes'],t:'weight',c:'physio',anim:'anim-rdl',tags:['Bodyweight','Hinge','Unilateral'],cols:['kg','reps'],
    tip:'Log weight per hand if using a single dumbbell, or combined weight if holding two.',
    s:['Glutes']},
   {id:23,n:'Sumo Deadlift (Barbell)',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-dead',tags:['Barbell','Hinge','Compound'],cols:['kg','reps'],
@@ -3149,7 +3218,7 @@ const EX=[
   {id:32,n:'Landmine Row',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Barbell','Pull','Compound'],cols:['kg','reps'],
    tip:'Log the weight of plates on the bar. Single arm version: log one side.',
    s:['Biceps']},
-  {id:33,n:'Single-Arm Landmine Row',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Barbell','Pull','Unilateral'],cols:['kg','reps'],
+  {id:33,n:'Single Arm Landmine Row',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Barbell','Pull','Unilateral'],cols:['kg','reps'],
    tip:'Log the plate weight on one side. Keep hips square — don\'t rotate to cheat reps.',
    s:['Biceps']},
   {id:34,n:'Barbell Lunge',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Barbell','Squat','Unilateral'],cols:['kg','reps'],
@@ -3194,7 +3263,7 @@ const EX=[
   {id:47,n:'Walking Lunge (DB)',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Dumbbell','Squat','Unilateral'],cols:['kg','reps'],
    tip:'Log the combined weight of both dumbbells. Count total steps or reps per leg.',
    s:['Glutes']},
-  {id:48,n:'Single-Leg RDL (DB)',m:'Glutes',ms:['Legs'],t:'weight',c:'gym',anim:'anim-rdl',tags:['Dumbbell','Hinge','Unilateral'],cols:['kg','reps'],
+  {id:48,n:'Single Leg RDL (DB)',m:'Glutes',ms:['Legs'],t:'weight',c:'gym',anim:'anim-rdl',tags:['Dumbbell','Hinge','Unilateral'],cols:['kg','reps'],
    tip:'Log the combined weight of both dumbbells, or single dumbbell weight if using one hand.',
    s:['Legs']},
   {id:49,n:'Sumo Squat (DB)',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Dumbbell','Squat'],cols:['kg','reps'],
@@ -3233,7 +3302,7 @@ const EX=[
   {id:60,n:'Bent-Over Row (DB)',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Dumbbell','Pull','Compound'],cols:['kg','reps'],
    tip:'Log the combined weight of both dumbbells.',
    s:['Biceps']},
-  {id:61,n:'Single-Arm DB Row',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Dumbbell','Pull','Unilateral'],cols:['kg','reps'],
+  {id:61,n:'Single Arm DB Row',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Dumbbell','Pull','Unilateral'],cols:['kg','reps'],
    tip:'Log the weight of one dumbbell. Brace well — the working side should do all the moving.',
    s:['Biceps']},
   {id:62,n:'Lateral Lunge (DB)',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',tags:['Dumbbell','Squat','Unilateral'],cols:['kg','reps'],
@@ -3248,7 +3317,7 @@ const EX=[
   {id:65,n:'Cable Lat Pulldown (Wide)',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-pullup',tags:['Cable','Pull','Compound'],cols:['kg','reps'],
    tip:'Log the cable stack weight. Wide or close grip both work — be consistent for tracking.',
    s:['Biceps']},
-  {id:66,n:'Single-Arm Row (Cable)',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Cable','Pull','Unilateral'],cols:['kg','reps'],
+  {id:66,n:'Single Arm Row (Cable)',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Cable','Pull','Unilateral'],cols:['kg','reps'],
    tip:'Log the cable stack weight — this is the load on one side.',
    s:['Biceps']},
   {id:67,n:'Face Pull (Cable)',m:'Shoulders',ms:['Back'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Cable','Pull'],cols:['kg','reps'],
@@ -3266,7 +3335,7 @@ const EX=[
   {id:71,n:'Bicep Curl (Cable)',m:'Biceps',t:'weight',c:'gym',anim:'anim-pullup',tags:['Cable','Pull'],cols:['kg','reps'],
    tip:'Log the cable stack weight. Constant tension vs dumbbells.',
    s:['Cable','Pull']},
-  {id:72,n:'Single-Arm Bicep Curl (Cable)',m:'Biceps',t:'weight',c:'gym',anim:'anim-pullup',tags:['Cable','Pull','Unilateral'],cols:['kg','reps'],
+  {id:72,n:'Single Arm Bicep Curl (Cable)',m:'Biceps',t:'weight',c:'gym',anim:'anim-pullup',tags:['Cable','Pull','Unilateral'],cols:['kg','reps'],
    tip:'Log the cable stack weight on one side.',
    s:['Cable','Pull','Unilateral']},
   {id:73,n:'Lateral Raise (Cable)',m:'Shoulders',t:'weight',c:'gym',anim:'anim-ohp',tags:['Cable'],cols:['kg','reps'],
@@ -3302,10 +3371,10 @@ const EX=[
   {id:83,n:'Turkish Get-Up (KB)',m:'Core',ms:['Shoulders','Legs'],t:'weight',c:'gym',anim:'anim-plank',tags:['Kettlebell','Compound'],cols:['kg','reps'],
    tip:'Log the kettlebell weight. Count reps per side. Eyes on the bell throughout.',
    s:['Shoulders','Legs']},
-  {id:84,n:'Single-Arm Press (KB)',m:'Shoulders',ms:['Triceps','Core'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Kettlebell','Push','Unilateral'],cols:['kg','reps'],
+  {id:84,n:'Single Arm Press (KB)',m:'Shoulders',ms:['Triceps','Core'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Kettlebell','Push','Unilateral'],cols:['kg','reps'],
    tip:'Log the kettlebell weight per side.',
    s:['Triceps','Core']},
-  {id:85,n:'Single-Arm Row (KB)',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Kettlebell','Pull','Unilateral'],cols:['kg','reps'],
+  {id:85,n:'Single Arm Row (KB)',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-dead',tags:['Kettlebell','Pull','Unilateral'],cols:['kg','reps'],
    tip:'Log the kettlebell weight per side.',
    s:['Biceps']},
   {id:86,n:'Deadlift (KB)',m:'Back',ms:['Glutes','Legs'],t:'weight',c:'gym',anim:'anim-dead',tags:['Kettlebell','Hinge'],cols:['kg','reps'],
@@ -3353,7 +3422,7 @@ const EX=[
   {id:100,n:'Glute Bridge',m:'Glutes',ms:['Legs'],t:'reps',c:'gym',anim:'anim-squat',tags:['Bodyweight','Hinge'],cols:['reps'],
    tip:'Log reps or hold time in seconds. Add a plate across hips for load.',
    s:['Legs']},
-  {id:101,n:'Single-Leg Glute Bridge',m:'Glutes',ms:['Legs'],t:'reps',c:'gym',anim:'anim-squat',tags:['Bodyweight','Hinge','Unilateral'],cols:['reps'],
+  {id:101,n:'Single Leg Glute Bridge',m:'Glutes',ms:['Legs'],t:'reps',c:'gym',anim:'anim-squat',tags:['Bodyweight','Hinge','Unilateral'],cols:['reps'],
    tip:'Log reps per side. Much harder than bilateral — exposes imbalances.',
    s:['Legs']},
   {id:102,n:'Hang Clean (DB)',m:'Back',ms:['Glutes','Legs','Shoulders'],t:'weight',c:'gym',anim:'anim-dead',tags:['Dumbbell','Compound','Explosive'],cols:['kg','reps'],
@@ -3449,7 +3518,7 @@ const EX=[
   {id:132,n:'TRX Hamstring Curl',m:'Legs',t:'reps',c:'gym',anim:'anim-rdl',tags:['TRX','Hinge'],cols:['reps'],
    tip:'Log reps. Lie on floor, heels in straps.',
    s:['TRX','Hinge']},
-  {id:133,n:'Single-Leg Squat (Assisted)',m:'Legs',ms:['Glutes','Core'],t:'reps',c:'gym',anim:'anim-squat',tags:['TRX','Squat','Unilateral'],cols:['reps'],
+  {id:133,n:'Single Leg Squat (Assisted)',m:'Legs',ms:['Glutes','Core'],t:'reps',c:'gym',anim:'anim-squat',tags:['TRX','Squat','Unilateral'],cols:['reps'],
    tip:'Log reps per side. Use TRX for balance assistance.',
    s:['Glutes','Core']},
   {id:134,n:'Leg Extension',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',tags:['Machine'],cols:['kg','reps'],
@@ -3638,7 +3707,7 @@ const EX=[
   {id:195,n:'Step-Over (DB)',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Dumbbell','Squat','Unilateral'],cols:['kg','reps'],
    tip:'Log the weight of one dumbbell. Note box height.',
    s:['Glutes']},
-  {id:196,n:'Single-Arm Press (DB)',m:'Shoulders',ms:['Triceps'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Dumbbell','Push','Unilateral'],cols:['kg','reps'],
+  {id:196,n:'Single Arm Press (DB)',m:'Shoulders',ms:['Triceps'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Dumbbell','Push','Unilateral'],cols:['kg','reps'],
    tip:'Log the weight of one dumbbell. Note if seated or standing.',
    s:['Triceps']},
   {id:197,n:'Decline Press (DB)',m:'Chest',ms:['Shoulders','Triceps'],t:'weight',c:'gym',anim:'anim-bench',tags:['Dumbbell','Push','Compound'],cols:['kg','reps'],
@@ -3656,13 +3725,13 @@ const EX=[
   {id:201,n:'Overhead Press (DB)',m:'Shoulders',ms:['Triceps'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Dumbbell','Push'],cols:['kg','reps'],
    tip:'Log the weight of one dumbbell. If pressing both, log one DB weight.',
    s:['Triceps']},
-  {id:202,n:'Single-Arm Clean (DB)',m:'Shoulders',ms:['Glutes','Legs'],t:'weight',c:'gym',anim:'anim-dead',tags:['Dumbbell','Compound','Explosive'],cols:['kg','reps'],
+  {id:202,n:'Single Arm Clean (DB)',m:'Shoulders',ms:['Glutes','Legs'],t:'weight',c:'gym',anim:'anim-dead',tags:['Dumbbell','Compound','Explosive'],cols:['kg','reps'],
    tip:'Log the weight of one dumbbell.',
    s:['Glutes','Legs']},
-  {id:203,n:'Single-Arm Clean and Press (DB)',m:'Shoulders',ms:['Glutes','Legs','Triceps'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Dumbbell','Compound','Explosive'],cols:['kg','reps'],
+  {id:203,n:'Single Arm Clean and Press (DB)',m:'Shoulders',ms:['Glutes','Legs','Triceps'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Dumbbell','Compound','Explosive'],cols:['kg','reps'],
    tip:'Log the weight of one dumbbell.',
    s:['Glutes','Legs','Triceps']},
-  {id:204,n:'Single-Arm Snatch (DB)',m:'Shoulders',ms:['Glutes','Legs'],t:'weight',c:'gym',anim:'anim-dead',tags:['Dumbbell','Compound','Explosive'],cols:['kg','reps'],
+  {id:204,n:'Single Arm Snatch (DB)',m:'Shoulders',ms:['Glutes','Legs'],t:'weight',c:'gym',anim:'anim-dead',tags:['Dumbbell','Compound','Explosive'],cols:['kg','reps'],
    tip:'Log the weight of one dumbbell.',
    s:['Glutes','Legs']},
   {id:205,n:'Cable Lat Pulldown (Narrow)',m:'Back',ms:['Biceps'],t:'weight',c:'gym',anim:'anim-pullup',tags:['Cable','Pull','Compound'],cols:['kg','reps'],
@@ -3674,16 +3743,16 @@ const EX=[
   {id:207,n:'Tricep Pushdown Rope (Cable)',m:'Triceps',t:'weight',c:'gym',anim:'anim-bench',tags:['Cable','Push'],cols:['kg','reps'],
    tip:'Log the cable stack weight. Rope allows wrists to rotate at the bottom.',
    s:['Cable','Push']},
-  {id:208,n:'Single-Leg Leg Press',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Machine','Push','Unilateral'],cols:['kg','reps'],
+  {id:208,n:'Single Leg Leg Press',m:'Legs',ms:['Glutes'],t:'weight',c:'gym',anim:'anim-squat',tags:['Machine','Push','Unilateral'],cols:['kg','reps'],
    tip:'Log the plate/stack weight per leg. Unilateral — great for identifying imbalances.',
    s:['Glutes']},
-  {id:209,n:'Single-Leg Leg Extension',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',tags:['Machine','Unilateral'],cols:['kg','reps'],
+  {id:209,n:'Single Leg Leg Extension',m:'Legs',t:'weight',c:'gym',anim:'anim-squat',tags:['Machine','Unilateral'],cols:['kg','reps'],
    tip:'Log the stack weight. Unilateral — address quad imbalances.',
    s:['Machine','Unilateral']},
-  {id:210,n:'Single-Leg Leg Curl (Lying)',m:'Legs',t:'weight',c:'gym',anim:'anim-rdl',tags:['Machine','Unilateral'],cols:['kg','reps'],
+  {id:210,n:'Single Leg Leg Curl (Lying)',m:'Legs',t:'weight',c:'gym',anim:'anim-rdl',tags:['Machine','Unilateral'],cols:['kg','reps'],
    tip:'Log the stack weight. Unilateral version — note if left/right differs.',
    s:['Machine','Unilateral']},
-  {id:211,n:'Single-Leg Leg Curl (Seated)',m:'Legs',t:'weight',c:'gym',anim:'anim-rdl',tags:['Machine','Unilateral'],cols:['kg','reps'],
+  {id:211,n:'Single Leg Leg Curl (Seated)',m:'Legs',t:'weight',c:'gym',anim:'anim-rdl',tags:['Machine','Unilateral'],cols:['kg','reps'],
    tip:'Log the stack weight. Seated position keeps hip flexion constant.',
    s:['Machine','Unilateral']},
   {id:212,n:'Reverse Fly Machine',m:'Back',t:'weight',c:'gym',anim:'anim-dead',tags:['Machine','Pull'],cols:['kg','reps'],
@@ -3864,7 +3933,7 @@ const EX=[
    tip:'Log hold time in seconds. Face the wall (chest to wall) for best vertical body position.',
    s:['Press directly overhead — avoid excessive lumbar arch','Build tension throughout — no relaxing mid-hold','Log consistently so your progress is trackable']},
   {id:271,n:'Handstand Walk',m:'Shoulders',ms:['Core'],t:'time',c:'gym',anim:'anim-ohp',tags:['Bodyweight'],cols:['time'],timeUnit:'min',
-   tip:'Log distance (metres) or time. Balance and overhead strength combined.',
+   tip:'Log distance (km) or time. Balance and overhead strength combined.',
    s:['Press directly overhead — avoid excessive lumbar arch','Controlled tempo — no momentum','Log consistently so your progress is trackable']},
   {id:272,n:'Skin the Cat',m:'Back',ms:['Shoulders','Core'],t:'reps',c:'gym',anim:'anim-pullup',tags:['Bodyweight','Pull'],cols:['reps'],
    tip:'Log reps. Full 360° rotation on rings — builds extraordinary shoulder mobility and lat strength.',
@@ -4411,7 +4480,7 @@ function computeStress(){
         } else { ir=0.70; }
         load+=(w2*r)*(ir*ir);
       } else if(r>0){ load+=(r*5);
-      } else if(s.t>0){ load+=(s.t*0.5); }
+      } else if(s.time>0){ load+=(s.time*0.5); }
     });
     return load;
   }
@@ -5645,6 +5714,22 @@ function openProgForEx(name){
 }
 
 /* ── Workout log ─────────────────────────────────── */
+function getLastLogged(name, cols){
+  // Find most recent workout containing this exercise with at least one completed set
+  for(let i=0;i<hist.length;i++){
+    const w=hist[i];
+    if(w.type!=='wo')continue;
+    const ex=(w.ex||[]).find(e=>e.n===name);
+    if(!ex)continue;
+    // Find last set that has any data
+    const sets=(ex.sets||[]).filter(s=>s.w||s.r||s.time||s.dist);
+    if(!sets.length)continue;
+    const last=sets[sets.length-1];
+    return{w:last.w||'',r:last.r||'',time:last.time||'',dist:last.dist||''};
+  }
+  return null;
+}
+
 function getPB(name){
   // Best weight ever logged for this exercise across all history
   let best=0;
@@ -5806,26 +5891,38 @@ function renderLog(){
       kg:  {label:'kg',        field:'w',    ph:'0', step:'0.5', min:'0'},
       reps:{label:'reps',      field:'r',    ph:'0', step:'1',   min:'0'},
       time:{label:_timeLabel,  field:'time', ph:'0', step:'1',   min:'0'},
-      dist:{label:'m',         field:'dist', ph:'0', step:'1',   min:'0'},
+      dist:{label:'km',        field:'dist', ph:'0', step:'0.01',min:'0'},
     };
-    const ALL_COLS=['kg','reps','time','dist'];
-    const chipLabels={kg:'+ kg',reps:'+ reps',time:`+ ${_timeLabel}`,dist:'+ m'};
+    const ALL_COLS=['kg','reps','time','dist','mins'];
+    const chipLabels={kg:'+ kg',reps:'+ reps',time:`+ ${_timeLabel}`,dist:'+ km',mins:'+ mins'};
 
     const dataCols=cols.length;
     const gridCols=`22px ${Array(dataCols).fill('1fr').join(' ')} 1fr 18px 28px`;
 
     const chipsHtml=`<div class="col-chips"><span class="col-chip-lbl">Track:</span>`+
-      ALL_COLS.map(c=>`<span class="col-chip ${cols.includes(c)?'active':''}" onclick="toggleCol(${ei},'${c}')">${cols.includes(c)?c.toUpperCase():chipLabels[c]}</span>`).join('')+
+      ALL_COLS.map(c=>{
+        if(c==='mins'){
+          const isMins=_timeUnit==='min';
+          return `<span class="col-chip ${isMins?'active':''}" onclick="toggleTimeUnit(${ei})">${isMins?'MINS':chipLabels[c]}</span>`;
+        }
+        return `<span class="col-chip ${cols.includes(c)?'active':''}" onclick="toggleCol(${ei},'${c}')">${cols.includes(c)?c.toUpperCase():chipLabels[c]}</span>`;
+      }).join('')+
       `</div>`;
 
     // Per-exercise rest is now built inside the SS section above
 
+    const _lastLogged=getLastLogged(ex.n,cols);
     const rows=ex.sets.map((s,si)=>{
       const isDone=!!s.d;
       const dc=isDone?'done-input':'';
       const dataInputs=cols.map(c=>{
         const m=COL_META[c];
-        return`<input type="number" class="set-input ${dc}" value="${s[m.field]||''}" placeholder="${m.ph}" min="${m.min}" step="${m.step}" oninput="upd(${ei},${si},'${m.field}',this.value)"/>`;
+        const hasVal=s[m.field]!==undefined&&s[m.field]!=='';
+        // Use last logged value as placeholder suggestion when field is empty
+        const suggVal=_lastLogged?_lastLogged[m.field]:'';
+        const ph=(!hasVal&&suggVal)?suggVal:m.ph;
+        const suggClass=(!hasVal&&suggVal)?'set-input-suggest':'';
+        return`<input type="number" class="set-input ${dc} ${suggClass}" value="${hasVal?s[m.field]:''}" placeholder="${ph}" min="${m.min}" step="${m.step}" oninput="upd(${ei},${si},'${m.field}',this.value)"/>`;
       }).join('');
       return`<div class="set-swipe-wrap" id="ssw-${ei}-${si}">
         <div class="set-del" id="sdel-${ei}-${si}" onclick="removeSet(${ei},${si})"><div class="set-del-icon">✕</div></div>
@@ -5892,7 +5989,7 @@ function renderLog(){
           ${headCols}
           <span>RPE</span>
           <span></span>
-          <span></span>
+          <span style="text-align:center;opacity:0.5">✓</span>
         </div>
         <div id="sets-${ei}">${rows}</div>
         <button class="add-set" onclick="addSet(${ei})">+ Add set</button>`}
@@ -6064,6 +6161,11 @@ function toggleCol(ei, col){
     ex.cols.sort((a,b)=>ORDER.indexOf(a)-ORDER.indexOf(b));
   }
   renderLog(); // full re-render to update grid
+}
+function toggleTimeUnit(ei){
+  const ex=curEx[ei]; if(!ex) return;
+  ex.timeUnit = (ex.timeUnit||'sec')==='sec' ? 'min' : 'sec';
+  renderLog();
 }
 function toggleInfoTip(ei){const t=document.getElementById('tip-'+ei);if(t)t.classList.toggle('show')}
 function upd(ei,si,f,v){if(curEx[ei]&&curEx[ei].sets[si])curEx[ei].sets[si][f]=f==='rpe'?parseInt(v)||null:(parseFloat(v)||parseFloat(v)===0?parseFloat(v):v);saveDraftDebounced();}
@@ -6876,6 +6978,8 @@ const SYNONYMS = {
   'bodyweight':['Bodyweight','Push-Up','Pull-Up','Plank','Dip'],
   'bw':['Bodyweight'],
   'trx':['TRX'],
+  'trap bar':['Deadlift'],'hex bar':['Deadlift'],
+  'ez bar':['EZ-Bar'],'ez curl':['EZ-Bar'],
   // Training styles
   'compound':['Compound'],'isolation':['Curl','Extension','Fly','Raise'],
   'unilateral':['Unilateral','Single'],'bilateral':['Bilateral'],
@@ -6884,36 +6988,99 @@ const SYNONYMS = {
   'cardio':['Cardio','Run','Bike','Row','Erg','Treadmill'],
   'hiit':['Intervals','Explosive'],'intervals':['Intervals'],
   'rehab':['Rehab','Band','Banded','Nordic','Spanish','Tibialis'],
-  // Muscle colloquial → exercise types
+  // Chest
+  'bench':['Bench Press'],'flat bench':['Bench Press'],'incline':['Incline'],'decline':['Decline'],
   'chest press':['Bench Press','Incline Press','Decline Press','Floor Press'],
-  'fly':['Fly','Chest Fly'],'flye':['Fly'],
-  'lat pulldown':['Pulldown','Lat Pulldown'],
-  'pullup':['Pull-Up'],'pull up':['Pull-Up'],'chin up':['Chin-Up'],'chinup':['Chin-Up'],
-  'pushup':['Push-Up'],'push up':['Push-Up'],
-  'hip thrust':['Hip Thrust'],'glute bridge':['Glute Bridge','Hip Thrust'],
+  'chest fly':['Fly'],'fly':['Fly'],'flye':['Fly'],'flies':['Fly'],'flys':['Fly'],
+  'cable fly':['Fly'],'pec deck':['Pec Deck','Chest Fly Machine'],
+  'chest machine':['Chest Fly Machine','Chest Press Machine'],
+  // Back
+  'lat pulldown':['Pulldown'],'pulldown':['Pulldown'],
+  'seated row':['Seated Row','Cable Row'],'cable row':['Cable Row','Seated Row'],
+  'chest supported':['Chest Supported'],
+  'pendlay':['Pendlay'],'yates row':['Yates'],
+  'meadows row':['Meadows'],
+  // Shoulders
   'ohp':['Overhead Press'],'overhead press':['Overhead Press'],
-  'bench':['Bench Press'],'incline':['Incline'],'decline':['Decline'],
-  'leg press':['Leg Press'],'leg extension':['Leg Extension'],
-  'leg curl':['Leg Curl'],'hamstring curl':['Leg Curl'],
-  'nordic':['Nordic'],'rdl':['Romanian'],
-  'face pull':['Face Pull'],'lateral raise':['Lateral Raise'],
+  'military press':['Overhead Press'],'strict press':['Overhead Press'],
+  'lateral raise':['Lateral Raise'],'side raise':['Lateral Raise'],
+  'side raises':['Lateral Raise'],'side lateral':['Lateral Raise'],
+  'rear delt':['Rear Delt','Face Pull','Reverse Fly'],
+  'reverse fly':['Reverse Fly'],
+  'upright row':['Upright Row'],'upright rows':['Upright Row'],
+  'face pull':['Face Pull'],'face pulls':['Face Pull'],
+  // Arms
+  'bicep curl':['Curl'],'hammer curl':['Hammer Curl'],
+  'preacher curl':['Preacher Curl'],'concentration curl':['Concentration Curl'],
+  'incline curl':['Incline Curl'],'cable curl':['Cable Curl'],
+  'reverse curl':['Reverse Curl'],
+  'skull crusher':['Skullcrusher'],'skull crushers':['Skullcrusher'],
+  'skullcrusher':['Skullcrusher'],
+  'tricep extension':['Extension','Pushdown','Skullcrusher'],
+  'overhead extension':['Overhead Extension'],
   'pushdown':['Pushdown','Tricep Pushdown'],'skull':['Skullcrusher'],
-  'skullcrusher':['Skullcrusher'],'jm press':['Close-Grip'],
-  'step up':['Step-Up'],'stepup':['Step-Up'],
+  'jm press':['Close-Grip'],
+  'shrug':['Shrug'],'shrugs':['Shrug'],
+  'wrist curl':['Wrist Curl'],
+  // Legs
+  'front squat':['Front Squat'],'back squat':['Squat'],
+  'goblet squat':['Goblet'],'sumo squat':['Sumo'],
   'split squat':['Split Squat','Bulgarian'],'bulgarian':['Bulgarian'],
   'walking lunge':['Walking Lunge'],'reverse lunge':['Reverse Lunge'],
-  'good morning':['Good Morning'],
+  'leg press':['Leg Press'],'leg extension':['Leg Extension'],
+  'leg curl':['Leg Curl'],'hamstring curl':['Leg Curl'],'ham curl':['Leg Curl'],
+  'calf raise':['Calf Raise'],'calf raises':['Calf Raise'],
+  'step up':['Step-Up'],'stepup':['Step-Up'],
+  'good morning':['Good Morning'],'good mornings':['Good Morning'],
+  'zercher':['Zercher'],'hack squat':['Hack Squat'],
   'sumo':['Sumo'],'conventional':['Deadlift (Barbell)'],
-  'trap bar':['Deadlift'],'hex bar':['Deadlift'],
+  'romanian':['Romanian'],'rdl':['Romanian'],
+  'stiff leg':['Stiff Leg','Romanian'],
+  'nordic':['Nordic'],'ghr':['Nordic'],'natural glute ham':['Nordic'],
+  // Glutes / hips
+  'hip thrust':['Hip Thrust'],'hip thrusts':['Hip Thrust'],
+  'glute bridge':['Glute Bridge','Hip Thrust'],'glute bridges':['Glute Bridge','Hip Thrust'],
+  // Bodyweight / calisthenics
+  'press up':['Push-Up'],'press ups':['Push-Up'],
+  'pressup':['Push-Up'],'pressups':['Push-Up'],
+  'pushup':['Push-Up'],'push up':['Push-Up'],
+  'pullup':['Pull-Up'],'pull up':['Pull-Up'],
+  'chin up':['Chin-Up'],'chinup':['Chin-Up'],
+  'chin ups':['Chin-Up'],'chinups':['Chin-Up'],
+  'dip':['Dip'],'dips':['Dip'],'tricep dip':['Dip'],
+  'muscle up':['Muscle-Up'],'muscle ups':['Muscle-Up'],'muscleup':['Muscle-Up'],
+  'sit up':['Sit-Up','Crunch'],'sit ups':['Sit-Up','Crunch'],
+  'situp':['Sit-Up','Crunch'],'situps':['Sit-Up','Crunch'],
+  'toes to bar':['Toes-to-Bar'],'ttb':['Toes-to-Bar'],
+  'l sit':['L-Sit'],'dragon flag':['Dragon Flag'],
+  'ab wheel':['Ab Wheel'],'rollout':['Rollout'],'wheel rollout':['Rollout'],
+  'hollow body':['Hollow'],
+  // Carries / strongman
+  'farmers walk':['Farmers Carry'],'farmers carry':['Farmers Carry'],
+  'suitcase carry':['Suitcase'],'yoke':['Carry'],
+  'landmine':['Landmine'],
+  'sled push':['Sled Push'],'sled pull':['Sled'],'prowler':['Sled'],
+  // KB
+  'kb swing':['KB Swing','Swing'],'kettlebell swing':['KB Swing','Swing'],
+  'turkish get up':['Turkish'],'tgu':['Turkish'],
+  'goblet':['Goblet'],
+  // Cardio / conditioning
+  'run':['Run','Treadmill','Trail'],'running':['Outdoor Walk','Running Intervals','Trail Run','Treadmill'],
+  'jog':['Outdoor Walk','Treadmill'],'jogging':['Outdoor Walk','Treadmill'],
   'sprint':['Running Intervals','Track Session','Assault Bike Intervals'],
-  'run':['Run','Treadmill','Trail'],'running':['Run','Treadmill','Trail'],
   'bike':['Bike','Cycling','Assault'],'cycling':['Cycling','Spin'],
-  'row':['Row','Rowing'],'rowing':['Rowing Erg','Bent','Cable Row'],
+  'rowing':['Rowing Erg'],'rower':['Rowing Erg'],
+  'erg':['Rowing Erg','SkiErg'],
+  'ski erg':['SkiErg'],'skierg':['SkiErg'],
+  'assault bike':['Assault Bike'],'airdyne':['Assault Bike'],
+  'treadmill':['Treadmill'],
+  'wall ball':['Wall Balls'],'battle rope':['Battle Rope'],'rope':['Rope','Battle'],
+  'burpee':['Burpee'],'burpees':['Burpee'],
+  'box jump':['Box Jump'],'jump squat':['Jump Squat'],
+  'thruster':['Thruster'],
   'yoga':['Yoga'],'pilates':['Pilates'],'swim':['Swimming'],
-  'sled':['Sled'],'wall ball':['Wall Balls'],
-  'battle rope':['Battle Rope'],'rope':['Rope','Battle'],
+  'sled':['Sled'],'hill sprint':['Sled Push'],
 };
-
 let _fuseInstance = null;
 function getFuse(){
   if(!_fuseInstance && typeof Fuse !== 'undefined'){
@@ -7039,13 +7206,14 @@ function getSimilarExercises(ex, limit=6){
 function renderLib(f='',m=selM){
   // Clear selection on a fresh filter/category change but not on re-render
   const mfEl=document.getElementById('mf');if(!mfEl)return;
-  mfEl.innerHTML=`<button class="mp ${catF==='all'?'active':''}" onclick="setCat('all')">All</button><button class="mp ${catF==='gym'?'active':''}" onclick="setCat('gym')">Gym</button><button class="mp ${catF==='run'?'active':''}" onclick="setCat('run')">Run</button><button class="mp ${catF==='physio'?'active':''}" onclick="setCat('physio')">Physio</button>`+muscles.slice(1).map(x=>`<button class="mp ${selM===x&&catF==='m'?'active':''}" onclick="setMus('${x}')">${x}</button>`).join('');
+  mfEl.innerHTML=`<button class="mp ${catF==='all'?'active':''}" onclick="setCat('all')">All</button><button class="mp ${catF==='gym'?'active':''}" onclick="setCat('gym')">Gym</button><button class="mp ${catF==='run'?'active':''}" onclick="setCat('run')">Run</button><button class="mp ${catF==='physio'?'active':''}" onclick="setCat('physio')">Physio</button><button class="mp ${catF==='custom'?'active':''}" onclick="setCat('custom')">Custom</button>`+muscles.slice(1).map(x=>`<button class="mp ${selM===x&&catF==='m'?'active':''}" onclick="setMus('${x}')">${x}</button>`).join('');
   const q=f.toLowerCase().trim();
   // Build pool filtered by category/muscle first
   let pool=EX.filter(e=>{
-    if(catF==='gym')    return e.c==='gym';
+    if(catF==='gym')    return e.c==='gym'&&!e.custom;
     if(catF==='run')    return e.c==='run';
     if(catF==='physio') return e.c==='physio';
+    if(catF==='custom') return !!e.custom;
     if(m!=='All')       return e.m===m||(e.ms||[]).includes(m);
     return true;
   });
@@ -7074,9 +7242,9 @@ function renderLib(f='',m=selM){
       </div>
     </div>`;
   }).join('');
-  // Show create hint when search has results OR always (at bottom)
+  // Show create hint: always when on Custom tab, or when search returns nothing
   const hint=document.getElementById('lib-create-hint');
-  if(hint) hint.style.display=filtered.length===0?'block':'none';
+  if(hint) hint.style.display=(filtered.length===0||catF==='custom')?'block':'none';
   // Show search context
   const ctx=document.getElementById('lib-search-ctx');
   if(ctx){
@@ -7480,8 +7648,8 @@ function getDayLoad(daysAgo){
           total+=(w2*r)*(intensityRatio*intensityRatio);
         } else if(r>0){
           total+=(r*5);
-        } else if(s.t>0){
-          total+=(s.t*0.5);
+        } else if(s.time>0){
+          total+=(s.time*0.5);
         }
       });
     });
@@ -7499,7 +7667,7 @@ function getDayLoad(daysAgo){
 function computeACWR(){
   // Build 42 days of daily loads (extra history improves EWMA warm-up)
   // Index 0 = today, index 41 = 41 days ago
-  const dailyLoads=Array.from({length:42},(_,i)=>getDayLoad(i));
+  const dailyLoads=Array.from({length:84},(_,i)=>getDayLoad(i));
 
   // Use EWMA (Exponentially Weighted Moving Average) — this is the Banister model approach.
   // Simple rolling averages divided by calendar days are misleading for gym-goers who
@@ -7515,7 +7683,7 @@ function computeACWR(){
   const lambdaChronic=2/(28+1); // ≈0.069 — slow-responding, tracks fitness base
 
   // Walk oldest→newest (reverse the array)
-  const loadsOldFirst=[...dailyLoads].reverse(); // index 0 = 41d ago, last = today
+  const loadsOldFirst=[...dailyLoads].reverse(); // index 0 = 83d ago, last = today
 
   let ewmaAcute=0,ewmaChronic=0;
   const ewmaAcuteArr=[];
@@ -7542,7 +7710,7 @@ function computeACWR(){
   const daysOfData=dailyLoads.slice(0,28).filter(v=>v>0).length;
   // Require at least 4 weeks of data (≥12 training days) before showing ratio
   // — below this the chronic EWMA hasn't had time to reflect habitual load
-  const hasBaseline=daysOfData>=12&&chronic>10;
+  const hasBaseline=daysOfData>=4&&chronic>10;
   const ratio=hasBaseline?Math.round((ewmaAcute/ewmaChronic)*100)/100:null;
 
   // Return last 28 days of daily loads for the chart (most recent = last element)
@@ -7677,13 +7845,118 @@ function setProgWin(w,btn){
 }
 function setProgEx(name){
   progExercise=name;
-  document.querySelectorAll('.prog-ex-pill').forEach(p=>p.classList.toggle('active',p.dataset.name===name));
+  // Clear search, hide results, show chip
+  const inp=document.getElementById('prog-ex-search');
+  const res=document.getElementById('prog-ex-results');
+  if(inp){inp.value='';inp.blur();}
+  if(res){res.style.display='none';res.innerHTML='';}
+  document.getElementById('prog-ex-clear').style.display='none';
+  _updateProgChip();
   renderProgChart();
   renderProgStats();
+}
+function _updateProgChip(){
+  const sel=document.getElementById('prog-ex-selected');
+  const chip=document.getElementById('prog-ex-chip');
+  if(!sel||!chip)return;
+  if(progExercise){
+    chip.innerHTML=progExercise+' <span onclick="clearProgEx()" style="opacity:0.7;font-size:14px;cursor:pointer;line-height:1">×</span>';
+    sel.style.display='block';
+  } else {
+    sel.style.display='none';
+  }
+}
+function clearProgEx(){
+  progExercise=null;
+  const inp=document.getElementById('prog-ex-search');
+  const res=document.getElementById('prog-ex-results');
+  const clr=document.getElementById('prog-ex-clear');
+  if(inp){inp.value='';}
+  if(res){res.style.display='none';res.innerHTML='';}
+  if(clr)clr.style.display='none';
+  _updateProgChip();
+  renderProgChart();
+  renderProgStats();
+}
+function filterProgEx(val){
+  const res=document.getElementById('prog-ex-results');
+  const clr=document.getElementById('prog-ex-clear');
+  if(!res)return;
+  if(clr)clr.style.display=val?'block':'none';
+  if(!val.trim()){res.style.display='none';res.innerHTML='';return;}
+  const allEx=[...new Set(hist.filter(h=>h.type==='wo').flatMap(w=>(w.ex||[]).map(e=>exDisplayName(e))))];
+  const q=val.toLowerCase();
+  const matches=allEx.filter(n=>n.toLowerCase().includes(q)).slice(0,12);
+  if(!matches.length){
+    res.style.display='block';
+    res.innerHTML='<div style="padding:10px 14px;font-size:12px;color:rgba(255,255,255,0.3)">No exercises found</div>';
+    return;
+  }
+  res.style.display='block';
+  res.innerHTML=matches.map(n=>
+    `<div class="prog-ex-result" onclick="setProgEx('${n.replace(/'/g,"\'")}')">${n}</div>`
+  ).join('');
 }
 
 // Epley 1RM estimate: weight × (1 + reps/30)
 function est1RM(w,r){return r===1?w:Math.round(w*(1+r/30)*10)/10;}
+
+function renderWeeklyVol(){
+  const svg=document.getElementById('weekly-vol-svg');if(!svg)return;
+  const fromStr=localDateKey(new Date(TODAY.getTime()-progWin*30*24*3600*1000));
+
+  // Bucket workouts into ISO weeks
+  const weekMap=new Map();
+  hist.filter(h=>h.type==='wo'&&h.date>=fromStr).forEach(w=>{
+    const d=new Date(w.date+'T00:00:00');
+    // ISO week start (Monday)
+    const day=d.getDay()||7;
+    d.setDate(d.getDate()-day+1);
+    const wk=localDateKey(d);
+    const vol=(w.ex||[]).reduce((a,e)=>a+(e.sets||[]).reduce((b,s)=>b+(s.d||s.r?((s.w||0)*(s.r||1)):0),0),0);
+    weekMap.set(wk,(weekMap.get(wk)||0)+vol);
+  });
+
+  if(!weekMap.size){
+    svg.innerHTML=`<text x="165" y="45" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.2)">No data for this window</text>`;
+    return;
+  }
+
+  // Sort weeks
+  const weeks=[...weekMap.entries()].sort((a,b)=>a[0]<b[0]?-1:1);
+  const vols=weeks.map(w=>w[1]);
+  const mx=Math.max(...vols)||1;
+
+  const W=330,H=80,padL=40,padR=8,padB=18,padT=6;
+  const n=weeks.length;
+  const gap=2;
+  const bw=Math.max(4,Math.floor((W-padL-padR-(n-1)*gap)/n));
+  const step=Math.max(1,Math.ceil(n/6));
+
+  const bars=weeks.map(([wk,v],i)=>{
+    const bh=Math.max(2,Math.round((v/mx)*(H-padT-padB)));
+    const x=padL+i*(bw+gap);
+    const y=H-padB-bh;
+    const label=i%step===0||i===n-1?wk.slice(5):'';
+    return `<rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="2" fill="${v===mx?'var(--ac)':'rgba(255,255,255,0.18)'}"/>
+      ${label?`<text x="${x+bw/2}" y="${H}" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.25)">${label}</text>`:''}`;
+  }).join('');
+
+  // Y axis labels
+  const yLabels=[0,0.5,1].map(f=>{
+    const y=Math.round(H-padB-f*(H-padT-padB));
+    const val=Math.round(mx*f);
+    return `<text x="${padL-4}" y="${y+3}" font-size="8" text-anchor="end" fill="rgba(255,255,255,0.25)">${val>=1000?Math.round(val/100)/10+'k':val}</text>
+      <line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>`;
+  }).join('');
+
+  // Best week annotation
+  const bestWk=weeks.reduce((b,w)=>w[1]>b[1]?w:b,weeks[0]);
+  const subEl=document.getElementById('weekly-vol-sub');
+  if(subEl)subEl.textContent=`Total kg lifted · best week: ${bestWk[0].slice(5)} (${Math.round(bestWk[1]).toLocaleString()}kg)`;
+
+  svg.innerHTML=yLabels+bars;
+}
 
 function renderProg(){
   const allEx=[...new Set(hist.filter(h=>h.type==='wo').flatMap(w=>(w.ex||[]).map(e=>exDisplayName(e))))];
@@ -7733,7 +8006,8 @@ function renderProgChart(){
   if(subEl)subEl.textContent=meta.sub;
 
   if(pts.length<2){
-    svg.innerHTML=`<text x="165" y="60" text-anchor="middle" font-size="11" fill="var(--chart-text,rgba(255,255,255,0.25))">Not enough data for this window</text>`;
+    const msg=!progExercise?'Search for an exercise above to see its progress':'Not enough data for this window';
+    svg.innerHTML=`<text x="165" y="60" text-anchor="middle" font-size="11" fill="var(--chart-text,rgba(255,255,255,0.25))">${msg}</text>`;
     return;
   }
 
@@ -9240,7 +9514,7 @@ function getCurrentBest(exName, type, direction){
       if(e.n!==exName)return;
       e.sets.forEach(s=>{
         if(s.d){
-          const v=type==='weight'?(s.w||0):type==='time'?(s.t||0):(s.r||0);
+          const v=type==='weight'?(s.w||0):type==='time'?(s.time||0):(s.r||0);
           if(v>0){
             if(best===null) best=v;
             else if(direction==='higher'&&v>best) best=v;
@@ -10120,10 +10394,22 @@ function discardDraft(){
 function saveDraft(){
   try {
     if(curEx.length){
-      localStorage.setItem(LS.curEx,       JSON.stringify(curEx));
-      localStorage.setItem(LS.woStartTime, String(woStartTime));
-      if(editingHistIdx !== null)
-        localStorage.setItem(LS.editingHistIdx, String(editingHistIdx));
+      const ce=JSON.stringify(curEx);
+      const wst=String(woStartTime);
+      const ehi=editingHistIdx!==null?String(editingHistIdx):'';
+      // Write to both stores — localStorage survives backgrounding,
+      // sessionStorage is a faster fallback within the same session
+      localStorage.setItem(LS.curEx,ce);
+      localStorage.setItem(LS.woStartTime,wst);
+      localStorage.setItem(LS.editingHistIdx,ehi);
+      try{sessionStorage.setItem(LS.curEx,ce);
+          sessionStorage.setItem(LS.woStartTime,wst);
+          sessionStorage.setItem(LS.editingHistIdx,ehi);}catch(e2){}
+    } else {
+      // Workout finished — clear both stores
+      [localStorage,sessionStorage].forEach(s=>{
+        try{s.removeItem(LS.curEx);s.removeItem(LS.woStartTime);s.removeItem(LS.editingHistIdx);}catch(e){}
+      });
     }
   } catch(e){ console.warn('saveDraft failed', e); }
 }
@@ -10131,7 +10417,7 @@ function saveDraft(){
 let _draftDebounceTimer = null;
 function saveDraftDebounced(){
   clearTimeout(_draftDebounceTimer);
-  _draftDebounceTimer = setTimeout(saveDraft, 600);
+  _draftDebounceTimer = setTimeout(saveDraft, 200);
 }
 
 function saveState(){
@@ -10206,12 +10492,13 @@ function loadState(){
     if(ck) checkins = JSON.parse(ck);
 
     // Restore active workout if one was in progress
-    const ce = localStorage.getItem(LS.curEx);
+    // Try localStorage first, fall back to sessionStorage
+    const ce = localStorage.getItem(LS.curEx)||sessionStorage.getItem(LS.curEx);
     if(ce){
       curEx = JSON.parse(ce);
-      const wst = localStorage.getItem(LS.woStartTime);
+      const wst = localStorage.getItem(LS.woStartTime)||sessionStorage.getItem(LS.woStartTime);
       if(wst) woStartTime = parseInt(wst)||Date.now();
-      const ehi = localStorage.getItem(LS.editingHistIdx);
+      const ehi = localStorage.getItem(LS.editingHistIdx)||sessionStorage.getItem(LS.editingHistIdx);
       editingHistIdx = ehi ? parseInt(ehi) : null;
     }
   } catch(e){ console.warn('loadState failed', e); }
@@ -10224,6 +10511,8 @@ document.addEventListener('visibilitychange',()=>{
 window.addEventListener('pagehide',()=>{
   if(curEx.length) saveState();
 });
+// Periodic auto-save every 15s during active workout — belt-and-braces against crashes
+setInterval(()=>{ if(curEx.length) saveDraft(); }, 15000);
 
 function hasOnboarded(){
   return localStorage.getItem(LS.onboarded) === '1';
@@ -10262,7 +10551,7 @@ function migrateExerciseIds(){
     'DB Walking Lunge':              47,
     'DB Lateral Lunge':              62,
     'DB Sumo Squat':                 49,
-    'Single-Leg DB RDL':             48,
+    'Single Leg DB RDL':             48,
     'Incline DB Press':              12,
     'DB Chest Fly':                  50,
     'DB Pullover':                   51,
@@ -10279,7 +10568,7 @@ function migrateExerciseIds(){
     'Farmers Carry':                169,
     'Cable Row (Seated)':            64,
     'Cable Lat Pulldown':            65,
-    'Single-Arm Cable Row':          66,
+    'Single Arm Cable Row':          66,
     'Cable Face Pull':               67,
     'Cable Chest Fly':               68,
     'Low Cable Chest Fly':           69,
@@ -10287,7 +10576,7 @@ function migrateExerciseIds(){
     'Cable Lateral Raise':           73,
     'Cable Overhead Tricep Extension':70,
     'Cable Bicep Curl':              71,
-    'Single-Arm Cable Curl':         72,
+    'Single Arm Cable Curl':         72,
     'Cable Glute Kickback':          74,
     'Cable Hip Abduction':           75,
     'Cable Pull-Through':            76,
@@ -10318,14 +10607,14 @@ function migrateExerciseIds(){
     'TRX Row':                      130,
     'TRX Push-Up':                  131,
     'TRX Hamstring Curl':           132,
-    'TRX Single-Leg Squat':         133,
+    'TRX Single Leg Squat':         133,
     'Pistol Squat':                 108,
     'Box Jump':                     109,
     'Box Step-Up':                  172,
     'Bodyweight Squat':             184,
     'Bodyweight Lunge':             185,
     'Glute Bridge':                 100,
-    'Single-Leg Glute Bridge':      101,
+    'Single Leg Glute Bridge':      101,
     'Glute Bridge March':           186,
     'Dead Bug':                     104,
     'Banded Deadbug':               127,
@@ -10350,8 +10639,8 @@ function migrateExerciseIds(){
     'KB Sumo Deadlift':              87,
     'KB Romanian Deadlift':          90,
     'KB Hip Thrust':                 91,
-    'KB Single-Arm Press':           84,
-    'KB Single-Arm Row':             85,
+    'KB Single Arm Press':           84,
+    'KB Single Arm Row':             85,
     'KB Clean':                      88,
     'KB Turkish Get-Up':             83,
     'Spanish Squat':                 14,
@@ -10361,7 +10650,7 @@ function migrateExerciseIds(){
     'Hip Thrust (Band)':             19,
     'Wall Slide':                    20,
     'Tibialis Raise':                21,
-    'Single-Leg RDL':                22,
+    'Single Leg RDL':                22,
     'Band Pull-Apart':               16,  // retired but may exist in old history
     'Banded Pull-Apart':            120,
     'Banded Row':                   122,
