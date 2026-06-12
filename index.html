@@ -2426,6 +2426,7 @@ body.light-mode .dual-dial-card{
     <div id="prog-ex-selected" style="display:none;margin-bottom:8px">
       <span id="prog-ex-chip" style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:var(--ac);border-radius:20px;font-size:12px;font-weight:500;color:#fff"></span>
     </div>
+    <div id="prog-empty"></div>
 
     <!-- Weekly volume chart -->
     <div class="sec-lbl" style="margin-bottom:6px">Overall volume per week</div>
@@ -3522,8 +3523,8 @@ const EX=[
   {id:108,n:'Pistol Squat',m:'Legs',ms:['Glutes','Core'],t:'reps',c:'gym',anim:'anim-squat',tags:['Bodyweight','Squat','Unilateral'],cols:['reps'],
    tip:'Log reps per side. Use a TRX or pole for assistance while building.',
    s:['Glutes','Core']},
-  {id:109,n:'Box Jump',m:'Legs',ms:['Glutes'],t:'reps',c:'gym',anim:'anim-squat',tags:['Bodyweight','Plyometric','Explosive'],cols:['reps'],
-   tip:'Log reps. Note box height in your notes. Land softly.',
+  {id:109,n:'Box Jump',m:'Legs',ms:['Glutes'],t:'reps',c:'gym',anim:'anim-squat',tags:['Bodyweight','Plyometric','Explosive'],cols:['height','reps'],
+   tip:'Log box height (cm) and reps. Land softly.',
    s:['Glutes']},
   {id:110,n:'Jump Squat',m:'Legs',ms:['Glutes'],t:'reps',c:'gym',anim:'anim-squat',tags:['Bodyweight','Plyometric','Explosive'],cols:['reps'],
    tip:'Log reps. Can add light dumbbells or vest for load.',
@@ -3672,11 +3673,11 @@ const EX=[
   {id:158,n:'Elliptical',m:'Legs',ms:['Glutes'],t:'time',c:'gym',anim:'anim-plank',tags:['Cardio'],cols:['time'],timeUnit:'min',
    tip:'Log duration and distance. Low impact — useful for active recovery or when managing injury.',
    s:['Cardio']},
-  {id:159,n:'Treadmill Walk / Run',m:'Legs',ms:['Glutes','Core'],t:'reps',c:'gym',anim:'anim-plank',tags:['Cardio'],cols:['dist','time'],timeUnit:'min',
-   tip:'Log duration, distance and incline. Incline 1–2% mimics outdoor running effort.',
+  {id:159,n:'Treadmill Walk / Run',m:'Legs',ms:['Glutes','Core'],t:'reps',c:'gym',anim:'anim-plank',tags:['Cardio'],cols:['incline','dist','time'],timeUnit:'min',
+   tip:'Log incline, distance and duration. Incline 1–2% mimics outdoor running effort.',
    s:['Cardio']},
-  {id:160,n:'Treadmill Intervals',m:'Legs',ms:['Glutes','Core'],t:'reps',c:'gym',anim:'anim-plank',tags:['Cardio','Explosive'],cols:['dist','time'],timeUnit:'min',
-   tip:'Log total duration. Note speed and incline per rep.',
+  {id:160,n:'Treadmill Intervals',m:'Legs',ms:['Glutes','Core'],t:'reps',c:'gym',anim:'anim-plank',tags:['Cardio','Explosive'],cols:['incline','dist','time'],timeUnit:'min',
+   tip:'Log incline, distance and total duration per interval block.',
    s:['Cardio','Explosive']},
   {id:161,n:'Clean and Jerk (KB)',m:'Shoulders',ms:['Glutes','Legs','Back'],t:'weight',c:'gym',anim:'anim-ohp',tags:['Kettlebell','Compound','Explosive'],cols:['kg','reps'],
    tip:'Log the kettlebell weight per side. Clean to rack, then press or jerk overhead.',
@@ -4850,7 +4851,9 @@ function go(v){
   // Bar sticks to the bottom of the app frame; hide it on the log screen (user is in the workout)
   const bar=document.getElementById('wo-bar');
   if(bar){
-    if(v==='log') bar.style.display='none';
+    // Hide on the log itself, and on the library while a workout is active —
+    // the user is mid-flow adding exercises, not away from their workout
+    if(v==='log'||(v==='lib'&&curEx.length>0)) bar.style.display='none';
     else bar.style.display=''; // let .active class control visibility
   }
   if(v==='home')renderHome();
@@ -5008,6 +5011,8 @@ let _dciSyms=new Set();
 
 function hasTodaysCheckin(){
   const k=localDateKey(TODAY);
+  // Dedicated fast key survives even if the checkins blob fails to parse/load
+  if(_lsGet('gt_lastDci')===k)return true;
   return checkins.some(c=>c.date===k);
 }
 
@@ -5063,6 +5068,9 @@ function submitDailyCheckin(skipped){
   checkins=checkins.filter(c=>c.date!==today);
   if(!skipped||entry.sleep||entry.energy||entry.stress)checkins.push(entry);
   else checkins.push({date:today,skipped:true}); // mark skipped so popup doesn't re-appear
+  // Dedicated fast key — guards against the main blob failing to persist/load
+  try{localStorage.setItem('gt_lastDci',today);}catch(e){}
+  try{sessionStorage.setItem('gt_lastDci',today);}catch(e){}
   saveState();
   document.getElementById('dci-backdrop')?.remove();
   document.getElementById('dci-sheet')?.remove();
@@ -5375,6 +5383,16 @@ function showCheckin(){
   const ex=document.getElementById('prewo-overlay');if(ex)ex.remove();
   ciMood=null;ciSyms=new Set();
 
+  // Prefill from today's daily check-in — same symptom vocabulary; energy maps to mood
+  const _todayDci=checkins.find(c=>c.date===localDateKey(TODAY)&&!c.skipped);
+  let _ciPrefilled=false;
+  if(_todayDci){
+    (_todayDci.symptoms||[]).forEach(l=>ciSyms.add(l));
+    const moodFromEnergy={Max:'Great',High:'Good',OK:'OK',Low:'Tired'}[_todayDci.energy];
+    if(moodFromEnergy)ciMood=moodFromEnergy;
+    _ciPrefilled=ciSyms.size>0||!!moodFromEnergy;
+  }
+
   const{scores}=computeStress();
   const mgs=MUSCLES.map(m=>({m,pct:scores[m]})).sort((a,b)=>a.pct-b.pct);
   const fresh=mgs.filter(x=>x.pct<25);
@@ -5462,10 +5480,17 @@ function showCheckin(){
   const moodSec=document.createElement('div');
   moodSec.className='prewo-sec';moodSec.style.marginTop='0';moodSec.textContent='How are you feeling?';
   scroll.appendChild(moodSec);
+  if(_ciPrefilled){
+    const pn=document.createElement('div');
+    pn.style.cssText='font-size:11px;color:rgba(149,188,43,0.8);margin-bottom:8px';
+    pn.textContent='✓ Pre-filled from today’s check-in — tap to change';
+    scroll.appendChild(pn);
+  }
   const moodRow=document.createElement('div');moodRow.className='mood-row';
   MOODS.forEach((m,i)=>{
     const btn=document.createElement('button');
     btn.className='mood-opt';btn.type='button';btn.id=`mood-${i}`;
+    if(ciMood===m.l)btn.classList.add('sel');
     btn.innerHTML=`<div class="mood-face">${m.e}</div><div class="mood-lbl">${m.l}</div>`;
     btn.addEventListener('click',()=>ciSelMood(i));
     moodRow.appendChild(btn);
@@ -5480,6 +5505,7 @@ function showCheckin(){
   syms.forEach((s,i)=>{
     const btn=document.createElement('button');
     btn.className='sym-chip';btn.type='button';btn.id=`sym-${i}`;
+    if(ciSyms.has(s.l))btn.classList.add(s.pos?'sel-g':'sel-r');
     btn.innerHTML=`<span class="sc-icon">${s.i}</span>${s.l}`;
     btn.addEventListener('click',()=>ciToggleSym(i,btn,s.pos?'g':'r'));
     symGrid.appendChild(btn);
@@ -5523,7 +5549,9 @@ function ciToggleSym(i,el,type){
   if(ciSyms.has(lbl)){ciSyms.delete(lbl);el.classList.remove('sel-g','sel-r');}
   else{ciSyms.add(lbl);el.classList.add(type==='g'?'sel-g':'sel-r');}
 }
+let _pendingWoCheckin=null; // pre-workout answers, attached to the entry at finishWo
 function ciComplete(skipped){
+  _pendingWoCheckin=(!skipped&&(ciMood||ciSyms.size))?{mood:ciMood,syms:[...ciSyms]}:null;
   document.getElementById('prewo-overlay')?.remove();
   woStartTime=Date.now();
   go('log');
@@ -5883,10 +5911,10 @@ function getLastLogged(name, cols){
     const ex=(w.ex||[]).find(e=>e.n===name);
     if(!ex)continue;
     // Find last set that has any data
-    const sets=(ex.sets||[]).filter(s=>s.w||s.r||s.time||s.dist);
+    const sets=(ex.sets||[]).filter(s=>s.w||s.r||s.time||s.dist||s.height||s.incline);
     if(!sets.length)continue;
     const last=sets[sets.length-1];
-    return{w:last.w||'',r:last.r||'',time:last.time||'',dist:last.dist||''};
+    return{w:last.w||'',r:last.r||'',time:last.time||'',dist:last.dist||'',height:last.height||'',incline:last.incline||''};
   }
   return null;
 }
@@ -6049,13 +6077,19 @@ function renderLog(){
     const _timeUnit=(ex.timeUnit||'sec');
     const _timeLabel=_timeUnit==='min'?'min':'sec';
     const COL_META={
-      kg:  {label:'kg',        field:'w',    ph:'0', step:'0.5', min:'0'},
-      reps:{label:'reps',      field:'r',    ph:'0', step:'1',   min:'0'},
-      time:{label:_timeLabel,  field:'time', ph:'0', step:'1',   min:'0'},
-      dist:{label:'km',        field:'dist', ph:'0', step:'0.01',min:'0'},
+      kg:  {label:'kg',        field:'w',      ph:'0', step:'0.5', min:'0'},
+      reps:{label:'reps',      field:'r',      ph:'0', step:'1',   min:'0'},
+      time:{label:_timeLabel,  field:'time',   ph:'0', step:'1',   min:'0'},
+      dist:{label:'km',        field:'dist',   ph:'0', step:'0.01',min:'0'},
+      height:{label:'cm',      field:'height', ph:'0', step:'1',   min:'0'},
+      incline:{label:'incl %', field:'incline',ph:'0', step:'0.5', min:'0'},
     };
-    const ALL_COLS=['kg','reps','time','dist','mins'];
-    const chipLabels={kg:'+ kg',reps:'+ reps',time:`+ ${_timeLabel}`,dist:'+ km',mins:'+ mins'};
+    // Height chip only for jump/step work; incline only for treadmill-style machines —
+    // keeps the chip row uncluttered everywhere else
+    const _offerHeight=/jump|step|box|plyo/i.test(ex.n)||(ex.tags||[]).includes('Plyometric');
+    const _offerIncline=/treadmill|walk|run|stair|elliptical|hike/i.test(ex.n);
+    const ALL_COLS=['kg','reps','time','dist',..._offerHeight?['height']:[],..._offerIncline?['incline']:[],'mins'];
+    const chipLabels={kg:'+ kg',reps:'+ reps',time:`+ ${_timeLabel}`,dist:'+ km',mins:'+ mins',height:'+ cm',incline:'+ incl %'};
 
     const dataCols=cols.length;
     const gridCols=`22px ${Array(dataCols).fill('1fr').join(' ')} 1fr 18px 28px`;
@@ -6318,7 +6352,7 @@ function toggleCol(ei, col){
   } else {
     ex.cols.push(col);
     // Keep sensible order: kg, reps, time, dist
-    const ORDER=['kg','reps','time','dist'];
+    const ORDER=['height','incline','kg','reps','time','dist'];
     ex.cols.sort((a,b)=>ORDER.indexOf(a)-ORDER.indexOf(b));
   }
   renderLog(); // full re-render to update grid
@@ -6706,7 +6740,7 @@ function hideFinishConfirm(){
 }
 
 // A set counts as "logged" if it's ticked done OR has any value entered
-function setHasData(s){return !!(s.d||s.r||s.w||s.time||s.dist);}
+function setHasData(s){return !!(s.d||s.r||s.w||s.time||s.dist||s.height||s.incline);}
 function finishWo(){
   if(!curEx.length)return;
   hideFinishConfirm();
@@ -6730,6 +6764,8 @@ function finishWo(){
       type:'wo', date, mode:woMode, dur,
       name:editing?hist[editingHistIdx].name:null,
       mood:editing?hist[editingHistIdx].mood:null,
+      // Pre-workout check-in answers (mood + symptoms) — consumed by cycle insights
+      checkin:editing?(hist[editingHistIdx].checkin||null):_pendingWoCheckin,
       ex:gymExs.map(e=>({id:e.id,n:e.n,sets:e.sets.filter(setHasData),...(e.rounds?.length?{rounds:e.rounds}:{})}))
     };
     if(editing){
@@ -7044,6 +7080,7 @@ function saveWo(){
 
   editingHistIdx=null;
   _postWoHistIdx=null;
+  _pendingWoCheckin=null;
   curEx=[];
   document.getElementById('postwo-overlay')?.remove();
   document.getElementById('wo-bar')?.classList.remove('active');
@@ -8299,7 +8336,7 @@ function filterProgEx(val){
   }
   res.style.display='block';
   res.innerHTML=matches.map(n=>
-    `<div class="prog-ex-result" onclick="setProgEx('${n.replace(/'/g,"\'")}')">${n}</div>`
+    `<div class="prog-ex-result" onclick="setProgEx(${escHtml(JSON.stringify(n))})">${escHtml(n)}</div>`
   ).join('');
 }
 
@@ -8310,21 +8347,30 @@ function renderWeeklyVol(){
   const svg=document.getElementById('weekly-vol-svg');if(!svg)return;
   const fromStr=localDateKey(new Date(TODAY.getTime()-progWin*30*24*3600*1000));
 
-  // Bucket workouts into ISO weeks
+  // Bucket workouts into ISO weeks — kg volume plus session count
   const weekMap=new Map();
-  hist.filter(h=>h.type==='wo'&&h.date>=fromStr).forEach(w=>{
+  const sessMap=new Map();
+  hist.filter(h=>(h.type==='wo'||h.type==='run')&&h.date>=fromStr).forEach(w=>{
     const d=parseLocalDate(w.date);
     // ISO week start (Monday)
     const day=d.getDay()||7;
     d.setDate(d.getDate()-day+1);
     const wk=localDateKey(d);
-    const vol=(w.ex||[]).reduce((a,e)=>a+(e.sets||[]).reduce((b,s)=>b+(s.d||s.r?((s.w||0)*(s.r||1)):0),0),0);
+    const vol=w.type==='wo'?(w.ex||[]).reduce((a,e)=>a+(e.sets||[]).reduce((b,s)=>b+(s.d||s.r?((s.w||0)*(s.r||1)):0),0),0):0;
     weekMap.set(wk,(weekMap.get(wk)||0)+vol);
+    sessMap.set(wk,(sessMap.get(wk)||0)+1);
   });
 
   if(!weekMap.size){
     svg.innerHTML=`<text x="165" y="45" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.2)">No data for this window</text>`;
     return;
+  }
+
+  // Cardio-only fallback: no weighted sets at all — show sessions per week instead
+  const allZero=[...weekMap.values()].every(v=>v===0);
+  if(allZero){
+    weekMap.clear();
+    sessMap.forEach((v,k)=>weekMap.set(k,v));
   }
 
   // Sort weeks
@@ -8358,7 +8404,9 @@ function renderWeeklyVol(){
   // Best week annotation
   const bestWk=weeks.reduce((b,w)=>w[1]>b[1]?w:b,weeks[0]);
   const subEl=document.getElementById('weekly-vol-sub');
-  if(subEl)subEl.textContent=`Total kg lifted · best week: ${bestWk[0].slice(5)} (${Math.round(bestWk[1]).toLocaleString()}kg)`;
+  if(subEl)subEl.textContent=allZero
+    ?`Sessions per week · best week: ${bestWk[0].slice(5)} (${bestWk[1]} session${bestWk[1]!==1?'s':''})`
+    :`Total kg lifted · best week: ${bestWk[0].slice(5)} (${Math.round(bestWk[1]).toLocaleString()}kg)`;
 
   svg.innerHTML=yLabels+bars;
 }
@@ -8367,17 +8415,17 @@ function renderProg(){
   const allEx=[...new Set(hist.filter(h=>h.type==='wo').flatMap(w=>(w.ex||[]).map(e=>exDisplayName(e))))];
   if(!progExercise||!allEx.includes(progExercise))progExercise=allEx[0]||null;
 
-  // Exercise pills (designed empty state when nothing logged yet)
-  const pillsEl=document.getElementById('prog-ex-pills');
-  if(pillsEl)pillsEl.innerHTML=allEx.map(n=>
-    `<div class="prog-ex-pill${n===progExercise?' active':''}" data-name="${escHtml(n)}" onclick="setProgEx(${escHtml(JSON.stringify(n))})">${escHtml(n)}</div>`
-  ).join('')||`
+  // Designed empty state when nothing logged yet
+  const emptyEl=document.getElementById('prog-empty');
+  if(emptyEl)emptyEl.innerHTML=allEx.length?'':`
     <div style="text-align:center;padding:36px 24px;width:100%">
       <div style="font-size:40px;margin-bottom:12px">📈</div>
       <div style="font-size:15px;font-weight:500;color:${isLight()?'rgba(0,0,0,0.75)':'rgba(255,255,255,0.85)'};margin-bottom:6px">Progress charts unlock with your first session</div>
       <div style="font-size:13px;color:${isLight()?'rgba(0,0,0,0.45)':'rgba(255,255,255,0.4)'};line-height:1.6;max-width:250px;margin:0 auto">Log a workout and you'll see strength trends, PBs and volume per muscle here.</div>
     </div>`;
 
+  renderWeeklyVol();     // headline: whole-body volume per week
+  _updateProgChip();     // show which exercise the deep-dive charts refer to
   renderProgChart();
   renderProgStats();
   renderProgPRs();
@@ -11083,6 +11131,7 @@ function showDraftRecoveryBanner(){
 function discardDraft(){
   curEx=[];
   editingHistIdx=null;
+  _pendingWoCheckin=null;
   dismissRestTimer();
   stopWoTimer();
   // Clear the active-workout draft from every storage backend so it isn't recovered
@@ -11225,43 +11274,24 @@ function _lsGet(key){
   return v;
 }
 function loadState(){
+  // Each key parses inside its own guard — one corrupt key must never abort the
+  // rest of the load (a late key like checkins silently failing made the daily
+  // check-in popup reappear every boot).
+  const _safe=fn=>{try{fn();}catch(e){console.warn('loadState key failed',e);}};
   try {
-    const h = _lsGet(LS.hist);
-    if(h) hist = JSON.parse(h);
-
-    const p = _lsGet(LS.prof);
-    if(p){ const pd=JSON.parse(p); Object.assign(profData,pd); }
-
-    const g = _lsGet(LS.goals);
-    if(g) userGoals = JSON.parse(g);
-
-    const ng = _lsGet(LS.nextGoalId);
-    if(ng) nextGoalId = parseInt(ng)||1;
-
-    const wh = _lsGet(LS.weightHist);
-    if(wh) weightHistory = JSON.parse(wh);
-
-    const ph = _lsGet(LS.periodHist);
-    if(ph) periodHistory = JSON.parse(ph);
-
-    const tc = _lsGet(LS.trackCycles);
-    if(tc !== null) trackCycles = tc === 'true';
-
-    const cl = _lsGet(LS.cycLen);
-    if(cl) cycLen = parseInt(cl)||28;
-
-    const st = _lsGet(LS.settings);
-    if(st){ const sv=JSON.parse(st); Object.assign(appSettings,sv); }
-
-    const col = _lsGet(LS.ac);
-    if(col) setCol(col);
-    const th = _lsGet(LS.theme);
-    if(th) setTheme(th, true);
-    const sw = _lsGet(LS.savedWorkouts);
-    if(sw) savedWorkouts = JSON.parse(sw);
-
-    const cx = _lsGet(LS.customExs);
-    if(cx){ customExs = JSON.parse(cx); mergeCustomExs(); }
+    _safe(()=>{const h=_lsGet(LS.hist);if(h)hist=JSON.parse(h);});
+    _safe(()=>{const p=_lsGet(LS.prof);if(p){const pd=JSON.parse(p);Object.assign(profData,pd);}});
+    _safe(()=>{const g=_lsGet(LS.goals);if(g)userGoals=JSON.parse(g);});
+    _safe(()=>{const ng=_lsGet(LS.nextGoalId);if(ng)nextGoalId=parseInt(ng)||1;});
+    _safe(()=>{const wh=_lsGet(LS.weightHist);if(wh)weightHistory=JSON.parse(wh);});
+    _safe(()=>{const ph=_lsGet(LS.periodHist);if(ph)periodHistory=JSON.parse(ph);});
+    _safe(()=>{const tc=_lsGet(LS.trackCycles);if(tc!==null)trackCycles=tc==='true';});
+    _safe(()=>{const cl=_lsGet(LS.cycLen);if(cl)cycLen=parseInt(cl)||28;});
+    _safe(()=>{const st=_lsGet(LS.settings);if(st){const sv=JSON.parse(st);Object.assign(appSettings,sv);}});
+    _safe(()=>{const col=_lsGet(LS.ac);if(col)setCol(col);});
+    _safe(()=>{const th=_lsGet(LS.theme);if(th)setTheme(th,true);});
+    _safe(()=>{const sw=_lsGet(LS.savedWorkouts);if(sw)savedWorkouts=JSON.parse(sw);});
+    _safe(()=>{const cx=_lsGet(LS.customExs);if(cx){customExs=JSON.parse(cx);mergeCustomExs();}});
 
     // Auto-recover custom exercises from history that were never formally saved to customExs
     // (e.g. logged via free-text entry before the custom ex system was in place)
@@ -11290,8 +11320,7 @@ function loadState(){
       } catch(err){ /* silent */ }
     }
 
-    const ck = _lsGet(LS.checkins);
-    if(ck) checkins = JSON.parse(ck);
+    _safe(()=>{const ck=_lsGet(LS.checkins);if(ck)checkins=JSON.parse(ck);});
 
     // Restore active workout if one was in progress
     // Try localStorage first, then sessionStorage, then URL hash backup

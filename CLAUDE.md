@@ -113,6 +113,12 @@ const LS = {
 };
 ```
 
+One key lives outside the `LS` object: `gt_lastDci` holds the date string of the last
+daily check-in. It is written directly (localStorage + sessionStorage) at submit and
+checked by `hasTodaysCheckin()` — a fast guard that survives even if the main
+checkins blob fails to load. `loadState()` wraps every key parse in its own
+try/catch (`_safe`) so one corrupt key cannot abort the rest of the load.
+
 Use `_lsGet(key)` and `_lsSet(key, value)` — never call `localStorage` directly. These functions handle try/catch and sessionStorage fallback.
 
 `saveState()` — call this after any mutation to `hist`, `prof`, `goals`, `periodHistory`, `weightHistory`, `customExs`, or settings.
@@ -133,6 +139,7 @@ Use `_lsGet(key)` and `_lsSet(key, value)` — never call `localStorage` directl
   dur: 45,                  // duration in minutes
   name: null,               // optional custom session name
   mood: null,               // optional post-workout mood
+  checkin: null,            // pre-workout check-in {mood, syms:[]} — prefilled from daily check-in
   ex: [
     {
       id: 12,               // exercise ID from EX array (may be null for custom)
@@ -141,7 +148,9 @@ Use `_lsGet(key)` and `_lsSet(key, value)` — never call `localStorage` directl
         { w: 80, r: 10 },   // weight (kg) + reps
         { r: 15 },          // bodyweight — reps only
         { time: 45 },       // time-based — seconds/minutes
-        { dist: 5, time: 30 } // distance + time (cardio)
+        { dist: 5, time: 30 }, // distance + time (cardio)
+        { height: 60, r: 8 },  // box height (cm) + reps — plyo
+        { incline: 2, dist: 5, time: 30 } // treadmill incline %
       ]
     }
   ]
