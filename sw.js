@@ -1,9 +1,9 @@
-const CACHE = 'trk-v15';
+const CACHE = 'trk-v16';
 
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE)
-      .then(c => c.addAll(['./TRK.html', './']))
+      .then(c => c.addAll(['./', './index.html', './manifest.json']))
       .then(() => self.skipWaiting())
   );
 });
@@ -28,7 +28,7 @@ self.addEventListener('fetch', e => {
           caches.open(CACHE).then(c => c.put(e.request, clone));
         }
         return res;
-      }).catch(() => caches.match('./TRK.html'))
+      }).catch(() => caches.match('./index.html'))
     )
   );
 });
